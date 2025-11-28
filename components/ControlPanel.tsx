@@ -7,11 +7,22 @@ import * as Tabs from "@radix-ui/react-tabs";
 import * as Slider from "@radix-ui/react-slider";
 import * as Switch from "@radix-ui/react-switch";
 import { ColorPicker } from "./ColorPicker";
-import { ExportTools } from "./ExportTools";
 import { ToolsTab } from "./tabs/ToolsTab";
 import { PranksTab } from "./tabs/PranksTab";
 import { AmbientTab } from "./tabs/AmbientTab";
 import { getColorString, getGradientCSS, COLOR_PRESETS } from "@/lib/colorUtils";
+
+// Helper function to convert hex to RGB
+function hexToRgb(hex: string): { r: number; g: number; b: number } | null {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result
+    ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16),
+      }
+    : null;
+}
 
 interface ControlPanelProps {
   showColorTab?: boolean;
@@ -176,12 +187,6 @@ export function ControlPanel({ showColorTab = true }: ControlPanelProps) {
                 className="px-3 py-1.5 text-xs font-medium text-gray-600 data-[state=active]:text-gray-900 data-[state=active]:border-b-2 data-[state=active]:border-gray-900 transition-colors whitespace-nowrap"
               >
                 🌟 {t.common.ambient}
-              </Tabs.Trigger>
-              <Tabs.Trigger
-                value="export"
-                className="px-3 py-1.5 text-xs font-medium text-gray-600 data-[state=active]:text-gray-900 data-[state=active]:border-b-2 data-[state=active]:border-gray-900 transition-colors whitespace-nowrap"
-              >
-                {t.common.export}
               </Tabs.Trigger>
               <Tabs.Trigger
                 value="settings"
@@ -407,38 +412,121 @@ export function ControlPanel({ showColorTab = true }: ControlPanelProps) {
                         </div>
                       </div>
                     </div>
+                  </div>
+
+                  {/* Download Buttons */}
+                  <div className="flex gap-2">
                     <button
-                      onClick={() => {
-                        const canvas = document.createElement("canvas");
-                        const [width, height] = resolution.split("x").map(Number);
-                        canvas.width = width;
-                        canvas.height = height;
-                        const ctx = canvas.getContext("2d");
-                        if (ctx) {
-                          const displayColor = getColorString(currentColor, brightness);
-                          const gradientCSS = gradient.enabled ? getGradientCSS(gradient) : null;
-                          if (gradientCSS && gradient.enabled) {
-                            // For gradients, we'll use a solid color approximation
-                            ctx.fillStyle = displayColor;
+                      onClick={async () => {
+                        try {
+                          const { default: jsPDF } = await import("jspdf");
+                          const displayArea = document.querySelector('[data-display-area]') as HTMLElement;
+                          
+                          if (displayArea) {
+                            // Capture screen as image first
+                            const html2canvas = (await import("html2canvas")).default;
+                            const canvas = await html2canvas(displayArea, {
+                              scale: 1,
+                              useCORS: true,
+                              backgroundColor: null,
+                            });
+                            
+                            const imgData = canvas.toDataURL("image/jpeg", 0.95);
+                            const pdf = new jsPDF({
+                              orientation: canvas.width > canvas.height ? "landscape" : "portrait",
+                              unit: "px",
+                              format: [canvas.width, canvas.height]
+                            });
+                            
+                            pdf.addImage(imgData, "JPEG", 0, 0, canvas.width, canvas.height);
+                            pdf.save(`whitescreen-${Date.now()}.pdf`);
                           } else {
-                            ctx.fillStyle = displayColor;
-                          }
-                          ctx.fillRect(0, 0, width, height);
-                          canvas.toBlob((blob) => {
-                            if (blob) {
-                              const url = URL.createObjectURL(blob);
-                              const a = document.createElement("a");
-                              a.href = url;
-                              a.download = `whitescreen-${resolution}.png`;
-                              a.click();
-                              URL.revokeObjectURL(url);
+                            // Fallback: Create PDF with solid color
+                            const pdf = new jsPDF({
+                              orientation: "landscape",
+                              unit: "px",
+                              format: [1920, 1080]
+                            });
+                            const displayColor = getColorString(currentColor, brightness);
+                            const rgb = hexToRgb(displayColor);
+                            if (rgb) {
+                              pdf.setFillColor(rgb.r, rgb.g, rgb.b);
+                              pdf.rect(0, 0, 1920, 1080, "F");
                             }
-                          });
+                            pdf.save(`whitescreen-${Date.now()}.pdf`);
+                          }
+                        } catch (error) {
+                          console.error("Failed to generate PDF:", error);
+                          alert("Failed to generate PDF. Please try again.");
                         }
                       }}
-                      className="px-6 py-2 bg-gray-900 hover:bg-gray-800 text-white rounded-lg transition-colors font-medium whitespace-nowrap"
+                      className="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors font-medium"
                     >
-                      {t.common.download}
+                      {t.common.download} PDF
+                    </button>
+                    <button
+                      onClick={async () => {
+                        try {
+                          const displayArea = document.querySelector('[data-display-area]') as HTMLElement;
+                          
+                          if (displayArea) {
+                            const html2canvas = (await import("html2canvas")).default;
+                            const canvas = await html2canvas(displayArea, {
+                              scale: 1,
+                              useCORS: true,
+                              backgroundColor: null,
+                            });
+                            
+                            canvas.toBlob(
+                              (blob) => {
+                                if (!blob) return;
+                                const url = URL.createObjectURL(blob);
+                                const a = document.createElement("a");
+                                a.href = url;
+                                a.download = `whitescreen-${Date.now()}.jpg`;
+                                document.body.appendChild(a);
+                                a.click();
+                                document.body.removeChild(a);
+                                URL.revokeObjectURL(url);
+                              },
+                              "image/jpeg",
+                              0.95
+                            );
+                          } else {
+                            // Fallback: Create JPEG with solid color
+                            const canvas = document.createElement("canvas");
+                            canvas.width = 1920;
+                            canvas.height = 1080;
+                            const ctx = canvas.getContext("2d");
+                            if (ctx) {
+                              const displayColor = getColorString(currentColor, brightness);
+                              ctx.fillStyle = displayColor;
+                              ctx.fillRect(0, 0, 1920, 1080);
+                              canvas.toBlob(
+                                (blob) => {
+                                  if (!blob) return;
+                                  const url = URL.createObjectURL(blob);
+                                  const a = document.createElement("a");
+                                  a.href = url;
+                                  a.download = `whitescreen-${Date.now()}.jpg`;
+                                  document.body.appendChild(a);
+                                  a.click();
+                                  document.body.removeChild(a);
+                                  URL.revokeObjectURL(url);
+                                },
+                                "image/jpeg",
+                                0.95
+                              );
+                            }
+                          }
+                        } catch (error) {
+                          console.error("Failed to generate JPEG:", error);
+                          alert("Failed to generate JPEG. Please try again.");
+                        }
+                      }}
+                      className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors font-medium"
+                    >
+                      {t.common.download} JPEG
                     </button>
                   </div>
 
@@ -747,11 +835,6 @@ export function ControlPanel({ showColorTab = true }: ControlPanelProps) {
                   </div>
                 )}
               </div>
-            </Tabs.Content>
-
-            {/* Export Tab */}
-            <Tabs.Content value="export">
-              <ExportTools />
             </Tabs.Content>
 
             {/* Settings Tab */}

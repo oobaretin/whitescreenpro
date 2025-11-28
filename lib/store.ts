@@ -60,7 +60,7 @@ export interface AppState {
   panelAutoHide: boolean;
   panelHideDelay: number;
   showHint: boolean;
-  activeTab: "colors" | "tools" | "pranks" | "ambient" | "export" | "settings";
+  activeTab: "colors" | "tools" | "pranks" | "ambient" | "settings";
   language: "en" | "es" | "fr" | "de" | "it" | "pt" | "zh" | "ja" | "ko" | "ar" | "ru" | "hi";
   
   // Active mode/tool
