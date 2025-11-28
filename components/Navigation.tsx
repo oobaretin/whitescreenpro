@@ -60,7 +60,7 @@ export function Navigation() {
   }, [isLangMenuOpen]);
 
   return (
-    <nav className="bg-white border-b border-gray-200 w-full overflow-hidden">
+    <nav className="bg-white border-b border-gray-200 w-full overflow-hidden relative z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="flex items-center h-14 w-full min-w-0">
           {/* Logo */}
@@ -125,7 +125,7 @@ export function Navigation() {
               
               {isLangMenuOpen && (
                 <div 
-                  className="absolute right-0 mt-1 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50 max-h-64 overflow-y-auto"
+                  className="absolute right-0 mt-1 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-[100] max-h-64 overflow-y-auto"
                   onClick={(e) => e.stopPropagation()}
                   style={{ maxWidth: 'calc(100vw - 2rem)' }}
                 >
@@ -181,7 +181,7 @@ export function Navigation() {
               
               {isLangMenuOpen && (
                 <div 
-                  className="absolute right-0 mt-1 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50 max-h-64 overflow-y-auto"
+                  className="absolute right-0 mt-1 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-[100] max-h-64 overflow-y-auto"
                   onClick={(e) => e.stopPropagation()}
                   style={{ maxWidth: 'calc(100vw - 2rem)' }}
                 >
