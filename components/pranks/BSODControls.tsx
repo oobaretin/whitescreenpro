@@ -1,13 +1,15 @@
 "use client";
 
 import { useAppStore } from "@/lib/store";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export function BSODControls() {
+  const t = useTranslation();
   const { bsod, setBSOD } = useAppStore();
 
   return (
     <div className="space-y-4 mt-4 p-4 bg-gray-800/50 rounded-lg border border-gray-700">
-      <h3 className="text-lg font-semibold text-white mb-4">Blue Screen of Death</h3>
+      <h3 className="text-lg font-semibold text-white mb-4">{t.pranks.bsod}</h3>
 
       <div>
         <label className="text-sm font-medium text-gray-300 mb-2 block">
@@ -32,7 +34,7 @@ export function BSODControls() {
 
       <div>
         <label className="text-sm font-medium text-gray-300 mb-2 block">
-          Custom Error Message (Optional)
+          {t.bsod.customError} (Optional)
         </label>
         <input
           type="text"
@@ -45,7 +47,7 @@ export function BSODControls() {
 
       <div>
         <label className="text-sm font-medium text-gray-300 mb-2 block">
-          Custom Error Code (Optional)
+          {t.bsod.errorCode} (Optional)
         </label>
         <input
           type="text"

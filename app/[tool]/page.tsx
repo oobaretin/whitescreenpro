@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useAppStore } from "@/lib/store";
+import { useTranslation } from "@/hooks/useTranslation";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
@@ -68,6 +69,7 @@ const TOOL_CONFIG: Record<string, { color?: string; mode?: string; name: string 
 };
 
 export default function ToolPage({ params }: { params: { tool: string } }) {
+  const t = useTranslation();
   const router = useRouter();
   const {
     currentColor,
@@ -194,7 +196,7 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
           >
             <path d="M19 12H5M12 19l-7-7 7-7" />
           </svg>
-          <span>Back to Home</span>
+          <span>{t.common.backToHome}</span>
         </Link>
       </div>
 
@@ -268,7 +270,7 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
             {!isFullscreen && activeMode !== "broken-screen" && (
               <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-30">
                 <div className="px-6 py-3 bg-white/95 text-gray-900 font-semibold rounded-lg shadow-lg backdrop-blur-sm border border-gray-200">
-                  Click to Fullscreen
+                  {t.home.clickToFullscreen}
                 </div>
               </div>
             )}
@@ -278,7 +280,7 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
         {/* Controls Section */}
         {!["tip-screen", "signature-screen", "dead-pixel-test"].includes(toolSlug) && (
           <div className="bg-white rounded-xl shadow-md p-6 mb-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">Settings</h2>
+            <h2 className="text-xl font-bold text-gray-900 mb-4">{t.common.settings}</h2>
             
             {/* Tool-specific controls */}
             {toolSlug === "broken-screen" && <BrokenScreen />}

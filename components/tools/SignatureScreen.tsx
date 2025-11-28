@@ -2,8 +2,10 @@
 
 import { useRef, useState, useEffect } from "react";
 import { useAppStore } from "@/lib/store";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export function SignatureScreen() {
+  const t = useTranslation();
   const { signature, setSignature } = useAppStore();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -68,7 +70,7 @@ export function SignatureScreen() {
     // "Sign here" text
     ctx.fillStyle = signature.backgroundColor === "#FFFFFF" ? "#999999" : "rgba(255,255,255,0.4)";
     ctx.font = "14px sans-serif";
-    ctx.fillText("Sign here", 40, canvas.height - 40);
+    ctx.fillText(t.signature.signHere, 40, canvas.height - 40);
 
     // Redraw all paths
     paths.forEach((path) => {
@@ -238,12 +240,12 @@ export function SignatureScreen() {
 
         {/* Background Options */}
         <div className="flex items-center gap-2">
-          <span className="text-sm text-slate-600 font-medium">Background:</span>
+          <span className="text-sm text-slate-600 font-medium">{t.signature.background}:</span>
           <div className="flex gap-1">
             {[
-              { value: "#FFFFFF", label: "White" },
-              { value: "#F8FAFC", label: "Light" },
-              { value: "transparent", label: "Clear" },
+              { value: "#FFFFFF", label: t.signature.white },
+              { value: "#F8FAFC", label: t.signature.light },
+              { value: "transparent", label: t.signature.clear },
             ].map((bg) => (
               <button
                 key={bg.value}
@@ -265,7 +267,7 @@ export function SignatureScreen() {
               onChange={(e) => setSignature({ showGrid: e.target.checked })}
               className="w-4 h-4 rounded"
             />
-            <span className="text-sm text-slate-600">Grid</span>
+            <span className="text-sm text-slate-600">{t.signature.grid}</span>
           </label>
         </div>
 
@@ -276,20 +278,20 @@ export function SignatureScreen() {
             disabled={paths.length === 0}
             className="flex-1 py-3 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            ↶ Undo
+            ↶ {t.signature.undo}
           </button>
           <button
             onClick={clearCanvas}
             className="flex-1 py-3 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-lg transition-all"
           >
-            Clear All
+            {t.signature.clearAll}
           </button>
           <button
             onClick={() => downloadImage("png")}
             disabled={paths.length === 0}
             className="flex-1 py-3 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Save PNG
+            {t.signature.savePng}
           </button>
         </div>
       </div>

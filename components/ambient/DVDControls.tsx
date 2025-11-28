@@ -1,14 +1,16 @@
 "use client";
 
 import { useAppStore } from "@/lib/store";
+import { useTranslation } from "@/hooks/useTranslation";
 import * as Slider from "@radix-ui/react-slider";
 
 export function DVDControls() {
+  const t = useTranslation();
   const { dvd, setDVD } = useAppStore();
 
   return (
     <div className="space-y-4 mt-4 p-4 bg-gray-800/50 rounded-lg border border-gray-700">
-      <h3 className="text-lg font-semibold text-white mb-4">DVD Screensaver</h3>
+      <h3 className="text-lg font-semibold text-white mb-4">{t.ambient.dvdScreensaver}</h3>
 
       <div>
         <label className="text-sm font-medium text-gray-300 mb-2 block">

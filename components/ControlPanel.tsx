@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useAppStore } from "@/lib/store";
+import { useTranslation } from "@/hooks/useTranslation";
 import * as Tabs from "@radix-ui/react-tabs";
 import * as Slider from "@radix-ui/react-slider";
 import * as Switch from "@radix-ui/react-switch";
@@ -17,6 +18,7 @@ interface ControlPanelProps {
 }
 
 export function ControlPanel({ showColorTab = true }: ControlPanelProps) {
+  const t = useTranslation();
   const {
     panelOpen,
     togglePanel,
@@ -132,7 +134,7 @@ export function ControlPanel({ showColorTab = true }: ControlPanelProps) {
       {/* Header */}
       <div className="mb-4">
         <h2 className="text-xl font-bold text-gray-900 mb-3">
-          {showColorTab ? "Screen Controls" : "Settings"}
+          {showColorTab ? t.common.display : t.common.settings}
         </h2>
       </div>
 
@@ -154,38 +156,38 @@ export function ControlPanel({ showColorTab = true }: ControlPanelProps) {
                   }}
                   className="px-3 py-1.5 text-xs font-medium text-gray-600 data-[state=active]:text-gray-900 data-[state=active]:border-b-2 data-[state=active]:border-gray-900 transition-colors whitespace-nowrap"
                 >
-                  Colors
+                  {t.common.colors}
                 </Tabs.Trigger>
               )}
               <Tabs.Trigger
                 value="tools"
                 className="px-3 py-1.5 text-xs font-medium text-gray-600 data-[state=active]:text-gray-900 data-[state=active]:border-b-2 data-[state=active]:border-gray-900 transition-colors whitespace-nowrap"
               >
-                🛠️ Tools
+                🛠️ {t.common.tools}
               </Tabs.Trigger>
               <Tabs.Trigger
                 value="pranks"
                 className="px-3 py-1.5 text-xs font-medium text-gray-600 data-[state=active]:text-gray-900 data-[state=active]:border-b-2 data-[state=active]:border-gray-900 transition-colors whitespace-nowrap"
               >
-                🎭 Pranks
+                🎭 {t.common.pranks}
               </Tabs.Trigger>
               <Tabs.Trigger
                 value="ambient"
                 className="px-3 py-1.5 text-xs font-medium text-gray-600 data-[state=active]:text-gray-900 data-[state=active]:border-b-2 data-[state=active]:border-gray-900 transition-colors whitespace-nowrap"
               >
-                🌟 Ambient
+                🌟 {t.common.ambient}
               </Tabs.Trigger>
               <Tabs.Trigger
                 value="export"
                 className="px-3 py-1.5 text-xs font-medium text-gray-600 data-[state=active]:text-gray-900 data-[state=active]:border-b-2 data-[state=active]:border-gray-900 transition-colors whitespace-nowrap"
               >
-                Export
+                {t.common.export}
               </Tabs.Trigger>
               <Tabs.Trigger
                 value="settings"
                 className="px-3 py-1.5 text-xs font-medium text-gray-600 data-[state=active]:text-gray-900 data-[state=active]:border-b-2 data-[state=active]:border-gray-900 transition-colors whitespace-nowrap"
               >
-                Settings
+                {t.common.settings}
               </Tabs.Trigger>
             </Tabs.List>
 
@@ -197,7 +199,7 @@ export function ControlPanel({ showColorTab = true }: ControlPanelProps) {
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <label className="text-sm font-medium text-gray-700">
-                    Brightness
+                    {t.colors.brightness}
                   </label>
                   <span className="text-sm text-gray-600">{mounted ? brightness : 100}%</span>
                 </div>
@@ -220,7 +222,7 @@ export function ControlPanel({ showColorTab = true }: ControlPanelProps) {
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <label className="text-sm font-medium text-gray-700">
-                    Color Temperature
+                    {t.colors.colorTemperature}
                   </label>
                   <span className="text-sm text-gray-600">
                     {mounted ? (colorTemperature > 0 ? "+" : "") : ""}
@@ -241,8 +243,8 @@ export function ControlPanel({ showColorTab = true }: ControlPanelProps) {
                   <Slider.Thumb className="block w-5 h-5 bg-gray-800 rounded-full shadow-lg hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:ring-offset-2 focus:ring-offset-white" />
                 </Slider.Root>
                 <div className="flex justify-between text-xs text-gray-500 mt-1">
-                  <span>Cool</span>
-                  <span>Warm</span>
+                  <span>{t.colors.cool}</span>
+                  <span>{t.colors.warm}</span>
                 </div>
               </div>
 
@@ -250,7 +252,7 @@ export function ControlPanel({ showColorTab = true }: ControlPanelProps) {
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <label className="text-sm font-medium text-gray-300">
-                    Gradient Mode
+                    {t.colors.gradientMode}
                   </label>
                   <Switch.Root
                     checked={gradient.enabled}
@@ -274,7 +276,7 @@ export function ControlPanel({ showColorTab = true }: ControlPanelProps) {
                             : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                         }`}
                       >
-                        Linear
+                        {t.colors.linear}
                       </button>
                       <button
                         onClick={() => setGradient({ type: "radial" })}
@@ -284,13 +286,13 @@ export function ControlPanel({ showColorTab = true }: ControlPanelProps) {
                             : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                         }`}
                       >
-                        Radial
+                        {t.colors.radial}
                       </button>
                     </div>
 
                     <div>
                       <label className="text-xs text-gray-400 mb-1 block">
-                        Start Color
+                        {t.colors.startColor}
                       </label>
                       <input
                         type="color"
@@ -304,7 +306,7 @@ export function ControlPanel({ showColorTab = true }: ControlPanelProps) {
 
                     <div>
                       <label className="text-xs text-gray-400 mb-1 block">
-                        End Color
+                        {t.colors.endColor}
                       </label>
                       <input
                         type="color"
@@ -319,7 +321,7 @@ export function ControlPanel({ showColorTab = true }: ControlPanelProps) {
                     {gradient.type === "linear" && (
                       <div>
                         <label className="text-xs text-gray-400 mb-1 block">
-                          Angle: {gradient.angle ?? 0}°
+                          {t.colors.angle}: {gradient.angle ?? 0}°
                         </label>
                         <Slider.Root
                           value={[gradient.angle ?? 0]}
@@ -344,13 +346,13 @@ export function ControlPanel({ showColorTab = true }: ControlPanelProps) {
 
               {/* Display Settings Section */}
               <div className="pt-4 mt-4 border-t border-gray-300">
-                <h3 className="text-sm font-semibold text-gray-700 mb-4">Display Settings</h3>
+                <h3 className="text-sm font-semibold text-gray-700 mb-4">{t.display.resolutionPreset}</h3>
                 
                 <div className="space-y-4">
                   <div className="flex flex-col sm:flex-row gap-4 items-end">
                     <div className="flex-1">
                       <label className="text-sm font-medium text-gray-700 mb-2 block">
-                        Resolution Preset
+                        {t.display.resolutionPreset}
                       </label>
                       <select
                         value={resolution}
@@ -367,7 +369,7 @@ export function ControlPanel({ showColorTab = true }: ControlPanelProps) {
                     <div className="flex gap-2 items-end">
                       <div>
                         <label className="text-sm font-medium text-gray-700 mb-2 block text-xs">
-                          Width
+                          {t.display.width}
                         </label>
                         <div className="flex items-center">
                           <input
@@ -387,7 +389,7 @@ export function ControlPanel({ showColorTab = true }: ControlPanelProps) {
                       <span className="text-gray-400 mb-2">x</span>
                       <div>
                         <label className="text-sm font-medium text-gray-700 mb-2 block text-xs">
-                          Height
+                          {t.display.height}
                         </label>
                         <div className="flex items-center">
                           <input
@@ -436,13 +438,13 @@ export function ControlPanel({ showColorTab = true }: ControlPanelProps) {
                       }}
                       className="px-6 py-2 bg-gray-900 hover:bg-gray-800 text-white rounded-lg transition-colors font-medium whitespace-nowrap"
                     >
-                      Download
+                      {t.common.download}
                     </button>
                   </div>
 
                   <div className="flex items-center justify-between">
                     <label className="text-sm font-medium text-gray-700">
-                      Aspect Ratio Lock
+                      {t.display.aspectRatioLock}
                     </label>
                     <Switch.Root
                       checked={aspectRatioLock}
@@ -458,7 +460,7 @@ export function ControlPanel({ showColorTab = true }: ControlPanelProps) {
                       onClick={toggleFullscreen}
                       className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
                     >
-                      Toggle Fullscreen
+                      {t.display.toggleFullscreen}
                     </button>
                     <button
                       onClick={togglePiP}
@@ -472,7 +474,7 @@ export function ControlPanel({ showColorTab = true }: ControlPanelProps) {
                       }`}
                       title={typeof document !== "undefined" && !document.pictureInPictureEnabled ? "Picture-in-Picture is not supported in this browser" : ""}
                     >
-                      {isPiP ? "Exit PiP" : "Picture-in-Picture"}
+                      {isPiP ? t.display.exitPiP : t.display.pictureInPicture}
                     </button>
                   </div>
                 </div>
@@ -756,7 +758,7 @@ export function ControlPanel({ showColorTab = true }: ControlPanelProps) {
             <Tabs.Content value="settings" className="space-y-6">
               <div className="flex items-center justify-between">
                 <label className="text-sm font-medium text-gray-300">
-                  Auto-hide Panel
+                  {t.settings.autoHidePanel}
                 </label>
                 <Switch.Root
                   checked={panelAutoHide}
@@ -772,7 +774,7 @@ export function ControlPanel({ showColorTab = true }: ControlPanelProps) {
               {panelAutoHide && (
                 <div className="pl-4 border-l-2 border-gray-700">
                   <label className="text-xs text-gray-400 mb-1 block">
-                    Hide Delay: {mounted ? panelHideDelay / 1000 : 3}s
+                    {t.settings.hideDelay}: {mounted ? panelHideDelay / 1000 : 3}s
                   </label>
                   <Slider.Root
                     value={[mounted ? panelHideDelay : 3000]}
@@ -794,41 +796,41 @@ export function ControlPanel({ showColorTab = true }: ControlPanelProps) {
 
               <div className="pt-4 border-t border-gray-700">
                 <h3 className="text-sm font-medium text-gray-300 mb-2">
-                  Keyboard Shortcuts
+                  {t.settings.keyboardShortcuts}
                 </h3>
                 <div className="text-xs text-gray-400 space-y-1">
                   <div>
                     <kbd className="px-2 py-1 bg-gray-800 rounded">F</kbd> or{" "}
                     <kbd className="px-2 py-1 bg-gray-800 rounded">F11</kbd>{" "}
-                    - Toggle Fullscreen
+                    - {t.settings.toggleFullscreen}
                   </div>
                   <div>
                     <kbd className="px-2 py-1 bg-gray-800 rounded">Space</kbd>{" "}
-                    - Cycle Colors
+                    - {t.settings.cycleColors}
                   </div>
                   <div>
                     <kbd className="px-2 py-1 bg-gray-800 rounded">C</kbd> -
-                    Toggle Controls
+                    {t.settings.toggleControls}
                   </div>
                   <div>
                     <kbd className="px-2 py-1 bg-gray-800 rounded">G</kbd> -
-                    Toggle Grid
+                    {t.settings.toggleGrid}
                   </div>
                   <div>
                     <kbd className="px-2 py-1 bg-gray-800 rounded">T</kbd> -
-                    Start/Stop Timer
+                    {t.settings.startStopTimer}
                   </div>
                   <div>
                     <kbd className="px-2 py-1 bg-gray-800 rounded">↑↓</kbd> -
-                    Adjust Brightness
+                    {t.settings.adjustBrightness}
                   </div>
                   <div>
                     <kbd className="px-2 py-1 bg-gray-800 rounded">←→</kbd> -
-                    Cycle Colors
+                    {t.settings.cycleColors}
                   </div>
                   <div>
                     <kbd className="px-2 py-1 bg-gray-800 rounded">1-9</kbd> -
-                    Quick Select Colors
+                    {t.settings.quickSelectColors}
                   </div>
                 </div>
               </div>

@@ -2,9 +2,11 @@
 
 import Link from "next/link";
 import { useAppStore } from "@/lib/store";
+import { useTranslation } from "@/hooks/useTranslation";
 import { ZoomLighting } from "../tools/ZoomLighting";
 
 export function ToolsTab() {
+  const t = useTranslation();
   const { activeMode, setActiveMode } = useAppStore();
 
   return (
@@ -19,8 +21,8 @@ export function ToolsTab() {
               : "border-gray-200 bg-gray-50 hover:border-gray-300"
           }`}
         >
-          <div className="text-gray-900 font-medium mb-1">💡 Zoom Lighting</div>
-          <div className="text-xs text-gray-500">Video call fill light</div>
+          <div className="text-gray-900 font-medium mb-1">💡 {t.tools.zoomLighting}</div>
+          <div className="text-xs text-gray-500">{t.tools.videoCallFillLight}</div>
         </button>
 
         {/* Signature - navigates to dedicated page */}
@@ -28,8 +30,8 @@ export function ToolsTab() {
           href="/signature-screen"
           className="p-4 rounded-lg border-2 border-gray-200 bg-gray-50 hover:border-gray-300 transition-all text-left block"
         >
-          <div className="text-gray-900 font-medium mb-1">✍️ Signature</div>
-          <div className="text-xs text-gray-500">Digital signature capture</div>
+          <div className="text-gray-900 font-medium mb-1">✍️ {t.tools.signature}</div>
+          <div className="text-xs text-gray-500">{t.tools.digitalSignatureCapture}</div>
         </Link>
 
         {/* Tip Screen - navigates to dedicated page */}
@@ -37,8 +39,8 @@ export function ToolsTab() {
           href="/tip-screen"
           className="p-4 rounded-lg border-2 border-gray-200 bg-gray-50 hover:border-gray-300 transition-all text-left block"
         >
-          <div className="text-gray-900 font-medium mb-1">💰 Tip Screen</div>
-          <div className="text-xs text-gray-500">POS tipping interface</div>
+          <div className="text-gray-900 font-medium mb-1">💰 {t.tools.tipScreen}</div>
+          <div className="text-xs text-gray-500">{t.tools.posTippingInterface}</div>
         </Link>
 
         {/* Dead Pixel Test - navigates to dedicated page */}
@@ -46,8 +48,8 @@ export function ToolsTab() {
           href="/dead-pixel-test"
           className="p-4 rounded-lg border-2 border-gray-200 bg-gray-50 hover:border-gray-300 transition-all text-left block"
         >
-          <div className="text-gray-900 font-medium mb-1">🔍 Dead Pixel Test</div>
-          <div className="text-xs text-gray-500">Monitor testing</div>
+          <div className="text-gray-900 font-medium mb-1">🔍 {t.tools.deadPixelTest}</div>
+          <div className="text-xs text-gray-500">{t.tools.monitorTesting}</div>
         </Link>
       </div>
 

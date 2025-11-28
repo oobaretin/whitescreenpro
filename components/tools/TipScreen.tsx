@@ -1,9 +1,11 @@
 "use client";
 
 import { useAppStore } from "@/lib/store";
+import { useTranslation } from "@/hooks/useTranslation";
 import { useState } from "react";
 
 export function TipScreen() {
+  const t = useTranslation();
   const { tipScreen, setTipScreen } = useAppStore();
   const [customTipInput, setCustomTipInput] = useState("");
 
@@ -52,12 +54,12 @@ export function TipScreen() {
       <div className="h-full w-full bg-gradient-to-b from-green-600 to-green-800 flex items-center justify-center">
         <div className="text-center text-white">
           <div className="text-8xl mb-6">🎉</div>
-          <h3 className="text-5xl font-bold mb-4">Thank You!</h3>
+          <h3 className="text-5xl font-bold mb-4">{t.tipScreen.thankYou}</h3>
           <p className="text-2xl opacity-90 mb-4">
-            Tip: ${tipAmount.toFixed(2)}
+            {t.tipScreen.tip}: ${tipAmount.toFixed(2)}
           </p>
           <p className="text-3xl font-semibold mb-8">
-            Total: ${total.toFixed(2)}
+            {t.tipScreen.total}: ${total.toFixed(2)}
           </p>
           <button
             onClick={(e) => {
@@ -66,7 +68,7 @@ export function TipScreen() {
             }}
             className="px-10 py-4 bg-white text-green-700 text-xl font-bold rounded-full shadow-lg hover:bg-gray-100 transition-colors"
           >
-            New Transaction
+            {t.tipScreen.newTransaction}
           </button>
         </div>
       </div>
@@ -86,7 +88,7 @@ export function TipScreen() {
           </div>
         )}
         <div className="text-right">
-          <div className="text-slate-400 text-xs">Amount</div>
+          <div className="text-slate-400 text-xs">{t.tipScreen.amount}</div>
           <div className="text-4xl font-mono text-green-400 tracking-wider">
             ${tipScreen.baseAmount.toFixed(2)}
           </div>
@@ -94,13 +96,13 @@ export function TipScreen() {
         {(tipScreen.tipPercent || tipScreen.customTip) && (
           <div className="mt-1.5 pt-1.5 border-t border-slate-700 flex justify-between items-center">
             <div>
-              <span className="text-slate-400 text-xs">Tip </span>
+              <span className="text-slate-400 text-xs">{t.tipScreen.tip} </span>
               <span className="text-yellow-400 font-semibold text-sm">
                 {tipScreen.tipPercent ? `${tipScreen.tipPercent}%` : `$${tipScreen.customTip?.toFixed(2)}`}
               </span>
             </div>
             <div className="text-right">
-              <div className="text-slate-400 text-xs">TOTAL</div>
+              <div className="text-slate-400 text-xs">{t.tipScreen.total}</div>
               <div className="text-2xl font-mono text-white">
                 ${total.toFixed(2)}
               </div>
@@ -147,13 +149,13 @@ export function TipScreen() {
             onClick={handleClear}
             className="py-2 bg-red-600 hover:bg-red-500 text-white text-sm font-bold rounded-lg transition-all transform active:scale-95"
           >
-            Clear
+            {t.common.clear}
           </button>
           <button
             onClick={() => setTipScreen({ tipPercent: 0, customTip: 0 })}
             className="py-2 bg-slate-600 hover:bg-slate-500 text-white text-sm font-bold rounded-lg transition-all transform active:scale-95"
           >
-            No Tip
+            {t.tipScreen.noTip}
           </button>
         </div>
 
@@ -164,8 +166,8 @@ export function TipScreen() {
           className="py-3 bg-green-600 hover:bg-green-500 disabled:bg-slate-700 disabled:text-slate-500 text-white text-lg font-bold rounded-lg transition-all transform active:scale-95 disabled:transform-none shadow-lg shadow-green-600/30 disabled:shadow-none flex-shrink-0"
         >
           {tipScreen.baseAmount > 0 
-            ? `Pay $${total.toFixed(2)}` 
-            : "Enter Amount"}
+            ? `${t.tipScreen.pay} $${total.toFixed(2)}` 
+            : t.tipScreen.enterAmount}
         </button>
       </div>
     </div>

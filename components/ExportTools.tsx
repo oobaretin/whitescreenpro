@@ -2,11 +2,13 @@
 
 import { useState, useRef } from "react";
 import { useAppStore } from "@/lib/store";
+import { useTranslation } from "@/hooks/useTranslation";
 import QRCode from "react-qr-code";
 import { COLOR_PRESETS } from "@/lib/colorUtils";
 import { getStoredFavorites } from "@/lib/storageUtils";
 
 export function ExportTools() {
+  const t = useTranslation();
   const { currentColor, brightness, gradient, activeMode } = useAppStore();
   const [showQR, setShowQR] = useState(false);
   const [exportResolution, setExportResolution] = useState("1920x1080");
@@ -155,7 +157,7 @@ export function ExportTools() {
     <div className="space-y-4">
       {/* Download Image */}
       <div>
-        <h3 className="text-sm font-medium mb-2 text-gray-300">Download Image</h3>
+        <h3 className="text-sm font-medium mb-2 text-gray-300">{t.export.downloadImage}</h3>
         <div className="space-y-2">
           <div>
             <label className="text-xs text-gray-400 mb-1 block">Export Type</label>
@@ -168,7 +170,7 @@ export function ExportTools() {
                     : "bg-gray-700 text-gray-300 hover:bg-gray-600"
                 }`}
               >
-                Screen Capture
+                {t.export.screenCapture}
               </button>
               <button
                 onClick={() => setExportType("color")}
@@ -178,7 +180,7 @@ export function ExportTools() {
                     : "bg-gray-700 text-gray-300 hover:bg-gray-600"
                 }`}
               >
-                Solid Color
+                {t.export.solidColor}
               </button>
             </div>
           </div>
@@ -198,18 +200,18 @@ export function ExportTools() {
               onClick={() => downloadImage("png")}
               className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded transition-colors"
             >
-              Download PNG
+              {t.common.download} PNG
             </button>
             <button
               onClick={() => downloadImage("jpg")}
               className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded transition-colors"
             >
-              Download JPG
+              {t.common.download} JPG
             </button>
           </div>
           {exportType === "screen" && (
             <p className="text-xs text-gray-400 mt-1">
-              ⚠️ Screen capture captures what&apos;s currently visible. For animated content (Matrix, DVD, etc.), pause or wait for a good frame.
+              {t.export.screenCaptureWarning}
             </p>
           )}
         </div>
@@ -217,7 +219,7 @@ export function ExportTools() {
 
       {/* Share Link */}
       <div>
-        <h3 className="text-sm font-medium mb-2 text-gray-300">Share</h3>
+        <h3 className="text-sm font-medium mb-2 text-gray-300">{t.export.share}</h3>
         <div className="flex gap-2">
           <input
             type="text"
@@ -229,19 +231,19 @@ export function ExportTools() {
             onClick={copyShareLink}
             className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded transition-colors"
           >
-            Copy
+            {t.common.copy}
           </button>
         </div>
       </div>
 
       {/* QR Code */}
       <div>
-        <h3 className="text-sm font-medium mb-2 text-gray-300">QR Code</h3>
+        <h3 className="text-sm font-medium mb-2 text-gray-300">{t.export.qrCode}</h3>
         <button
           onClick={() => setShowQR(!showQR)}
           className="w-full px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded transition-colors"
         >
-          {showQR ? "Hide" : "Show"} QR Code
+          {showQR ? t.export.hideQrCode : t.export.showQrCode}
         </button>
         {showQR && (
           <div className="mt-4 flex justify-center p-4 bg-white rounded">
@@ -252,19 +254,19 @@ export function ExportTools() {
 
       {/* Export Palette */}
       <div>
-        <h3 className="text-sm font-medium mb-2 text-gray-300">Export Palette</h3>
+        <h3 className="text-sm font-medium mb-2 text-gray-300">{t.export.exportPalette}</h3>
         <div className="flex gap-2">
           <button
             onClick={() => exportPalette("css")}
             className="flex-1 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded transition-colors"
           >
-            Export CSS
+            {t.export.exportCss}
           </button>
           <button
             onClick={() => exportPalette("json")}
             className="flex-1 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded transition-colors"
           >
-            Export JSON
+            {t.export.exportJson}
           </button>
         </div>
       </div>

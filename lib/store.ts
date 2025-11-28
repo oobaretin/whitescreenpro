@@ -61,6 +61,7 @@ export interface AppState {
   panelHideDelay: number;
   showHint: boolean;
   activeTab: "colors" | "tools" | "pranks" | "ambient" | "export" | "settings";
+  language: "en" | "es" | "fr" | "de" | "it" | "pt" | "zh" | "ja" | "ko" | "ar" | "ru" | "hi";
   
   // Active mode/tool
   activeMode: "color" | "zoom-lighting" | "signature" | "tip-screen" | "dead-pixel" | "broken-screen" | "bsod" | "fake-update" | "hacker-terminal" | "dvd-screensaver" | "matrix-rain" | "flip-clock" | "no-signal" | "quote" | "white-noise" | "radar";
@@ -157,6 +158,7 @@ export interface AppState {
   togglePanel: () => void;
   setPanelOpen: (open: boolean) => void;
   setActiveTab: (tab: AppState["activeTab"]) => void;
+  setLanguage: (language: AppState["language"]) => void;
   cycleColor: () => void;
   cycleToNextPreset: () => void;
   cycleToPreviousPreset: () => void;
@@ -234,6 +236,7 @@ export const useAppStore = create<AppState>()((set, get) => ({
       panelHideDelay: storedSettings.panelHideDelay ?? 3000,
       showHint: true,
       activeTab: "colors",
+      language: (typeof window !== "undefined" && localStorage.getItem("whitescreenpro-language")) as AppState["language"] || "en",
       
       // Active mode
       activeMode: "color",
@@ -416,6 +419,12 @@ export const useAppStore = create<AppState>()((set, get) => ({
 
       setActiveTab: (tab: AppState["activeTab"]) => {
         set({ activeTab: tab });
+      },
+      setLanguage: (language: AppState["language"]) => {
+        set({ language });
+        if (typeof window !== "undefined") {
+          localStorage.setItem("whitescreenpro-language", language);
+        }
       },
 
       cycleColor: () => {

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useAppStore } from "@/lib/store";
+import { useTranslation } from "@/hooks/useTranslation";
 import {
   getColorString,
   getGradientCSS,
@@ -31,6 +32,7 @@ import { FlipClock } from "@/components/ambient/FlipClock";
 import { NoSignal } from "@/components/ambient/NoSignal";
 
 export default function Home() {
+  const t = useTranslation();
   const {
     currentColor,
     brightness,
@@ -163,10 +165,10 @@ export default function Home() {
         {/* Hero Section */}
         <div className="text-center mb-8">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">
-            White Screen Tool
+            {t.home.title}
           </h1>
           <p className="text-lg text-gray-600">
-            Free full screen color tool for display testing and creative projects
+            {t.home.subtitle}
           </p>
         </div>
 
@@ -202,7 +204,7 @@ export default function Home() {
           {!isFullscreen && (
             <div className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity">
               <div className="px-6 py-3 bg-gray-900/90 hover:bg-gray-800 text-white font-semibold rounded-lg shadow-lg backdrop-blur-sm">
-                Click to Fullscreen
+                {t.home.clickToFullscreen}
               </div>
             </div>
           )}
