@@ -12,18 +12,6 @@ import { PranksTab } from "./tabs/PranksTab";
 import { AmbientTab } from "./tabs/AmbientTab";
 import { getColorString, getGradientCSS, COLOR_PRESETS } from "@/lib/colorUtils";
 
-// Helper function to convert hex to RGB
-function hexToRgb(hex: string): { r: number; g: number; b: number } | null {
-  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return result
-    ? {
-        r: parseInt(result[1], 16),
-        g: parseInt(result[2], 16),
-        b: parseInt(result[3], 16),
-      }
-    : null;
-}
-
 interface ControlPanelProps {
   showColorTab?: boolean;
 }
@@ -419,11 +407,9 @@ export function ControlPanel({ showColorTab = true }: ControlPanelProps) {
                     <button
                       onClick={async () => {
                         try {
-                          const { default: jsPDF } = await import("jspdf");
                           const displayArea = document.querySelector('[data-display-area]') as HTMLElement;
                           
                           if (displayArea) {
-                            // Capture screen as image first
                             const html2canvas = (await import("html2canvas")).default;
                             const canvas = await html2canvas(displayArea, {
                               scale: 1,
@@ -431,38 +417,56 @@ export function ControlPanel({ showColorTab = true }: ControlPanelProps) {
                               backgroundColor: null,
                             });
                             
-                            const imgData = canvas.toDataURL("image/jpeg", 0.95);
-                            const pdf = new jsPDF({
-                              orientation: canvas.width > canvas.height ? "landscape" : "portrait",
-                              unit: "px",
-                              format: [canvas.width, canvas.height]
-                            });
-                            
-                            pdf.addImage(imgData, "JPEG", 0, 0, canvas.width, canvas.height);
-                            pdf.save(`whitescreen-${Date.now()}.pdf`);
+                            canvas.toBlob(
+                              (blob) => {
+                                if (!blob) return;
+                                const url = URL.createObjectURL(blob);
+                                const a = document.createElement("a");
+                                a.href = url;
+                                a.download = `whitescreen-${Date.now()}.png`;
+                                document.body.appendChild(a);
+                                a.click();
+                                document.body.removeChild(a);
+                                URL.revokeObjectURL(url);
+                              },
+                              "image/png",
+                              1.0
+                            );
                           } else {
-                            // Fallback: Create PDF with solid color
-                            const pdf = new jsPDF({
-                              orientation: "landscape",
-                              unit: "px",
-                              format: [1920, 1080]
-                            });
-                            const displayColor = getColorString(currentColor, brightness);
-                            const rgb = hexToRgb(displayColor);
-                            if (rgb) {
-                              pdf.setFillColor(rgb.r, rgb.g, rgb.b);
-                              pdf.rect(0, 0, 1920, 1080, "F");
+                            // Fallback: Create PNG with solid color
+                            const canvas = document.createElement("canvas");
+                            canvas.width = 1920;
+                            canvas.height = 1080;
+                            const ctx = canvas.getContext("2d");
+                            if (ctx) {
+                              const displayColor = getColorString(currentColor, brightness);
+                              ctx.fillStyle = displayColor;
+                              ctx.fillRect(0, 0, 1920, 1080);
+                              canvas.toBlob(
+                                (blob) => {
+                                  if (!blob) return;
+                                  const url = URL.createObjectURL(blob);
+                                  const a = document.createElement("a");
+                                  a.href = url;
+                                  a.download = `whitescreen-${Date.now()}.png`;
+                                  document.body.appendChild(a);
+                                  a.click();
+                                  document.body.removeChild(a);
+                                  URL.revokeObjectURL(url);
+                                },
+                                "image/png",
+                                1.0
+                              );
                             }
-                            pdf.save(`whitescreen-${Date.now()}.pdf`);
                           }
                         } catch (error) {
-                          console.error("Failed to generate PDF:", error);
-                          alert("Failed to generate PDF. Please try again.");
+                          console.error("Failed to generate PNG:", error);
+                          alert("Failed to generate PNG. Please try again.");
                         }
                       }}
                       className="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors font-medium"
                     >
-                      {t.common.download} PDF
+                      {t.common.download} PNG
                     </button>
                     <button
                       onClick={async () => {
