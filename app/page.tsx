@@ -215,6 +215,134 @@ export default function Home() {
           <ControlPanel />
         </div>
 
+        {/* About Section */}
+        <div className="bg-white rounded-xl shadow-md p-6 mb-6">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">{t.home.aboutTitle}</h2>
+          <p className="text-gray-700 mb-6 leading-relaxed">{t.home.aboutDescription}</p>
+          
+          <h3 className="text-xl font-semibold text-gray-900 mb-3">{t.home.definitionTitle}</h3>
+          <p className="text-gray-700 mb-6 leading-relaxed">{t.home.definition}</p>
+
+          <h3 className="text-xl font-semibold text-gray-900 mb-3">{t.home.featuresTitle}</h3>
+          <div className="grid md:grid-cols-2 gap-4 mb-6">
+            <div>
+              <h4 className="font-semibold text-gray-800 mb-2">{t.about.useCases}</h4>
+              <ul className="space-y-2 text-gray-700 text-sm">
+                <li className="flex items-start">
+                  <span className="text-blue-600 mr-2">•</span>
+                  <span>{t.about.professional}</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-blue-600 mr-2">•</span>
+                  <span>{t.about.creative}</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-blue-600 mr-2">•</span>
+                  <span>{t.about.testing}</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-blue-600 mr-2">•</span>
+                  <span>{t.about.entertainment}</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* How Tools Work Section */}
+        <div className="bg-white rounded-xl shadow-md p-6 mb-6">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">{t.home.toolsTitle}</h2>
+          <div className="space-y-4">
+            <div className="border-l-4 border-blue-500 pl-4">
+              <h4 className="font-semibold text-gray-800 mb-2">Color Screens</h4>
+              <p className="text-gray-700 text-sm">{t.toolExplanations.colorScreens}</p>
+            </div>
+            <div className="border-l-4 border-blue-500 pl-4">
+              <h4 className="font-semibold text-gray-800 mb-2">{t.tools.zoomLighting}</h4>
+              <p className="text-gray-700 text-sm">{t.toolExplanations.zoomLighting}</p>
+            </div>
+            <div className="border-l-4 border-blue-500 pl-4">
+              <h4 className="font-semibold text-gray-800 mb-2">{t.tools.signature}</h4>
+              <p className="text-gray-700 text-sm">{t.toolExplanations.signature}</p>
+            </div>
+            <div className="border-l-4 border-blue-500 pl-4">
+              <h4 className="font-semibold text-gray-800 mb-2">{t.tools.tipScreen}</h4>
+              <p className="text-gray-700 text-sm">{t.toolExplanations.tipScreen}</p>
+            </div>
+            <div className="border-l-4 border-blue-500 pl-4">
+              <h4 className="font-semibold text-gray-800 mb-2">{t.tools.deadPixelTest}</h4>
+              <p className="text-gray-700 text-sm">{t.toolExplanations.deadPixel}</p>
+            </div>
+            <div className="border-l-4 border-blue-500 pl-4">
+              <h4 className="font-semibold text-gray-800 mb-2">{t.pranks.brokenScreen}</h4>
+              <p className="text-gray-700 text-sm">{t.toolExplanations.brokenScreen}</p>
+            </div>
+            <div className="border-l-4 border-blue-500 pl-4">
+              <h4 className="font-semibold text-gray-800 mb-2">{t.pranks.bsod}</h4>
+              <p className="text-gray-700 text-sm">{t.toolExplanations.bsod}</p>
+            </div>
+            <div className="border-l-4 border-blue-500 pl-4">
+              <h4 className="font-semibold text-gray-800 mb-2">{t.pranks.fakeUpdate}</h4>
+              <p className="text-gray-700 text-sm">{t.toolExplanations.fakeUpdate}</p>
+            </div>
+            <div className="border-l-4 border-blue-500 pl-4">
+              <h4 className="font-semibold text-gray-800 mb-2">{t.pranks.hackerTerminal}</h4>
+              <p className="text-gray-700 text-sm">{t.toolExplanations.hackerTerminal}</p>
+            </div>
+            <div className="border-l-4 border-blue-500 pl-4">
+              <h4 className="font-semibold text-gray-800 mb-2">{t.ambient.dvdScreensaver}</h4>
+              <p className="text-gray-700 text-sm">{t.toolExplanations.dvdScreensaver}</p>
+            </div>
+            <div className="border-l-4 border-blue-500 pl-4">
+              <h4 className="font-semibold text-gray-800 mb-2">{t.ambient.matrixRain}</h4>
+              <p className="text-gray-700 text-sm">{t.toolExplanations.matrixRain}</p>
+            </div>
+            <div className="border-l-4 border-blue-500 pl-4">
+              <h4 className="font-semibold text-gray-800 mb-2">{t.ambient.flipClock}</h4>
+              <p className="text-gray-700 text-sm">{t.toolExplanations.flipClock}</p>
+            </div>
+            <div className="border-l-4 border-blue-500 pl-4">
+              <h4 className="font-semibold text-gray-800 mb-2">{t.ambient.noSignal}</h4>
+              <p className="text-gray-700 text-sm">{t.toolExplanations.noSignal}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Q&A Section */}
+        <div className="bg-white rounded-xl shadow-md p-6 mb-6">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">{t.home.qaTitle}</h2>
+          <div className="space-y-6">
+            <div>
+              <h4 className="font-semibold text-gray-900 mb-2">Q: {t.qa.q1}</h4>
+              <p className="text-gray-700 text-sm pl-4">{t.qa.a1}</p>
+            </div>
+            <div>
+              <h4 className="font-semibold text-gray-900 mb-2">Q: {t.qa.q2}</h4>
+              <p className="text-gray-700 text-sm pl-4">{t.qa.a2}</p>
+            </div>
+            <div>
+              <h4 className="font-semibold text-gray-900 mb-2">Q: {t.qa.q3}</h4>
+              <p className="text-gray-700 text-sm pl-4">{t.qa.a3}</p>
+            </div>
+            <div>
+              <h4 className="font-semibold text-gray-900 mb-2">Q: {t.qa.q4}</h4>
+              <p className="text-gray-700 text-sm pl-4">{t.qa.a4}</p>
+            </div>
+            <div>
+              <h4 className="font-semibold text-gray-900 mb-2">Q: {t.qa.q5}</h4>
+              <p className="text-gray-700 text-sm pl-4">{t.qa.a5}</p>
+            </div>
+            <div>
+              <h4 className="font-semibold text-gray-900 mb-2">Q: {t.qa.q6}</h4>
+              <p className="text-gray-700 text-sm pl-4">{t.qa.a6}</p>
+            </div>
+            <div>
+              <h4 className="font-semibold text-gray-900 mb-2">Q: {t.qa.q7}</h4>
+              <p className="text-gray-700 text-sm pl-4">{t.qa.a7}</p>
+            </div>
+          </div>
+        </div>
+
         {/* All Tools Section */}
         <div className="bg-white rounded-xl shadow-md p-6">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">All Tools</h2>
