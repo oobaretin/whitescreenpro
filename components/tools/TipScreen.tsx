@@ -79,29 +79,29 @@ export function TipScreen() {
       onClick={(e) => e.stopPropagation()}
     >
       {/* Display Screen */}
-      <div className="bg-slate-950 p-4 border-b-4 border-slate-700">
+      <div className="bg-slate-950 p-3 border-b-4 border-slate-700 flex-shrink-0">
         {tipScreen.serviceDescription && (
-          <div className="text-slate-400 text-sm mb-1 truncate">
+          <div className="text-slate-400 text-xs mb-1 truncate">
             {tipScreen.serviceDescription}
           </div>
         )}
         <div className="text-right">
-          <div className="text-slate-400 text-sm">Amount</div>
-          <div className="text-5xl font-mono text-green-400 tracking-wider">
+          <div className="text-slate-400 text-xs">Amount</div>
+          <div className="text-4xl font-mono text-green-400 tracking-wider">
             ${tipScreen.baseAmount.toFixed(2)}
           </div>
         </div>
         {(tipScreen.tipPercent || tipScreen.customTip) && (
-          <div className="mt-2 pt-2 border-t border-slate-700 flex justify-between items-center">
+          <div className="mt-1.5 pt-1.5 border-t border-slate-700 flex justify-between items-center">
             <div>
-              <span className="text-slate-400 text-sm">Tip </span>
-              <span className="text-yellow-400 font-semibold">
+              <span className="text-slate-400 text-xs">Tip </span>
+              <span className="text-yellow-400 font-semibold text-sm">
                 {tipScreen.tipPercent ? `${tipScreen.tipPercent}%` : `$${tipScreen.customTip?.toFixed(2)}`}
               </span>
             </div>
             <div className="text-right">
               <div className="text-slate-400 text-xs">TOTAL</div>
-              <div className="text-3xl font-mono text-white">
+              <div className="text-2xl font-mono text-white">
                 ${total.toFixed(2)}
               </div>
             </div>
@@ -110,14 +110,14 @@ export function TipScreen() {
       </div>
 
       {/* Calculator Body */}
-      <div className="flex-1 p-3 flex flex-col gap-3 overflow-auto">
+      <div className="flex-1 p-2.5 flex flex-col gap-1.5 min-h-0">
         {/* Tip Percentage Buttons */}
-        <div className="grid grid-cols-4 gap-2">
+        <div className="grid grid-cols-4 gap-1.5 flex-shrink-0">
           {[15, 18, 20, 25].map((percent) => (
             <button
               key={percent}
               onClick={() => handleTipPercent(percent)}
-              className={`py-4 rounded-xl text-xl font-bold transition-all transform active:scale-95 ${
+              className={`py-2 rounded-lg text-base font-bold transition-all transform active:scale-95 ${
                 tipScreen.tipPercent === percent
                   ? "bg-green-500 text-white shadow-lg shadow-green-500/30"
                   : "bg-slate-700 text-slate-200 hover:bg-slate-600"
@@ -129,12 +129,12 @@ export function TipScreen() {
         </div>
 
         {/* Number Pad */}
-        <div className="grid grid-cols-3 gap-2 flex-1">
+        <div className="grid grid-cols-3 gap-1.5 flex-1 min-h-0">
           {["1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "0", "⌫"].map((key) => (
             <button
               key={key}
               onClick={() => key === "⌫" ? handleBackspace() : handleNumberPad(key)}
-              className="bg-slate-700 hover:bg-slate-600 text-white text-2xl font-semibold rounded-xl transition-all transform active:scale-95 min-h-[60px]"
+              className="bg-slate-700 hover:bg-slate-600 text-white text-lg font-semibold rounded-lg transition-all transform active:scale-95 py-2"
             >
               {key}
             </button>
@@ -142,16 +142,16 @@ export function TipScreen() {
         </div>
 
         {/* Action Buttons */}
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-2 gap-1.5 flex-shrink-0">
           <button
             onClick={handleClear}
-            className="py-4 bg-red-600 hover:bg-red-500 text-white text-lg font-bold rounded-xl transition-all transform active:scale-95"
+            className="py-2 bg-red-600 hover:bg-red-500 text-white text-sm font-bold rounded-lg transition-all transform active:scale-95"
           >
             Clear
           </button>
           <button
             onClick={() => setTipScreen({ tipPercent: 0, customTip: 0 })}
-            className="py-4 bg-slate-600 hover:bg-slate-500 text-white text-lg font-bold rounded-xl transition-all transform active:scale-95"
+            className="py-2 bg-slate-600 hover:bg-slate-500 text-white text-sm font-bold rounded-lg transition-all transform active:scale-95"
           >
             No Tip
           </button>
@@ -161,7 +161,7 @@ export function TipScreen() {
         <button
           onClick={() => tipScreen.baseAmount > 0 && setTipScreen({ showThankYou: true })}
           disabled={tipScreen.baseAmount === 0}
-          className="py-5 bg-green-600 hover:bg-green-500 disabled:bg-slate-700 disabled:text-slate-500 text-white text-2xl font-bold rounded-xl transition-all transform active:scale-95 disabled:transform-none shadow-lg shadow-green-600/30 disabled:shadow-none"
+          className="py-3 bg-green-600 hover:bg-green-500 disabled:bg-slate-700 disabled:text-slate-500 text-white text-lg font-bold rounded-lg transition-all transform active:scale-95 disabled:transform-none shadow-lg shadow-green-600/30 disabled:shadow-none flex-shrink-0"
         >
           {tipScreen.baseAmount > 0 
             ? `Pay $${total.toFixed(2)}` 

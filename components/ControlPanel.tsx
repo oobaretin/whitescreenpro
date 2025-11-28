@@ -10,7 +10,7 @@ import { ExportTools } from "./ExportTools";
 import { ToolsTab } from "./tabs/ToolsTab";
 import { PranksTab } from "./tabs/PranksTab";
 import { AmbientTab } from "./tabs/AmbientTab";
-import { getColorString, getGradientCSS } from "@/lib/colorUtils";
+import { getColorString, getGradientCSS, COLOR_PRESETS } from "@/lib/colorUtils";
 
 interface ControlPanelProps {
   showColorTab?: boolean;
@@ -48,6 +48,9 @@ export function ControlPanel({ showColorTab = true }: ControlPanelProps) {
     panelHideDelay,
     setPanelOpen,
     currentColor,
+    setColor,
+    activeMode,
+    setActiveMode,
     activeTab,
     setActiveTab,
   } = useAppStore();
@@ -145,17 +148,15 @@ export function ControlPanel({ showColorTab = true }: ControlPanelProps) {
               {showColorTab && (
                 <Tabs.Trigger
                   value="colors"
+                  onClick={() => {
+                    setColor(COLOR_PRESETS[0].hex); // Reset to white
+                    setActiveMode("color");
+                  }}
                   className="px-3 py-1.5 text-xs font-medium text-gray-600 data-[state=active]:text-gray-900 data-[state=active]:border-b-2 data-[state=active]:border-gray-900 transition-colors whitespace-nowrap"
                 >
                   Colors
                 </Tabs.Trigger>
               )}
-              <Tabs.Trigger
-                value="display"
-                className="px-3 py-1.5 text-xs font-medium text-gray-600 data-[state=active]:text-gray-900 data-[state=active]:border-b-2 data-[state=active]:border-gray-900 transition-colors whitespace-nowrap"
-              >
-                Display
-              </Tabs.Trigger>
               <Tabs.Trigger
                 value="tools"
                 className="px-3 py-1.5 text-xs font-medium text-gray-600 data-[state=active]:text-gray-900 data-[state=active]:border-b-2 data-[state=active]:border-gray-900 transition-colors whitespace-nowrap"
@@ -340,133 +341,137 @@ export function ControlPanel({ showColorTab = true }: ControlPanelProps) {
                   </div>
                 )}
               </div>
-            </Tabs.Content>
 
-            {/* Display Tab */}
-            <Tabs.Content value="display" className="space-y-4">
-              <div className="flex flex-col sm:flex-row gap-4 items-end">
-                <div className="flex-1">
-                  <label className="text-sm font-medium text-gray-700 mb-2 block">
-                    Resolution Preset
-                  </label>
-                  <select
-                    value={resolution}
-                    onChange={(e) => setResolution(e.target.value)}
-                    className="w-full px-3 py-2 bg-white text-gray-900 rounded-lg border border-gray-300 focus:border-blue-500 focus:outline-none"
-                  >
-                    {resolutions.map((res) => (
-                      <option key={res.value} value={res.value}>
-                        {res.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="flex gap-2 items-end">
-                  <div>
-                    <label className="text-sm font-medium text-gray-700 mb-2 block text-xs">
-                      Width
-                    </label>
-                    <div className="flex items-center">
-                      <input
-                        type="number"
-                        value={resolution.split("x")[0]}
-                        onChange={(e) => {
-                          const width = e.target.value;
-                          const height = resolution.split("x")[1];
-                          setResolution(`${width}x${height}`);
-                        }}
-                        className="w-24 px-3 py-2 bg-white text-gray-900 rounded-lg border border-gray-300 focus:border-blue-500 focus:outline-none"
-                        placeholder="1920"
-                      />
-                      <span className="ml-1 text-sm text-gray-600">px</span>
+              {/* Display Settings Section */}
+              <div className="pt-4 mt-4 border-t border-gray-300">
+                <h3 className="text-sm font-semibold text-gray-700 mb-4">Display Settings</h3>
+                
+                <div className="space-y-4">
+                  <div className="flex flex-col sm:flex-row gap-4 items-end">
+                    <div className="flex-1">
+                      <label className="text-sm font-medium text-gray-700 mb-2 block">
+                        Resolution Preset
+                      </label>
+                      <select
+                        value={resolution}
+                        onChange={(e) => setResolution(e.target.value)}
+                        className="w-full px-3 py-2 bg-white text-gray-900 rounded-lg border border-gray-300 focus:border-blue-500 focus:outline-none"
+                      >
+                        {resolutions.map((res) => (
+                          <option key={res.value} value={res.value}>
+                            {res.label}
+                          </option>
+                        ))}
+                      </select>
                     </div>
-                  </div>
-                  <span className="text-gray-400 mb-2">x</span>
-                  <div>
-                    <label className="text-sm font-medium text-gray-700 mb-2 block text-xs">
-                      Height
-                    </label>
-                    <div className="flex items-center">
-                      <input
-                        type="number"
-                        value={resolution.split("x")[1]}
-                        onChange={(e) => {
-                          const width = resolution.split("x")[0];
-                          const height = e.target.value;
-                          setResolution(`${width}x${height}`);
-                        }}
-                        className="w-24 px-3 py-2 bg-white text-gray-900 rounded-lg border border-gray-300 focus:border-blue-500 focus:outline-none"
-                        placeholder="1080"
-                      />
-                      <span className="ml-1 text-sm text-gray-600">px</span>
+                    <div className="flex gap-2 items-end">
+                      <div>
+                        <label className="text-sm font-medium text-gray-700 mb-2 block text-xs">
+                          Width
+                        </label>
+                        <div className="flex items-center">
+                          <input
+                            type="number"
+                            value={resolution.split("x")[0]}
+                            onChange={(e) => {
+                              const width = e.target.value;
+                              const height = resolution.split("x")[1];
+                              setResolution(`${width}x${height}`);
+                            }}
+                            className="w-24 px-3 py-2 bg-white text-gray-900 rounded-lg border border-gray-300 focus:border-blue-500 focus:outline-none"
+                            placeholder="1920"
+                          />
+                          <span className="ml-1 text-sm text-gray-600">px</span>
+                        </div>
+                      </div>
+                      <span className="text-gray-400 mb-2">x</span>
+                      <div>
+                        <label className="text-sm font-medium text-gray-700 mb-2 block text-xs">
+                          Height
+                        </label>
+                        <div className="flex items-center">
+                          <input
+                            type="number"
+                            value={resolution.split("x")[1]}
+                            onChange={(e) => {
+                              const width = resolution.split("x")[0];
+                              const height = e.target.value;
+                              setResolution(`${width}x${height}`);
+                            }}
+                            className="w-24 px-3 py-2 bg-white text-gray-900 rounded-lg border border-gray-300 focus:border-blue-500 focus:outline-none"
+                            placeholder="1080"
+                          />
+                          <span className="ml-1 text-sm text-gray-600">px</span>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-                <button
-                  onClick={() => {
-                    const canvas = document.createElement("canvas");
-                    const [width, height] = resolution.split("x").map(Number);
-                    canvas.width = width;
-                    canvas.height = height;
-                    const ctx = canvas.getContext("2d");
-                    if (ctx) {
-                      const displayColor = getColorString(currentColor, brightness);
-                      const gradientCSS = gradient.enabled ? getGradientCSS(gradient) : null;
-                      if (gradientCSS && gradient.enabled) {
-                        // For gradients, we'll use a solid color approximation
-                        ctx.fillStyle = displayColor;
-                      } else {
-                        ctx.fillStyle = displayColor;
-                      }
-                      ctx.fillRect(0, 0, width, height);
-                      canvas.toBlob((blob) => {
-                        if (blob) {
-                          const url = URL.createObjectURL(blob);
-                          const a = document.createElement("a");
-                          a.href = url;
-                          a.download = `whitescreen-${resolution}.png`;
-                          a.click();
-                          URL.revokeObjectURL(url);
+                    <button
+                      onClick={() => {
+                        const canvas = document.createElement("canvas");
+                        const [width, height] = resolution.split("x").map(Number);
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext("2d");
+                        if (ctx) {
+                          const displayColor = getColorString(currentColor, brightness);
+                          const gradientCSS = gradient.enabled ? getGradientCSS(gradient) : null;
+                          if (gradientCSS && gradient.enabled) {
+                            // For gradients, we'll use a solid color approximation
+                            ctx.fillStyle = displayColor;
+                          } else {
+                            ctx.fillStyle = displayColor;
+                          }
+                          ctx.fillRect(0, 0, width, height);
+                          canvas.toBlob((blob) => {
+                            if (blob) {
+                              const url = URL.createObjectURL(blob);
+                              const a = document.createElement("a");
+                              a.href = url;
+                              a.download = `whitescreen-${resolution}.png`;
+                              a.click();
+                              URL.revokeObjectURL(url);
+                            }
+                          });
                         }
-                      });
-                    }
-                  }}
-                  className="px-6 py-2 bg-gray-900 hover:bg-gray-800 text-white rounded-lg transition-colors font-medium whitespace-nowrap"
-                >
-                  Download
-                </button>
-              </div>
+                      }}
+                      className="px-6 py-2 bg-gray-900 hover:bg-gray-800 text-white rounded-lg transition-colors font-medium whitespace-nowrap"
+                    >
+                      Download
+                    </button>
+                  </div>
 
-              <div className="flex items-center justify-between">
-                <label className="text-sm font-medium text-gray-300">
-                  Aspect Ratio Lock
-                </label>
-                <Switch.Root
-                  checked={aspectRatioLock}
-                  onCheckedChange={toggleAspectRatioLock}
-                  className="w-11 h-6 bg-gray-700 rounded-full relative data-[state=checked]:bg-blue-600 transition-colors"
-                >
-                  <Switch.Thumb className="block w-5 h-5 bg-white rounded-full transition-transform translate-x-0.5 data-[state=checked]:translate-x-[22px]" />
-                </Switch.Root>
-              </div>
+                  <div className="flex items-center justify-between">
+                    <label className="text-sm font-medium text-gray-700">
+                      Aspect Ratio Lock
+                    </label>
+                    <Switch.Root
+                      checked={aspectRatioLock}
+                      onCheckedChange={toggleAspectRatioLock}
+                      className="w-11 h-6 bg-gray-300 rounded-full relative data-[state=checked]:bg-blue-600 transition-colors"
+                    >
+                      <Switch.Thumb className="block w-5 h-5 bg-white rounded-full transition-transform translate-x-0.5 data-[state=checked]:translate-x-[22px]" />
+                    </Switch.Root>
+                  </div>
 
-              <div className="flex gap-2">
-                <button
-                  onClick={toggleFullscreen}
-                  className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded transition-colors"
-                >
-                  Toggle Fullscreen
-                </button>
-                <button
-                  onClick={togglePiP}
-                  className={`flex-1 px-4 py-2 rounded transition-colors ${
-                    isPiP
-                      ? "bg-green-600 hover:bg-green-700 text-white"
-                      : "bg-gray-700 hover:bg-gray-600 text-white"
-                  }`}
-                >
-                  {isPiP ? "Exit PiP" : "Picture-in-Picture"}
-                </button>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={toggleFullscreen}
+                      className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+                    >
+                      Toggle Fullscreen
+                    </button>
+                    <button
+                      onClick={togglePiP}
+                      className={`flex-1 px-4 py-2 rounded-lg transition-colors ${
+                        isPiP
+                          ? "bg-green-600 hover:bg-green-700 text-white"
+                          : "bg-gray-700 hover:bg-gray-600 text-white"
+                      }`}
+                    >
+                      {isPiP ? "Exit PiP" : "Picture-in-Picture"}
+                    </button>
+                  </div>
+                </div>
               </div>
             </Tabs.Content>
 

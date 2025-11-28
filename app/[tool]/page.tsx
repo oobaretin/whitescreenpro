@@ -214,16 +214,20 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
 
         {/* Display Area - Interactive tools have their own standalone layouts */}
         {toolSlug === "signature-screen" ? (
-          <div className="relative h-[500px] rounded-xl shadow-md mb-6 overflow-hidden">
-            <SignatureScreen />
+          <div className="flex justify-center mb-6">
+            <div className="relative h-[400px] w-full max-w-2xl rounded-xl shadow-md overflow-hidden">
+              <SignatureScreen />
+            </div>
           </div>
         ) : toolSlug === "dead-pixel-test" ? (
           <div className="relative h-[500px] rounded-xl shadow-md mb-6 overflow-hidden">
             <DeadPixelTest />
           </div>
         ) : toolSlug === "tip-screen" ? (
-          <div className="relative h-[500px] mb-6 overflow-hidden">
-            <TipScreen />
+          <div className="flex justify-center mb-6">
+            <div className="relative h-[500px] w-full max-w-md overflow-hidden">
+              <TipScreen />
+            </div>
           </div>
         ) : (
           <div
