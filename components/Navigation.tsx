@@ -60,9 +60,9 @@ export function Navigation() {
   }, [isLangMenuOpen]);
 
   return (
-    <nav className="bg-white border-b border-gray-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center h-14">
+    <nav className="bg-white border-b border-gray-200 w-full overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div className="flex items-center h-14 w-full min-w-0">
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link 
@@ -75,7 +75,7 @@ export function Navigation() {
           </div>
 
           {/* Desktop Navigation - Closer to brand */}
-          <div className="hidden md:flex items-center space-x-4 ml-6">
+          <div className="hidden md:flex items-center space-x-4 ml-6 flex-shrink-0">
             <Link
               href="/"
               onClick={resetToWhite}
@@ -98,7 +98,7 @@ export function Navigation() {
           </div>
 
           {/* Language Selector - Far Right */}
-          <div className="hidden md:block ml-auto" ref={langMenuRefDesktop}>
+          <div className="hidden md:block ml-auto flex-shrink-0" ref={langMenuRefDesktop}>
             <div className="relative">
               <button
                 type="button"
@@ -106,10 +106,10 @@ export function Navigation() {
                   e.stopPropagation();
                   setIsLangMenuOpen(!isLangMenuOpen);
                 }}
-                className="flex items-center gap-1.5 px-2 py-1 text-gray-700 hover:text-gray-900 transition-colors text-sm"
+                className="flex items-center gap-1.5 px-2 py-1 text-gray-700 hover:text-gray-900 transition-colors text-sm whitespace-nowrap"
               >
                 <span className="text-base">{currentLanguage.flag}</span>
-                <span>{currentLanguage.name}</span>
+                <span className="truncate max-w-[120px]">{currentLanguage.name}</span>
                 <svg
                   width="12"
                   height="12"
@@ -117,7 +117,7 @@ export function Navigation() {
                   fill="none"
                   stroke="currentColor"
                   strokeWidth="2"
-                  className={`transition-transform ${isLangMenuOpen ? "rotate-180" : ""}`}
+                  className={`transition-transform flex-shrink-0 ${isLangMenuOpen ? "rotate-180" : ""}`}
                 >
                   <path d="M3 4.5L6 7.5L9 4.5" />
                 </svg>
@@ -127,6 +127,7 @@ export function Navigation() {
                 <div 
                   className="absolute right-0 mt-1 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50 max-h-64 overflow-y-auto"
                   onClick={(e) => e.stopPropagation()}
+                  style={{ maxWidth: 'calc(100vw - 2rem)' }}
                 >
                   {languages.map((lang) => (
                     <button
@@ -163,7 +164,7 @@ export function Navigation() {
           </div>
 
           {/* Mobile Menu Button and Language */}
-          <div className="md:hidden flex items-center gap-2 ml-auto">
+          <div className="md:hidden flex items-center gap-2 ml-auto flex-shrink-0">
             {/* Language Selector - Mobile */}
             <div className="relative" ref={langMenuRefMobile}>
               <button
@@ -182,6 +183,7 @@ export function Navigation() {
                 <div 
                   className="absolute right-0 mt-1 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50 max-h-64 overflow-y-auto"
                   onClick={(e) => e.stopPropagation()}
+                  style={{ maxWidth: 'calc(100vw - 2rem)' }}
                 >
                   {languages.map((lang) => (
                     <button
