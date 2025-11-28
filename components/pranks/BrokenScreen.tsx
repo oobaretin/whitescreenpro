@@ -9,8 +9,6 @@ const PATTERNS = [
   { id: "pattern-3", name: "Impact Point", src: "/images/broken-screen/pattern-3.png" },
   { id: "pattern-4", name: "Spider Crack", src: "/images/broken-screen/pattern-4.png" },
   { id: "pattern-5", name: "Crack Pattern 2", src: "/images/broken-screen/7A515A49-2903-4B2A-A524-A5CCDEC64CE8.jpeg" },
-  { id: "pattern-6", name: "Crack Pattern 3", src: "/images/broken-screen/A0B32E7C-9F7B-4308-B6EE-C025B201273E_4_5005_c.jpeg" },
-  { id: "pattern-7", name: "Crack Pattern 4", src: "/images/broken-screen/D4E6ECEB-A7F3-463C-AAD4-20C6845362FA_4_5005_c.jpeg" },
 ];
 
 export function BrokenScreen() {
@@ -54,7 +52,7 @@ export function BrokenScreen() {
       <p className="text-sm text-gray-500">Select a crack pattern:</p>
 
       {/* Pattern selector */}
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+      <div className="grid grid-cols-2 gap-3">
         {PATTERNS.map((pattern) => (
           <button
             key={pattern.id}
