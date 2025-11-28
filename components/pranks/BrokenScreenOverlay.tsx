@@ -4,9 +4,12 @@ import { useAppStore } from "@/lib/store";
 
 const PATTERNS = [
   { id: "pattern-1", src: "/images/broken-screen/pattern-1.png" },
-  { id: "pattern-2", src: "/images/broken-screen/pattern-2.png" },
+  { id: "pattern-2", src: "/images/broken-screen/A540D4DB-A25F-4FE5-81CE-A2C4825365F1.jpeg" },
   { id: "pattern-3", src: "/images/broken-screen/pattern-3.png" },
   { id: "pattern-4", src: "/images/broken-screen/pattern-4.png" },
+  { id: "pattern-5", src: "/images/broken-screen/7A515A49-2903-4B2A-A524-A5CCDEC64CE8.jpeg" },
+  { id: "pattern-6", src: "/images/broken-screen/A0B32E7C-9F7B-4308-B6EE-C025B201273E_4_5005_c.jpeg" },
+  { id: "pattern-7", src: "/images/broken-screen/D4E6ECEB-A7F3-463C-AAD4-20C6845362FA_4_5005_c.jpeg" },
 ];
 
 export function BrokenScreenOverlay() {

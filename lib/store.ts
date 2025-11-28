@@ -99,7 +99,7 @@ export interface AppState {
   };
   
   brokenScreen: {
-    pattern: string; // "shatteredWeb" | "radialCrack" | "impactPoint"
+    pattern: string; // "pattern-1" | "pattern-2" | "pattern-3" | "pattern-4" | "pattern-5" | "pattern-6" | "pattern-7"
     soundEnabled: boolean;
     timedActivation: number; // seconds, 0 = instant
     shakeEnabled: boolean;
