@@ -1,15 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useAppStore } from "@/lib/store";
 import QRCode from "react-qr-code";
 import { COLOR_PRESETS } from "@/lib/colorUtils";
 import { getStoredFavorites } from "@/lib/storageUtils";
 
 export function ExportTools() {
-  const { currentColor, brightness, gradient } = useAppStore();
+  const { currentColor, brightness, gradient, activeMode } = useAppStore();
   const [showQR, setShowQR] = useState(false);
   const [exportResolution, setExportResolution] = useState("1920x1080");
+  const [exportType, setExportType] = useState<"screen" | "color">("screen");
 
   const resolutions = [
     { label: "480p", value: "854x480" },
@@ -21,8 +22,55 @@ export function ExportTools() {
     { label: "8K", value: "7680x4320" },
   ];
 
-  const downloadImage = (format: "png" | "jpg") => {
+  const downloadImage = async (format: "png" | "jpg") => {
     const [width, height] = exportResolution.split("x").map(Number);
+    
+    if (exportType === "screen") {
+      // Capture the actual display area
+      const displayArea = document.querySelector('[data-display-area]') as HTMLElement;
+      if (!displayArea) {
+        alert("Display area not found. Please ensure the screen is visible.");
+        return;
+      }
+
+      try {
+        // Use html2canvas if available, otherwise fallback to color
+        const html2canvas = (await import("html2canvas")).default;
+        const canvas = await html2canvas(displayArea, {
+          width: width,
+          height: height,
+          scale: 1,
+          useCORS: true,
+          backgroundColor: null,
+        });
+
+        canvas.toBlob(
+          (blob) => {
+            if (!blob) return;
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `whitescreen-${activeMode || "color"}-${exportResolution}.${format}`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+          },
+          `image/${format}`,
+          0.95
+        );
+      } catch (error) {
+        console.error("Failed to capture screen:", error);
+        // Fallback to color download
+        downloadColorImage(format, width, height);
+      }
+    } else {
+      // Download solid color
+      downloadColorImage(format, width, height);
+    }
+  };
+
+  const downloadColorImage = (format: "png" | "jpg", width: number, height: number) => {
     const canvas = document.createElement("canvas");
     canvas.width = width;
     canvas.height = height;
@@ -109,6 +157,31 @@ export function ExportTools() {
       <div>
         <h3 className="text-sm font-medium mb-2 text-gray-300">Download Image</h3>
         <div className="space-y-2">
+          <div>
+            <label className="text-xs text-gray-400 mb-1 block">Export Type</label>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setExportType("screen")}
+                className={`flex-1 px-3 py-2 rounded text-sm transition-colors ${
+                  exportType === "screen"
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+                }`}
+              >
+                Screen Capture
+              </button>
+              <button
+                onClick={() => setExportType("color")}
+                className={`flex-1 px-3 py-2 rounded text-sm transition-colors ${
+                  exportType === "color"
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+                }`}
+              >
+                Solid Color
+              </button>
+            </div>
+          </div>
           <select
             value={exportResolution}
             onChange={(e) => setExportResolution(e.target.value)}
@@ -134,6 +207,11 @@ export function ExportTools() {
               Download JPG
             </button>
           </div>
+          {exportType === "screen" && (
+            <p className="text-xs text-gray-400 mt-1">
+              ⚠️ Screen capture captures what&apos;s currently visible. For animated content (Matrix, DVD, etc.), pause or wait for a good frame.
+            </p>
+          )}
         </div>
       </div>
 

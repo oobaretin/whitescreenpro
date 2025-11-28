@@ -232,6 +232,7 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
         ) : (
           <div
             ref={containerRef}
+            data-display-area
             className={`${
               isFullscreen ? "fixed inset-0 z-50" : "relative h-[500px] rounded-xl shadow-md mb-6 cursor-pointer"
             } overflow-hidden group`}

@@ -173,6 +173,7 @@ export default function Home() {
         {/* Display Area - Always show on homepage */}
         <div
           ref={containerRef}
+          data-display-area
           className={`${
             isFullscreen ? "fixed inset-0 z-50" : "relative h-[300px] rounded-xl shadow-md mb-6 cursor-pointer"
           } overflow-hidden group`}
