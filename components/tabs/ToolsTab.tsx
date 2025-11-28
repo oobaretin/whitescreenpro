@@ -12,7 +12,7 @@ export function ToolsTab() {
       <div className="grid grid-cols-2 gap-3">
         {/* Zoom Lighting - activates inline with display screen */}
         <button
-          onClick={() => setActiveMode(activeMode === "zoom-lighting" ? null : "zoom-lighting")}
+          onClick={() => setActiveMode(activeMode === "zoom-lighting" ? "color" : "zoom-lighting")}
           className={`p-4 rounded-lg border-2 transition-all text-left ${
             activeMode === "zoom-lighting"
               ? "border-blue-500 bg-blue-500/10"
