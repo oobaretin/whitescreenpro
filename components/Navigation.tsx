@@ -73,7 +73,7 @@ export function Navigation() {
 
   // Close language menu when clicking outside
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
       const target = event.target as Node;
       const isClickInsideDesktop = 
         (buttonRefDesktop.current?.contains(target)) ||
@@ -90,12 +90,18 @@ export function Navigation() {
     };
 
     if (isLangMenuOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
+      // Use a small delay to allow click events to register first
+      const timeoutId = setTimeout(() => {
+        document.addEventListener("mousedown", handleClickOutside);
+        document.addEventListener("touchstart", handleClickOutside);
+      }, 100);
 
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+      return () => {
+        clearTimeout(timeoutId);
+        document.removeEventListener("mousedown", handleClickOutside);
+        document.removeEventListener("touchstart", handleClickOutside);
+      };
+    }
   }, [isLangMenuOpen]);
 
   return (
@@ -179,13 +185,19 @@ export function Navigation() {
                     <button
                       key={lang.code}
                       type="button"
-                      onMouseDown={(e) => {
+                      onClick={(e) => {
                         e.preventDefault();
                         e.stopPropagation();
                         setLanguage(lang.code);
                         setIsLangMenuOpen(false);
                       }}
-                      className={`w-full px-4 py-2 text-left text-sm hover:bg-gray-100 transition-colors flex items-center gap-2 ${
+                      onTouchEnd={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setLanguage(lang.code);
+                        setIsLangMenuOpen(false);
+                      }}
+                      className={`w-full px-4 py-2 text-left text-sm hover:bg-gray-100 active:bg-gray-200 transition-colors flex items-center gap-2 ${
                         language === lang.code ? "bg-blue-50 text-blue-700" : "text-gray-700"
                       }`}
                     >
@@ -243,13 +255,19 @@ export function Navigation() {
                     <button
                       key={lang.code}
                       type="button"
-                      onMouseDown={(e) => {
+                      onClick={(e) => {
                         e.preventDefault();
                         e.stopPropagation();
                         setLanguage(lang.code);
                         setIsLangMenuOpen(false);
                       }}
-                      className={`w-full px-4 py-2 text-left text-sm hover:bg-gray-100 transition-colors flex items-center gap-2 ${
+                      onTouchEnd={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setLanguage(lang.code);
+                        setIsLangMenuOpen(false);
+                      }}
+                      className={`w-full px-4 py-2 text-left text-sm hover:bg-gray-100 active:bg-gray-200 transition-colors flex items-center gap-2 ${
                         language === lang.code ? "bg-blue-50 text-blue-700" : "text-gray-700"
                       }`}
                     >
