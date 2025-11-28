@@ -1,10 +1,34 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAppStore } from "@/lib/store";
+
+// Check if Picture-in-Picture API is supported
+export function isPiPSupported(): boolean {
+  if (typeof document === "undefined") return false;
+  return (
+    "pictureInPictureEnabled" in document &&
+    document.pictureInPictureEnabled !== false &&
+    "requestPictureInPicture" in HTMLVideoElement.prototype
+  );
+}
 
 export function usePiP() {
   const { isPiP, togglePiP } = useAppStore();
+  const [pipSupported, setPipSupported] = useState(false);
 
   useEffect(() => {
+    // Check PiP support
+    const supported = isPiPSupported();
+    setPipSupported(supported);
+
+    if (!supported) {
+      console.warn("Picture-in-Picture API is not supported in this browser");
+      if (isPiP) {
+        // Reset state if PiP was enabled but not supported
+        togglePiP();
+      }
+      return;
+    }
+
     const video = document.createElement("video");
     video.style.position = "fixed";
     video.style.top = "0";
@@ -73,5 +97,7 @@ export function usePiP() {
       }
     };
   }, [isPiP, togglePiP]);
+
+  return { pipSupported };
 }
 

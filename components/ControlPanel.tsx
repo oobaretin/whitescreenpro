@@ -462,11 +462,15 @@ export function ControlPanel({ showColorTab = true }: ControlPanelProps) {
                     </button>
                     <button
                       onClick={togglePiP}
+                      disabled={typeof document !== "undefined" && !document.pictureInPictureEnabled}
                       className={`flex-1 px-4 py-2 rounded-lg transition-colors ${
                         isPiP
                           ? "bg-green-600 hover:bg-green-700 text-white"
+                          : typeof document !== "undefined" && !document.pictureInPictureEnabled
+                          ? "bg-gray-600 text-gray-400 cursor-not-allowed"
                           : "bg-gray-700 hover:bg-gray-600 text-white"
                       }`}
+                      title={typeof document !== "undefined" && !document.pictureInPictureEnabled ? "Picture-in-Picture is not supported in this browser" : ""}
                     >
                       {isPiP ? "Exit PiP" : "Picture-in-Picture"}
                     </button>
