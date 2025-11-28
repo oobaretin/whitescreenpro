@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { useAppStore } from "@/lib/store";
 import { COLOR_PRESETS } from "@/lib/colorUtils";
@@ -25,8 +26,15 @@ const languages: { code: Language; name: string; flag: string }[] = [
 export function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
+  const [dropdownPosition, setDropdownPosition] = useState({ top: 56, right: 16 });
   const langMenuRefDesktop = useRef<HTMLDivElement>(null);
   const langMenuRefMobile = useRef<HTMLDivElement>(null);
+  const buttonRefDesktop = useRef<HTMLButtonElement>(null);
+  const buttonRefMobile = useRef<HTMLButtonElement>(null);
+  const dropdownRefDesktop = useRef<HTMLDivElement>(null);
+  const dropdownRefMobile = useRef<HTMLDivElement>(null);
   const { setColor, setActiveMode, setActiveTab, language, setLanguage } = useAppStore();
   const t = useTranslation();
 
@@ -38,12 +46,43 @@ export function Navigation() {
 
   const currentLanguage = languages.find(lang => lang.code === language) || languages[0];
 
+  // Handle client-side mount and screen size
+  useEffect(() => {
+    setMounted(true);
+    const checkScreenSize = () => {
+      setIsDesktop(window.innerWidth >= 768);
+    };
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
+
+  // Update dropdown position when menu opens
+  useEffect(() => {
+    if (isLangMenuOpen && mounted) {
+      const button = buttonRefDesktop.current || buttonRefMobile.current;
+      if (button) {
+        const rect = button.getBoundingClientRect();
+        setDropdownPosition({
+          top: rect.bottom + 4,
+          right: window.innerWidth - rect.right
+        });
+      }
+    }
+  }, [isLangMenuOpen, mounted]);
+
   // Close language menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Node;
-      const isClickInsideDesktop = langMenuRefDesktop.current?.contains(target);
-      const isClickInsideMobile = langMenuRefMobile.current?.contains(target);
+      const isClickInsideDesktop = 
+        (buttonRefDesktop.current?.contains(target)) ||
+        (dropdownRefDesktop.current?.contains(target)) ||
+        (langMenuRefDesktop.current?.contains(target));
+      const isClickInsideMobile = 
+        (buttonRefMobile.current?.contains(target)) ||
+        (dropdownRefMobile.current?.contains(target)) ||
+        (langMenuRefMobile.current?.contains(target));
       
       if (!isClickInsideDesktop && !isClickInsideMobile) {
         setIsLangMenuOpen(false);
@@ -60,8 +99,8 @@ export function Navigation() {
   }, [isLangMenuOpen]);
 
   return (
-    <nav className="bg-white border-b border-gray-200 w-full overflow-hidden relative z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+    <nav className="bg-white border-b border-gray-200 w-full relative z-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full overflow-x-hidden">
         <div className="flex items-center h-14 w-full min-w-0">
           {/* Logo */}
           <div className="flex-shrink-0">
@@ -101,6 +140,7 @@ export function Navigation() {
           <div className="hidden md:block ml-auto flex-shrink-0" ref={langMenuRefDesktop}>
             <div className="relative">
               <button
+                ref={buttonRefDesktop}
                 type="button"
                 onClick={(e) => {
                   e.stopPropagation();
@@ -123,11 +163,17 @@ export function Navigation() {
                 </svg>
               </button>
               
-              {isLangMenuOpen && (
+              {mounted && isLangMenuOpen && isDesktop && createPortal(
                 <div 
-                  className="absolute right-0 mt-1 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-[100] max-h-64 overflow-y-auto"
+                  ref={dropdownRefDesktop}
+                  className="fixed w-48 bg-white rounded-lg shadow-xl border border-gray-200 py-1 max-h-64 overflow-y-auto"
                   onClick={(e) => e.stopPropagation()}
-                  style={{ maxWidth: 'calc(100vw - 2rem)' }}
+                  style={{ 
+                    top: `${dropdownPosition.top}px`,
+                    right: `${dropdownPosition.right}px`,
+                    zIndex: 9999,
+                    maxWidth: 'calc(100vw - 2rem)'
+                  }}
                 >
                   {languages.map((lang) => (
                     <button
@@ -158,7 +204,8 @@ export function Navigation() {
                       )}
                     </button>
                   ))}
-                </div>
+                </div>,
+                document.body
               )}
             </div>
           </div>
@@ -168,6 +215,7 @@ export function Navigation() {
             {/* Language Selector - Mobile */}
             <div className="relative" ref={langMenuRefMobile}>
               <button
+                ref={buttonRefMobile}
                 type="button"
                 onClick={(e) => {
                   e.stopPropagation();
@@ -179,11 +227,17 @@ export function Navigation() {
                 <span className="text-base">{currentLanguage.flag}</span>
               </button>
               
-              {isLangMenuOpen && (
+              {mounted && isLangMenuOpen && !isDesktop && createPortal(
                 <div 
-                  className="absolute right-0 mt-1 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-[100] max-h-64 overflow-y-auto"
+                  ref={dropdownRefMobile}
+                  className="fixed w-48 bg-white rounded-lg shadow-xl border border-gray-200 py-1 max-h-64 overflow-y-auto"
                   onClick={(e) => e.stopPropagation()}
-                  style={{ maxWidth: 'calc(100vw - 2rem)' }}
+                  style={{ 
+                    top: `${dropdownPosition.top}px`,
+                    right: `${dropdownPosition.right}px`,
+                    zIndex: 9999,
+                    maxWidth: 'calc(100vw - 2rem)'
+                  }}
                 >
                   {languages.map((lang) => (
                     <button
@@ -214,7 +268,8 @@ export function Navigation() {
                       )}
                     </button>
                   ))}
-                </div>
+                </div>,
+                document.body
               )}
             </div>
             
