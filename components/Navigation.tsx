@@ -25,7 +25,8 @@ const languages: { code: Language; name: string; flag: string }[] = [
 export function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
-  const langMenuRef = useRef<HTMLDivElement>(null);
+  const langMenuRefDesktop = useRef<HTMLDivElement>(null);
+  const langMenuRefMobile = useRef<HTMLDivElement>(null);
   const { setColor, setActiveMode, setActiveTab, language, setLanguage } = useAppStore();
   const t = useTranslation();
 
@@ -40,7 +41,11 @@ export function Navigation() {
   // Close language menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (langMenuRef.current && !langMenuRef.current.contains(event.target as Node)) {
+      const target = event.target as Node;
+      const isClickInsideDesktop = langMenuRefDesktop.current?.contains(target);
+      const isClickInsideMobile = langMenuRefMobile.current?.contains(target);
+      
+      if (!isClickInsideDesktop && !isClickInsideMobile) {
         setIsLangMenuOpen(false);
       }
     };
@@ -90,11 +95,17 @@ export function Navigation() {
             >
               {t.nav.contact}
             </Link>
-            
-            {/* Language Selector */}
-            <div className="relative ml-2" ref={langMenuRef}>
+          </div>
+
+          {/* Language Selector - Far Right */}
+          <div className="hidden md:block ml-auto" ref={langMenuRefDesktop}>
+            <div className="relative">
               <button
-                onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsLangMenuOpen(!isLangMenuOpen);
+                }}
                 className="flex items-center gap-1.5 px-2 py-1 text-gray-700 hover:text-gray-900 transition-colors text-sm"
               >
                 <span className="text-base">{currentLanguage.flag}</span>
@@ -113,11 +124,17 @@ export function Navigation() {
               </button>
               
               {isLangMenuOpen && (
-                <div className="absolute right-0 mt-1 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50 max-h-64 overflow-y-auto">
+                <div 
+                  className="absolute right-0 mt-1 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50 max-h-64 overflow-y-auto"
+                  onClick={(e) => e.stopPropagation()}
+                >
                   {languages.map((lang) => (
                     <button
                       key={lang.code}
-                      onClick={() => {
+                      type="button"
+                      onMouseDown={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
                         setLanguage(lang.code);
                         setIsLangMenuOpen(false);
                       }}
@@ -148,9 +165,13 @@ export function Navigation() {
           {/* Mobile Menu Button and Language */}
           <div className="md:hidden flex items-center gap-2 ml-auto">
             {/* Language Selector - Mobile */}
-            <div className="relative" ref={langMenuRef}>
+            <div className="relative" ref={langMenuRefMobile}>
               <button
-                onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsLangMenuOpen(!isLangMenuOpen);
+                }}
                 className="flex items-center gap-1 p-2 text-gray-700 hover:text-gray-900 transition-colors"
                 aria-label="Select language"
               >
@@ -158,11 +179,17 @@ export function Navigation() {
               </button>
               
               {isLangMenuOpen && (
-                <div className="absolute right-0 mt-1 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50 max-h-64 overflow-y-auto">
+                <div 
+                  className="absolute right-0 mt-1 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50 max-h-64 overflow-y-auto"
+                  onClick={(e) => e.stopPropagation()}
+                >
                   {languages.map((lang) => (
                     <button
                       key={lang.code}
-                      onClick={() => {
+                      type="button"
+                      onMouseDown={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
                         setLanguage(lang.code);
                         setIsLangMenuOpen(false);
                       }}
