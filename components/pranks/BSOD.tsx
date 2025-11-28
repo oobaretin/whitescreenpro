@@ -50,12 +50,31 @@ export function BSOD() {
 
   // For image-based BSOD (XP, 7, 10, 11)
   if (version.useImage && version.imageSrc) {
+    // Use object-contain for XP and 7 to prevent text cutoff, object-cover for 10 and 11
+    const imageClass = (bsod.version === "xp" || bsod.version === "7") 
+      ? "w-full h-full object-contain" 
+      : "w-full h-full object-cover";
+    
     return (
-      <div className="absolute inset-0" style={{ backgroundColor: version.bgColor }}>
+      <div 
+        className="absolute inset-0 overflow-auto" 
+        style={{ 
+          backgroundColor: version.bgColor,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         <img
           src={version.imageSrc}
           alt="Blue Screen of Death"
-          className="w-full h-full object-cover"
+          className={imageClass}
+          style={{
+            maxWidth: "100%",
+            maxHeight: "100%",
+            width: "auto",
+            height: "auto",
+          }}
         />
         {/* Overlay custom message and code */}
         {(bsod.customMessage || bsod.customCode) && (
