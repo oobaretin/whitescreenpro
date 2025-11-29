@@ -1,6 +1,7 @@
 "use client";
 
 import { useAppStore } from "@/lib/store";
+import Image from "next/image";
 
 const PATTERNS = [
   { id: "pattern-1", src: "/images/broken-screen/pattern-1.png" },
@@ -20,11 +21,26 @@ export function BrokenScreenOverlay() {
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 5 }}>
       {/* Scale up slightly and position to crop out bottom camera icon */}
-      <div className="absolute inset-0 scale-105" style={{ top: '-2%', bottom: '-5%' }}>
-        <img
+      <div 
+        className="absolute inset-0" 
+        style={{ 
+          top: '-2%', 
+          bottom: '-5%',
+          left: '-2.5%',
+          right: '-2.5%',
+        }}
+      >
+        <Image
           src={selectedPattern.src}
           alt="Broken screen crack pattern"
-          className="w-full h-full object-cover object-top"
+          fill
+          quality={100}
+          priority
+          className="object-cover object-top"
+          style={{
+            imageRendering: 'auto',
+          }}
+          sizes="100vw"
         />
       </div>
     </div>
