@@ -49,12 +49,23 @@ export function DVDScreensaver() {
         const containerWidth = containerRef.current?.parentElement?.clientWidth || window.innerWidth;
         const containerHeight = containerRef.current?.parentElement?.clientHeight || window.innerHeight;
 
-        // Check wall collisions
-        if (newX <= 0 || newX >= containerWidth - logoWidth) {
+        // Check wall collisions - allow logo to touch corners exactly
+        if (newX <= 0) {
+          newX = 0; // Touch left edge
+          newVx = -newVx;
+          hitWall = true;
+        } else if (newX >= containerWidth - logoWidth) {
+          newX = containerWidth - logoWidth; // Touch right edge
           newVx = -newVx;
           hitWall = true;
         }
-        if (newY <= 0 || newY >= containerHeight - logoHeight) {
+        
+        if (newY <= 0) {
+          newY = 0; // Touch top edge
+          newVy = -newVy;
+          hitWall = true;
+        } else if (newY >= containerHeight - logoHeight) {
+          newY = containerHeight - logoHeight; // Touch bottom edge
           newVy = -newVy;
           hitWall = true;
         }
@@ -67,8 +78,8 @@ export function DVDScreensaver() {
 
         setVelocity({ x: newVx, y: newVy });
         return {
-          x: Math.max(0, Math.min(containerWidth - logoWidth, newX)),
-          y: Math.max(0, Math.min(containerHeight - logoHeight, newY)),
+          x: newX,
+          y: newY,
         };
       });
 

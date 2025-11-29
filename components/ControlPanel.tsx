@@ -10,7 +10,7 @@ import { ColorPicker } from "./ColorPicker";
 import { ToolsTab } from "./tabs/ToolsTab";
 import { PranksTab } from "./tabs/PranksTab";
 import { AmbientTab } from "./tabs/AmbientTab";
-import { getColorString, getGradientCSS, COLOR_PRESETS } from "@/lib/colorUtils";
+import { getColorString, getGradientCSS } from "@/lib/colorUtils";
 
 interface ControlPanelProps {
   showColorTab?: boolean;
@@ -151,7 +151,7 @@ export function ControlPanel({ showColorTab = true }: ControlPanelProps) {
                 <Tabs.Trigger
                   value="colors"
                   onClick={() => {
-                    setColor(COLOR_PRESETS[0].hex); // Reset to white
+                    setColor("#FFFFFF"); // Reset to white
                     setActiveMode("color");
                   }}
                   className="px-3 py-1.5 text-xs font-medium text-gray-600 data-[state=active]:text-gray-900 data-[state=active]:border-b-2 data-[state=active]:border-gray-900 transition-colors whitespace-nowrap"

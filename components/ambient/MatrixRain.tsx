@@ -20,15 +20,36 @@ export function MatrixRain() {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    const updateCanvasSize = () => {
+      // Get the actual container dimensions, not just window
+      const container = canvas.parentElement;
+      const width = container?.clientWidth || window.innerWidth;
+      const height = container?.clientHeight || window.innerHeight;
+      
+      canvas.width = width;
+      canvas.height = height;
+    };
+
+    updateCanvasSize();
+    
+    // Update on resize
+    const handleResize = () => {
+      updateCanvasSize();
+    };
+    
+    window.addEventListener("resize", handleResize);
+    
     const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+    if (!ctx) {
+      window.removeEventListener("resize", handleResize);
+      return;
+    }
 
     const chars = CHARACTER_SETS[matrix.characterSet] || CHARACTER_SETS.latin;
     const fontSize = 14;
-    const columns = Math.floor(canvas.width / fontSize);
-    const drops: number[] = Array(columns).fill(1);
+    
+    let columns = Math.floor(canvas.width / fontSize);
+    let drops: number[] = Array(columns).fill(1);
 
     const colors = {
       green: "#00FF00",
@@ -40,6 +61,13 @@ export function MatrixRain() {
     const color = colors[matrix.color] || colors.green;
 
     const draw = () => {
+      // Recalculate columns if canvas size changed
+      const newColumns = Math.floor(canvas.width / fontSize);
+      if (newColumns !== columns) {
+        columns = newColumns;
+        drops = Array(columns).fill(1);
+      }
+
       ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -63,7 +91,10 @@ export function MatrixRain() {
     const interval = setInterval(draw, 1000 / matrix.speed);
     draw();
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener("resize", handleResize);
+    };
   }, [activeMode, matrix]);
 
   if (activeMode !== "matrix-rain") return null;
@@ -71,8 +102,8 @@ export function MatrixRain() {
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0"
-      style={{ background: "#000000" }}
+      className="absolute inset-0 w-full h-full"
+      style={{ background: "#000000", display: "block" }}
     />
   );
 }

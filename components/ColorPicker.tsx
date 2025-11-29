@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useAppStore } from "@/lib/store";
-import { isValidColor, formatColor, COLOR_PRESETS } from "@/lib/colorUtils";
+import { isValidColor, formatColor } from "@/lib/colorUtils";
 import { getStoredFavorites, saveFavorite, removeFavorite } from "@/lib/storageUtils";
 
 export function ColorPicker() {
@@ -55,27 +55,6 @@ export function ColorPicker() {
 
   return (
     <div className="space-y-4">
-      {/* Preset Colors */}
-      <div>
-        <h3 className="text-sm font-medium mb-2 text-gray-300">Presets</h3>
-        <div className="grid grid-cols-6 gap-2">
-          {COLOR_PRESETS.map((preset) => (
-            <button
-              key={preset.hex}
-              onClick={() => handleColorChange(preset.hex)}
-              className={`w-10 h-10 rounded border-2 transition-all ${
-                mounted && displayColor.toUpperCase() === preset.hex.toUpperCase()
-                  ? "border-white scale-110"
-                  : "border-gray-600 hover:border-gray-400"
-              }`}
-              style={{ backgroundColor: preset.hex }}
-              title={preset.name}
-              aria-label={`Select ${preset.name} color`}
-            />
-          ))}
-        </div>
-      </div>
-
       {/* Favorites */}
       {mounted && favorites.length > 0 && (
         <div>
