@@ -107,10 +107,7 @@ export function ColorPicker() {
               onChange={(e) => {
                 const newFormat = e.target.value as "hex" | "rgb" | "hsl";
                 setInputFormat(newFormat);
-                if (mounted) {
-                  // Reformat the current color into the newly selected format
-                  setInputValue(formatColor(currentColor, newFormat));
-                }
+                // The useEffect will automatically update inputValue when inputFormat changes
               }}
               className="px-2 py-1 bg-gray-800 text-white rounded text-sm border border-gray-600"
             >
