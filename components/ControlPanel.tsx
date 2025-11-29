@@ -281,10 +281,10 @@ export function ControlPanel({ showColorTab = true }: ControlPanelProps) {
                           step={1}
                           className="relative flex items-center w-full h-5"
                         >
-                          <Slider.Track className="bg-gray-700 relative flex-1 rounded-full h-2">
-                            <Slider.Range className="absolute bg-white rounded-full h-full" />
+                          <Slider.Track className="bg-gray-200 relative flex-1 rounded-full h-2">
+                            <Slider.Range className="absolute bg-gray-800 rounded-full h-full" />
                           </Slider.Track>
-                          <Slider.Thumb className="block w-5 h-5 bg-white rounded-full shadow-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black" />
+                          <Slider.Thumb className="block w-5 h-5 bg-gray-800 rounded-full shadow-lg hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:ring-offset-2 focus:ring-offset-white" />
                         </Slider.Root>
                       </div>
                     )}
@@ -509,19 +509,6 @@ export function ControlPanel({ showColorTab = true }: ControlPanelProps) {
                     >
                       {t.common.download} JPEG
                     </button>
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <label className="text-sm font-medium text-gray-700">
-                      {t.display.aspectRatioLock}
-                    </label>
-                    <Switch.Root
-                      checked={aspectRatioLock}
-                      onCheckedChange={toggleAspectRatioLock}
-                      className="w-11 h-6 bg-gray-300 rounded-full relative data-[state=checked]:bg-blue-600 transition-colors"
-                    >
-                      <Switch.Thumb className="block w-5 h-5 bg-white rounded-full transition-transform translate-x-0.5 data-[state=checked]:translate-x-[22px]" />
-                    </Switch.Root>
                   </div>
 
                   <div className="flex gap-2">
