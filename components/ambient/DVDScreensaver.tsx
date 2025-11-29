@@ -41,7 +41,6 @@ export function DVDScreensaver() {
         let newY = prev.y + velocity.y;
         let newVx = velocity.x;
         let newVy = velocity.y;
-        let hitWall = false;
 
         const logoWidth = dvd.logoSize;
         const logoHeight = dvd.logoSize * 0.6;
@@ -49,29 +48,45 @@ export function DVDScreensaver() {
         const containerWidth = containerRef.current?.parentElement?.clientWidth || window.innerWidth;
         const containerHeight = containerRef.current?.parentElement?.clientHeight || window.innerHeight;
 
-        // Check wall collisions - allow logo to touch corners exactly
-        if (newX <= 0) {
-          newX = 0; // Touch left edge
-          newVx = -newVx;
-          hitWall = true;
-        } else if (newX >= containerWidth - logoWidth) {
-          newX = containerWidth - logoWidth; // Touch right edge
-          newVx = -newVx;
-          hitWall = true;
+        // Calculate if logo is at or past edges
+        const hitLeft = newX <= 0;
+        const hitRight = newX >= containerWidth - logoWidth;
+        const hitTop = newY <= 0;
+        const hitBottom = newY >= containerHeight - logoHeight;
+
+        // Clamp position to ensure logo fully touches edges/corners
+        if (hitLeft) {
+          newX = 0;
+        } else if (hitRight) {
+          newX = containerWidth - logoWidth;
         }
         
-        if (newY <= 0) {
-          newY = 0; // Touch top edge
-          newVy = -newVy;
-          hitWall = true;
-        } else if (newY >= containerHeight - logoHeight) {
-          newY = containerHeight - logoHeight; // Touch bottom edge
-          newVy = -newVy;
-          hitWall = true;
+        if (hitTop) {
+          newY = 0;
+        } else if (hitBottom) {
+          newY = containerHeight - logoHeight;
         }
 
-        // Change color on wall hit
-        if (hitWall) {
+        // Detect if logo is at a corner (touching both x and y edges simultaneously)
+        // Use small threshold for floating point precision
+        const threshold = 0.5;
+        const atTopLeft = Math.abs(newX - 0) < threshold && Math.abs(newY - 0) < threshold;
+        const atTopRight = Math.abs(newX - (containerWidth - logoWidth)) < threshold && Math.abs(newY - 0) < threshold;
+        const atBottomLeft = Math.abs(newX - 0) < threshold && Math.abs(newY - (containerHeight - logoHeight)) < threshold;
+        const atBottomRight = Math.abs(newX - (containerWidth - logoWidth)) < threshold && Math.abs(newY - (containerHeight - logoHeight)) < threshold;
+        const atCorner = atTopLeft || atTopRight || atBottomLeft || atBottomRight;
+
+        // Bounce on wall hits, but prioritize corner detection
+        if (hitLeft || hitRight) {
+          newVx = -newVx;
+        }
+        
+        if (hitTop || hitBottom) {
+          newVy = -newVy;
+        }
+
+        // Change color when fully touching a corner
+        if (atCorner) {
           setColorIndex((prev) => (prev + 1) % colors.length);
           triggerFlash();
         }
