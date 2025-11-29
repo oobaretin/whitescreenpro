@@ -294,8 +294,6 @@ export function ControlPanel({ showColorTab = true }: ControlPanelProps) {
 
               {/* Display Settings Section */}
               <div className="pt-4 mt-4 border-t border-gray-300">
-                <h3 className="text-sm font-semibold text-gray-700 mb-4">{t.display.resolutionPreset}</h3>
-                
                 <div className="space-y-4">
                   <div className="flex flex-col sm:flex-row gap-4 items-end">
                     <div className="flex-1">
