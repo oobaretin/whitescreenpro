@@ -135,13 +135,13 @@ export function ColorPicker() {
       <div className="pt-2 border-t border-gray-700">
         <div className="text-xs text-gray-400 space-y-1">
           <div>
-            <strong>HEX:</strong> {mounted ? formatColor(displayColor, "hex") : "#FFFFFF"}
+            <strong>HEX:</strong> {mounted && currentColor ? formatColor(currentColor, "hex") : "#FFFFFF"}
           </div>
           <div>
-            <strong>RGB:</strong> {mounted ? formatColor(displayColor, "rgb") : "rgb(255, 255, 255)"}
+            <strong>RGB:</strong> {mounted && currentColor ? formatColor(currentColor, "rgb") : "rgb(255, 255, 255)"}
           </div>
           <div>
-            <strong>HSL:</strong> {mounted ? formatColor(displayColor, "hsl") : "hsl(0, 0%, 100%)"}
+            <strong>HSL:</strong> {mounted && currentColor ? formatColor(currentColor, "hsl") : "hsl(0, 0%, 100%)"}
           </div>
         </div>
       </div>
