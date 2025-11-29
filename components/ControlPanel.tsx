@@ -41,6 +41,7 @@ export function ControlPanel({ showColorTab = true }: ControlPanelProps) {
     toggleFullscreen,
     togglePiP,
     isPiP,
+    isFullscreen,
     resolution,
     setResolution,
     aspectRatioLock,
@@ -411,11 +412,21 @@ export function ControlPanel({ showColorTab = true }: ControlPanelProps) {
                           
                           if (displayArea) {
                             const html2canvas = (await import("html2canvas")).default;
-                            const canvas = await html2canvas(displayArea, {
+                            
+                            // If in fullscreen, capture at fullscreen dimensions
+                            const captureOptions: any = {
                               scale: 1,
                               useCORS: true,
                               backgroundColor: null,
-                            });
+                            };
+                            
+                            if (isFullscreen) {
+                              // Capture at fullscreen viewport dimensions
+                              captureOptions.width = window.innerWidth;
+                              captureOptions.height = window.innerHeight;
+                            }
+                            
+                            const canvas = await html2canvas(displayArea, captureOptions);
                             
                             canvas.toBlob(
                               (blob) => {
@@ -435,13 +446,15 @@ export function ControlPanel({ showColorTab = true }: ControlPanelProps) {
                           } else {
                             // Fallback: Create PNG with solid color
                             const canvas = document.createElement("canvas");
-                            canvas.width = 1920;
-                            canvas.height = 1080;
+                            const width = isFullscreen ? window.innerWidth : 1920;
+                            const height = isFullscreen ? window.innerHeight : 1080;
+                            canvas.width = width;
+                            canvas.height = height;
                             const ctx = canvas.getContext("2d");
                             if (ctx) {
                               const displayColor = getColorString(currentColor, brightness);
                               ctx.fillStyle = displayColor;
-                              ctx.fillRect(0, 0, 1920, 1080);
+                              ctx.fillRect(0, 0, width, height);
                               canvas.toBlob(
                                 (blob) => {
                                   if (!blob) return;
@@ -475,11 +488,21 @@ export function ControlPanel({ showColorTab = true }: ControlPanelProps) {
                           
                           if (displayArea) {
                             const html2canvas = (await import("html2canvas")).default;
-                            const canvas = await html2canvas(displayArea, {
+                            
+                            // If in fullscreen, capture at fullscreen dimensions
+                            const captureOptions: any = {
                               scale: 1,
                               useCORS: true,
                               backgroundColor: null,
-                            });
+                            };
+                            
+                            if (isFullscreen) {
+                              // Capture at fullscreen viewport dimensions
+                              captureOptions.width = window.innerWidth;
+                              captureOptions.height = window.innerHeight;
+                            }
+                            
+                            const canvas = await html2canvas(displayArea, captureOptions);
                             
                             canvas.toBlob(
                               (blob) => {
@@ -499,13 +522,15 @@ export function ControlPanel({ showColorTab = true }: ControlPanelProps) {
                           } else {
                             // Fallback: Create JPEG with solid color
                             const canvas = document.createElement("canvas");
-                            canvas.width = 1920;
-                            canvas.height = 1080;
+                            const width = isFullscreen ? window.innerWidth : 1920;
+                            const height = isFullscreen ? window.innerHeight : 1080;
+                            canvas.width = width;
+                            canvas.height = height;
                             const ctx = canvas.getContext("2d");
                             if (ctx) {
                               const displayColor = getColorString(currentColor, brightness);
                               ctx.fillStyle = displayColor;
-                              ctx.fillRect(0, 0, 1920, 1080);
+                              ctx.fillRect(0, 0, width, height);
                               canvas.toBlob(
                                 (blob) => {
                                   if (!blob) return;
