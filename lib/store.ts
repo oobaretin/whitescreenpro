@@ -61,7 +61,7 @@ export interface AppState {
   panelHideDelay: number;
   showHint: boolean;
   activeTab: "colors" | "tools" | "pranks" | "ambient" | "settings";
-  language: "en" | "es" | "fr" | "de" | "it" | "pt" | "zh" | "ja" | "ko" | "ar" | "ru" | "hi";
+  language: "en" | "es" | "fr" | "de" | "it" | "pt" | "zh" | "ja" | "ko" | "ar" | "ru" | "hi" | "tr";
   
   // Active mode/tool
   activeMode: "color" | "zoom-lighting" | "signature" | "tip-screen" | "dead-pixel" | "broken-screen" | "bsod" | "fake-update" | "hacker-terminal" | "dvd-screensaver" | "matrix-rain" | "flip-clock" | "no-signal" | "quote" | "white-noise" | "radar";

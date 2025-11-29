@@ -21,6 +21,7 @@ const languages: { code: Language; name: string; flag: string }[] = [
   { code: "ar", name: "العربية", flag: "🇸🇦" },
   { code: "ru", name: "Русский", flag: "🇷🇺" },
   { code: "hi", name: "हिन्दी", flag: "🇮🇳" },
+  { code: "tr", name: "Türkçe", flag: "🇹🇷" },
 ];
 
 export function Navigation() {
