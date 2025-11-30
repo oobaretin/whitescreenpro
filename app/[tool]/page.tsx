@@ -158,6 +158,11 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
     "no-signal",
   ].includes(activeMode);
 
+  // Check if this is a color page or zoom-lighting page
+  const isColorPage = !toolConfig.mode;
+  const isZoomLightingPage = toolSlug === "zoom-lighting";
+  const isFullPageMode = isColorPage || isZoomLightingPage;
+
   if (!toolConfig) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -174,70 +179,42 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
     );
   }
 
-
-
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Navigation />
+    <div className={`${isFullPageMode ? "fixed inset-0" : "min-h-screen bg-gray-50"}`}>
+      {!isFullPageMode && <Navigation />}
       
-      {/* Back Button */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-4">
-        <Link
-          href="/"
-          className="inline-flex items-center gap-2 text-gray-700 hover:text-gray-900 transition-colors"
-        >
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
+      {/* Back Button - only show if not full page mode */}
+      {!isFullPageMode && (
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-4">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 text-gray-700 hover:text-gray-900 transition-colors"
           >
-            <path d="M19 12H5M12 19l-7-7 7-7" />
-          </svg>
-          <span>{t.common.backToHome}</span>
-        </Link>
-      </div>
-
-      {/* Main Content Area */}
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
-        {/* Title */}
-        <div className="text-center mb-6">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
-            {toolConfig.name}
-          </h1>
-          {toolSlug === "broken-screen" && (
-            <p className="text-gray-600">
-              👆 Click on the display below to enter fullscreen mode
-            </p>
-          )}
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+            <span>{t.common.backToHome}</span>
+          </Link>
         </div>
+      )}
 
-        {/* Display Area - Interactive tools have their own standalone layouts */}
-        {toolSlug === "signature-screen" ? (
-          <div className="flex justify-center mb-6">
-            <div className="relative h-[400px] w-full max-w-2xl rounded-xl shadow-md overflow-hidden">
-              <SignatureScreen />
-            </div>
-          </div>
-        ) : toolSlug === "dead-pixel-test" ? (
-          <div className="relative h-[500px] rounded-xl shadow-md mb-6 overflow-hidden">
-            <DeadPixelTest />
-          </div>
-        ) : toolSlug === "tip-screen" ? (
-          <div className="flex justify-center mb-6">
-            <div className="relative h-[500px] w-full max-w-md overflow-hidden">
-              <TipScreen />
-            </div>
-          </div>
-        ) : (
+      {/* Full Page Display Area for Color Pages and Zoom Lighting */}
+      {isFullPageMode ? (
+        <div className="relative w-full h-full">
+          {/* Full Page Background */}
           <div
             ref={containerRef}
             data-display-area
             className={`${
-              isFullscreen ? "fixed inset-0 z-50" : "relative h-[500px] rounded-xl shadow-md mb-6 cursor-pointer"
-            } overflow-hidden group`}
+              isFullscreen ? "fixed inset-0 z-50" : "fixed inset-0"
+            } overflow-hidden`}
             style={{
               backgroundColor:
                 shouldShowBackground && gradient.enabled
@@ -256,50 +233,138 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
             {shouldShowBackground && <PatternOverlay pattern={pattern} />}
             {shouldShowBackground && <TimerDisplay />}
             {activeMode === "zoom-lighting" && <ZoomLightingDisplay />}
-            {activeMode === "broken-screen" && <BrokenScreenOverlay />}
-            {activeMode === "bsod" && <BSOD />}
-            {activeMode === "fake-update" && <FakeUpdate />}
-            {activeMode === "hacker-terminal" && <HackerTerminal />}
-            {activeMode === "dvd-screensaver" && <DVDScreensaver />}
-            {activeMode === "matrix-rain" && <MatrixRain />}
-            {activeMode === "flip-clock" && <FlipClock />}
-            {activeMode === "no-signal" && <NoSignal />}
             {shouldShowBackground && showHint && <HintIndicator />}
-            
-            {/* Fullscreen Button Overlay - hidden for broken-screen (it has its own), hover for others */}
-            {!isFullscreen && activeMode !== "broken-screen" && (
-              <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-30">
-                <div className="px-6 py-3 bg-white/95 text-gray-900 font-semibold rounded-lg shadow-lg backdrop-blur-sm border border-gray-200">
-                  {t.home.clickToFullscreen}
+          </div>
+
+          {/* Centered Settings Panel */}
+          <div className="fixed inset-0 z-40 flex items-center justify-center pointer-events-none">
+            <div className="w-full max-w-md mx-4 pointer-events-auto max-h-[90vh] overflow-y-auto">
+              <div className="bg-white rounded-xl shadow-2xl p-6 border border-gray-200">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-xl font-bold text-gray-900">{t.common.settings}</h2>
+                  <Link
+                    href="/"
+                    className="text-gray-500 hover:text-gray-700 transition-colors"
+                    title="Back to Home"
+                  >
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    >
+                      <path d="M19 12H5M12 19l-7-7 7-7" />
+                    </svg>
+                  </Link>
                 </div>
+                
+                {/* Tool-specific controls */}
+                {toolSlug === "zoom-lighting" && <ZoomLighting />}
+                {isColorPage && <ControlPanel showColorTab={true} />}
               </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        /* Regular Layout for Other Tools */
+        <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
+          {/* Title */}
+          <div className="text-center mb-6">
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+              {toolConfig.name}
+            </h1>
+            {toolSlug === "broken-screen" && (
+              <p className="text-gray-600">
+                👆 Click on the display below to enter fullscreen mode
+              </p>
             )}
           </div>
-        )}
 
-        {/* Controls Section */}
-        {!["tip-screen", "signature-screen", "dead-pixel-test"].includes(toolSlug) && (
-          <div className="bg-white rounded-xl shadow-md p-6 mb-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">{t.common.settings}</h2>
-            
-            {/* Tool-specific controls */}
-            {toolSlug === "broken-screen" && <BrokenScreen />}
-            {toolSlug === "bsod" && <BSODControls />}
-            {toolSlug === "fake-update" && <FakeUpdateControls />}
-            {toolSlug === "hacker-terminal" && <HackerTerminalControls />}
-            {toolSlug === "dvd-screensaver" && <DVDControls />}
-            {toolSlug === "matrix-rain" && <MatrixControls />}
-            {toolSlug === "flip-clock" && <FlipClockControls />}
-            {toolSlug === "no-signal" && <NoSignalControls />}
-            {toolSlug === "zoom-lighting" && <ZoomLighting />}
-            
-            {/* Color controls for simple color screens */}
-            {!toolConfig.mode && <ControlPanel showColorTab={true} />}
-          </div>
-        )}
-      </main>
+          {/* Display Area - Interactive tools have their own standalone layouts */}
+          {toolSlug === "signature-screen" ? (
+            <div className="flex justify-center mb-6">
+              <div className="relative h-[400px] w-full max-w-2xl rounded-xl shadow-md overflow-hidden">
+                <SignatureScreen />
+              </div>
+            </div>
+          ) : toolSlug === "dead-pixel-test" ? (
+            <div className="relative h-[500px] rounded-xl shadow-md mb-6 overflow-hidden">
+              <DeadPixelTest />
+            </div>
+          ) : toolSlug === "tip-screen" ? (
+            <div className="flex justify-center mb-6">
+              <div className="relative h-[500px] w-full max-w-md overflow-hidden">
+                <TipScreen />
+              </div>
+            </div>
+          ) : (
+            <div
+              ref={containerRef}
+              data-display-area
+              className={`${
+                isFullscreen ? "fixed inset-0 z-50" : "relative h-[500px] rounded-xl shadow-md mb-6 cursor-pointer"
+              } overflow-hidden group`}
+              style={{
+                backgroundColor:
+                  shouldShowBackground && gradient.enabled
+                    ? undefined
+                    : shouldShowBackground
+                    ? backgroundColor
+                    : "transparent",
+                backgroundImage: shouldShowBackground && gradient.enabled ? gradientCSS : undefined,
+                opacity: flickerVisible ? 1 : 1,
+                transition: flickerVisible
+                  ? "opacity 0.1s ease-in-out"
+                  : "opacity 0.05s ease-in-out",
+              }}
+              onClick={!isFullscreen ? () => useAppStore.getState().toggleFullscreen() : undefined}
+            >
+              {shouldShowBackground && <PatternOverlay pattern={pattern} />}
+              {shouldShowBackground && <TimerDisplay />}
+              {activeMode === "zoom-lighting" && <ZoomLightingDisplay />}
+              {activeMode === "broken-screen" && <BrokenScreenOverlay />}
+              {activeMode === "bsod" && <BSOD />}
+              {activeMode === "fake-update" && <FakeUpdate />}
+              {activeMode === "hacker-terminal" && <HackerTerminal />}
+              {activeMode === "dvd-screensaver" && <DVDScreensaver />}
+              {activeMode === "matrix-rain" && <MatrixRain />}
+              {activeMode === "flip-clock" && <FlipClock />}
+              {activeMode === "no-signal" && <NoSignal />}
+              {shouldShowBackground && showHint && <HintIndicator />}
+              
+              {/* Fullscreen Button Overlay - hidden for broken-screen (it has its own), hover for others */}
+              {!isFullscreen && activeMode !== "broken-screen" && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-30">
+                  <div className="px-6 py-3 bg-white/95 text-gray-900 font-semibold rounded-lg shadow-lg backdrop-blur-sm border border-gray-200">
+                    {t.home.clickToFullscreen}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
 
-      <Footer />
+          {/* Controls Section */}
+          {!["tip-screen", "signature-screen", "dead-pixel-test"].includes(toolSlug) && (
+            <div className="bg-white rounded-xl shadow-md p-6 mb-6">
+              <h2 className="text-xl font-bold text-gray-900 mb-4">{t.common.settings}</h2>
+              
+              {/* Tool-specific controls */}
+              {toolSlug === "broken-screen" && <BrokenScreen />}
+              {toolSlug === "bsod" && <BSODControls />}
+              {toolSlug === "fake-update" && <FakeUpdateControls />}
+              {toolSlug === "hacker-terminal" && <HackerTerminalControls />}
+              {toolSlug === "dvd-screensaver" && <DVDControls />}
+              {toolSlug === "matrix-rain" && <MatrixControls />}
+              {toolSlug === "flip-clock" && <FlipClockControls />}
+              {toolSlug === "no-signal" && <NoSignalControls />}
+            </div>
+          )}
+        </main>
+      )}
+
+      {!isFullPageMode && <Footer />}
     </div>
   );
 }
