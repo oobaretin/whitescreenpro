@@ -86,6 +86,7 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
   } = useAppStore();
 
   const [mounted, setMounted] = useState(false);
+  const [showSettings, setShowSettings] = useState(true);
   const containerRef = useFullscreen();
   const flickerVisible = useFlicker();
   useKeyboardShortcuts();
@@ -128,6 +129,20 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
       return () => clearTimeout(timer);
     }
   }, [showHint]);
+
+  // Handle ESC key to toggle settings panel for full page mode
+  useEffect(() => {
+    if (!isFullPageMode) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setShowSettings((prev) => !prev);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isFullPageMode]);
 
   // Calculate final color based on active mode
   // Use default white until mounted to prevent hydration mismatch
@@ -214,7 +229,7 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
             data-display-area
             className={`${
               isFullscreen ? "fixed inset-0 z-50" : "fixed inset-0"
-            } overflow-hidden`}
+            } overflow-hidden group`}
             style={{
               backgroundColor:
                 shouldShowBackground && gradient.enabled
@@ -228,44 +243,97 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
                 ? "opacity 0.1s ease-in-out"
                 : "opacity 0.05s ease-in-out",
             }}
-            onClick={!isFullscreen ? () => useAppStore.getState().toggleFullscreen() : undefined}
+            onClick={() => {
+              if (!isFullscreen) {
+                useAppStore.getState().toggleFullscreen();
+              }
+              if (showSettings) {
+                setShowSettings(false);
+              }
+            }}
           >
             {shouldShowBackground && <PatternOverlay pattern={pattern} />}
             {shouldShowBackground && <TimerDisplay />}
             {activeMode === "zoom-lighting" && <ZoomLightingDisplay />}
             {shouldShowBackground && showHint && <HintIndicator />}
+            
+            {/* Click to Fullscreen Overlay - only show when settings are visible */}
+            {showSettings && !isFullscreen && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-30">
+                <div className="px-6 py-3 bg-white/95 text-gray-900 font-semibold rounded-lg shadow-lg backdrop-blur-sm border border-gray-200">
+                  {t.home.clickToFullscreen}
+                </div>
+              </div>
+            )}
+            
+            {/* Settings Toggle Button - show when settings are hidden */}
+            {!showSettings && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowSettings(true);
+                }}
+                className="absolute top-4 right-4 z-50 px-4 py-2 bg-white/90 hover:bg-white text-gray-900 font-medium rounded-lg shadow-lg backdrop-blur-sm border border-gray-200 transition-all"
+                title="Show Settings"
+              >
+                ⚙️ Settings
+              </button>
+            )}
           </div>
 
-          {/* Centered Settings Panel */}
-          <div className="fixed inset-0 z-40 flex items-center justify-center pointer-events-none">
-            <div className="w-full max-w-md mx-4 pointer-events-auto max-h-[90vh] overflow-y-auto">
-              <div className="bg-white rounded-xl shadow-2xl p-6 border border-gray-200">
-                <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-xl font-bold text-gray-900">{t.common.settings}</h2>
-                  <Link
-                    href="/"
-                    className="text-gray-500 hover:text-gray-700 transition-colors"
-                    title="Back to Home"
-                  >
-                    <svg
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                    >
-                      <path d="M19 12H5M12 19l-7-7 7-7" />
-                    </svg>
-                  </Link>
+          {/* Centered Settings Panel - only show when showSettings is true */}
+          {showSettings && (
+            <div className="fixed inset-0 z-40 flex items-center justify-center pointer-events-none">
+              <div className="w-full max-w-md mx-4 pointer-events-auto max-h-[90vh] overflow-y-auto">
+                <div className="bg-white rounded-xl shadow-2xl p-6 border border-gray-200">
+                  <div className="flex items-center justify-between mb-4">
+                    <h2 className="text-xl font-bold text-gray-900">{t.common.settings}</h2>
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => {
+                          setShowSettings(false);
+                          useAppStore.getState().toggleFullscreen();
+                        }}
+                        className="text-gray-500 hover:text-gray-700 transition-colors"
+                        title="Fullscreen"
+                      >
+                        <svg
+                          width="20"
+                          height="20"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                        >
+                          <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
+                        </svg>
+                      </button>
+                      <Link
+                        href="/"
+                        className="text-gray-500 hover:text-gray-700 transition-colors"
+                        title="Back to Home"
+                      >
+                        <svg
+                          width="20"
+                          height="20"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                        >
+                          <path d="M19 12H5M12 19l-7-7 7-7" />
+                        </svg>
+                      </Link>
+                    </div>
+                  </div>
+                  
+                  {/* Tool-specific controls */}
+                  {toolSlug === "zoom-lighting" && <ZoomLighting />}
+                  {isColorPage && <ControlPanel showColorTab={true} />}
                 </div>
-                
-                {/* Tool-specific controls */}
-                {toolSlug === "zoom-lighting" && <ZoomLighting />}
-                {isColorPage && <ControlPanel showColorTab={true} />}
               </div>
             </div>
-          </div>
+          )}
         </div>
       ) : (
         /* Regular Layout for Other Tools */
