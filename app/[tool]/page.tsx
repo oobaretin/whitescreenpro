@@ -130,20 +130,6 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
     }
   }, [showHint]);
 
-  // Handle ESC key to toggle settings panel for full page mode
-  useEffect(() => {
-    if (!isFullPageMode) return;
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        setShowSettings((prev) => !prev);
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isFullPageMode]);
-
   // Calculate final color based on active mode
   // Use default white until mounted to prevent hydration mismatch
   let displayColor = mounted ? currentColor : "#FFFFFF";
@@ -177,6 +163,20 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
   const isColorPage = !toolConfig.mode;
   const isZoomLightingPage = toolSlug === "zoom-lighting";
   const isFullPageMode = isColorPage || isZoomLightingPage;
+
+  // Handle ESC key to toggle settings panel for full page mode
+  useEffect(() => {
+    if (!isFullPageMode) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setShowSettings((prev) => !prev);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isFullPageMode]);
 
   if (!toolConfig) {
     return (
