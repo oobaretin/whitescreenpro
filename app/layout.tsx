@@ -31,6 +31,9 @@ export const metadata: Metadata = {
     description:
       "Advanced whitescreen utility for photography, videography, monitor testing, and focus.",
   },
+  verification: {
+    google: "BYuikEvuUf_6B-G2sZRL9FA0UQOy9VyR-V07oybT5es",
+  },
   manifest: "/manifest.json",
 };
 
