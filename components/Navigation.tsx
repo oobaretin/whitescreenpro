@@ -116,7 +116,7 @@ export function Navigation() {
               onClick={resetToWhite}
               className="text-gray-900 font-semibold text-lg hover:text-gray-700 transition-colors"
             >
-              WhiteScreen Pro
+              WhiteScreen Tools
             </Link>
           </div>
 
