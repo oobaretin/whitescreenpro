@@ -114,7 +114,7 @@ export function Navigation() {
             <Link 
               href="/" 
               onClick={resetToWhite}
-              className="text-gray-900 font-semibold text-lg hover:text-gray-700 transition-colors"
+              className="science-gothic text-gray-900 text-lg hover:text-gray-700 transition-colors"
             >
               WhiteScreen Tools
             </Link>

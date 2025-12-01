@@ -189,7 +189,7 @@ export const translations: Record<Language, Translations> = {
       confirm: "Confirm",
     },
     home: {
-      title: "White Screen Tool",
+      title: "White Screen Tools",
       subtitle: "Free full screen color tool for display testing and creative projects",
       clickToFullscreen: "Click to Fullscreen",
       aboutTitle: "About WhiteScreen Tools",
