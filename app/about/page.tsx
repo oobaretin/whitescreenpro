@@ -4,8 +4,8 @@ import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "About Us - WhiteScreen Pro",
-  description: "Learn about WhiteScreen Pro, the ultimate screen utility tool.",
+  title: "About Us - WhiteScreen Tools",
+  description: "Learn about WhiteScreen Tools, the ultimate screen utility tool.",
 };
 
 export default function AboutPage() {
@@ -23,12 +23,12 @@ export default function AboutPage() {
             </svg>
             <span>Back to Home</span>
           </Link>
-          <h1 className="text-4xl md:text-5xl font-bold mb-8 text-center">About WhiteScreen Pro</h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-8 text-center">About WhiteScreen Tools</h1>
           
           <div className="space-y-8 text-gray-700 leading-relaxed">
             <section className="prose prose-lg max-w-none">
               <p className="text-xl text-gray-800 mb-6">
-                WhiteScreen Pro is a comprehensive, feature-rich screen utility web application 
+                WhiteScreen Tools is a comprehensive, feature-rich screen utility web application 
                 designed for professionals, creators, and everyday users. We provide the most 
                 complete collection of screen tools available—all free, accessible, and privacy-focused.
               </p>
@@ -87,7 +87,7 @@ export default function AboutPage() {
             </section>
 
             <section>
-              <h2 className="text-3xl font-semibold text-black mb-4">Who Uses WhiteScreen Pro?</h2>
+              <h2 className="text-3xl font-semibold text-black mb-4">Who Uses WhiteScreen Tools?</h2>
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <h3 className="text-xl font-semibold text-black mb-2">📸 Photographers</h3>
@@ -131,12 +131,12 @@ export default function AboutPage() {
             <section className="bg-gray-50 p-6 rounded-lg">
               <h2 className="text-3xl font-semibold text-black mb-4">Privacy & Transparency</h2>
               <p className="text-gray-700 mb-4">
-                WhiteScreen Pro is built with privacy in mind. Everything runs entirely in your browser—no 
+                WhiteScreen Tools is built with privacy in mind. Everything runs entirely in your browser—no 
                 data is collected, stored, or transmitted to our servers. All your preferences and settings 
                 are saved locally on your device.
               </p>
               <p className="text-gray-700">
-                We believe in transparency and user control. You can use WhiteScreen Pro with complete 
+                We believe in transparency and user control. You can use WhiteScreen Tools with complete 
                 confidence that your privacy is protected.
               </p>
             </section>

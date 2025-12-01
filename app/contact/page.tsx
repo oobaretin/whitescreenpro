@@ -4,8 +4,8 @@ import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Contact Us - WhiteScreen Pro",
-  description: "Get in touch with the WhiteScreen Pro team.",
+  title: "Contact Us - WhiteScreen Tools",
+  description: "Get in touch with the WhiteScreen Tools team.",
 };
 
 export default function ContactPage() {
@@ -39,14 +39,14 @@ export default function ContactPage() {
               <div className="space-y-4">
                 <div>
                   <h3 className="font-semibold text-black mb-1">Email</h3>
-                  <a href="mailto:contact@whitescreenpro.com" className="text-blue-600 hover:text-blue-800">
-                    contact@whitescreenpro.com
+                  <a href="mailto:contact@whitescreentools.com" className="text-blue-600 hover:text-blue-800">
+                    contact@whitescreentools.com
                   </a>
                 </div>
                 <div>
                   <h3 className="font-semibold text-black mb-1">GitHub</h3>
-                  <a href="https://github.com/whitescreenpro" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
-                    github.com/whitescreenpro
+                  <a href="https://github.com/whitescreentools" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
+                    github.com/whitescreentools
                   </a>
                 </div>
               </div>
@@ -64,7 +64,7 @@ export default function ContactPage() {
             <section>
               <h2 className="text-2xl font-semibold text-black mb-4">Feedback & Suggestions</h2>
               <p className="text-lg text-gray-700">
-                Your feedback helps us improve WhiteScreen Pro. We appreciate all suggestions 
+                Your feedback helps us improve WhiteScreen Tools. We appreciate all suggestions 
                 and use them to prioritize new features and improvements. Whether it&apos;s a 
                 new tool idea, UI improvement, or bug report, we want to hear from you.
               </p>

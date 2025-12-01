@@ -4,8 +4,8 @@ import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy - WhiteScreen Pro",
-  description: "Privacy Policy for WhiteScreen Pro.",
+  title: "Privacy Policy - WhiteScreen Tools",
+  description: "Privacy Policy for WhiteScreen Tools.",
 };
 
 export default function PrivacyPage() {
@@ -31,7 +31,7 @@ export default function PrivacyPage() {
             <section>
               <h2 className="text-3xl font-semibold text-black mb-4">Our Commitment to Privacy</h2>
               <p className="text-lg text-gray-700">
-                WhiteScreen Pro is committed to protecting your privacy. This application 
+                WhiteScreen Tools is committed to protecting your privacy. This application 
                 operates entirely in your browser and does not collect, store, or transmit 
                 any personal information to our servers. Your privacy is our top priority.
               </p>
@@ -40,7 +40,7 @@ export default function PrivacyPage() {
             <section className="bg-green-50 p-6 rounded-lg">
               <h2 className="text-2xl font-semibold text-black mb-4">Data Collection</h2>
               <p className="text-lg text-gray-700 mb-4">
-                <strong>We do not collect any data.</strong> WhiteScreen Pro:
+                <strong>We do not collect any data.</strong> WhiteScreen Tools:
               </p>
               <ul className="list-disc list-inside space-y-2 ml-4 text-gray-700">
                 <li>Does not track your usage</li>
@@ -55,7 +55,7 @@ export default function PrivacyPage() {
             <section>
               <h2 className="text-2xl font-semibold text-black mb-4">Local Storage</h2>
               <p className="text-lg text-gray-700">
-                WhiteScreen Pro uses your browser&apos;s local storage to save your preferences 
+                WhiteScreen Tools uses your browser&apos;s local storage to save your preferences 
                 (colors, settings, favorites) for convenience. This data never leaves your device 
                 and can be cleared at any time through your browser settings. You have complete 
                 control over your data.
@@ -74,7 +74,7 @@ export default function PrivacyPage() {
             <section>
               <h2 className="text-2xl font-semibold text-black mb-4">Browser Information</h2>
               <p className="text-lg text-gray-700">
-                When you visit WhiteScreen Pro, your browser may automatically send certain 
+                When you visit WhiteScreen Tools, your browser may automatically send certain 
                 information (such as IP address, browser type, and device information) to our 
                 hosting provider. This is standard web server logging and is not used for 
                 tracking or identification purposes.
@@ -94,8 +94,8 @@ export default function PrivacyPage() {
               <h2 className="text-2xl font-semibold text-black mb-4">Contact</h2>
               <p className="text-lg text-gray-700">
                 If you have any questions about this Privacy Policy, please contact us at{" "}
-                <a href="mailto:contact@whitescreenpro.com" className="text-blue-600 hover:text-blue-800">
-                  contact@whitescreenpro.com
+                <a href="mailto:contact@whitescreentools.com" className="text-blue-600 hover:text-blue-800">
+                  contact@whitescreentools.com
                 </a>
               </p>
             </section>

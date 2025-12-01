@@ -236,7 +236,7 @@ export const useAppStore = create<AppState>()((set, get) => ({
       panelHideDelay: storedSettings.panelHideDelay ?? 3000,
       showHint: true,
       activeTab: "colors",
-      language: (typeof window !== "undefined" && localStorage.getItem("whitescreenpro-language")) as AppState["language"] || "en",
+      language: (typeof window !== "undefined" && localStorage.getItem("whitescreentools-language")) as AppState["language"] || "en",
       
       // Active mode
       activeMode: "color",
@@ -423,7 +423,7 @@ export const useAppStore = create<AppState>()((set, get) => ({
       setLanguage: (language: AppState["language"]) => {
         set({ language });
         if (typeof window !== "undefined") {
-          localStorage.setItem("whitescreenpro-language", language);
+          localStorage.setItem("whitescreentools-language", language);
         }
       },
 

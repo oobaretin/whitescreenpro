@@ -1,4 +1,4 @@
-# WhiteScreen Pro
+# WhiteScreen Tools
 
 A professional, feature-rich whitescreen utility web application for photography, videography, monitor testing, animation tracing, and focus/productivity use cases.
 

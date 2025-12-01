@@ -1,7 +1,7 @@
 const STORAGE_KEYS = {
-  FAVORITES: "whitescreenpro_favorites",
-  SETTINGS: "whitescreenpro_settings",
-  HISTORY: "whitescreenpro_history",
+  FAVORITES: "whitescreentools_favorites",
+  SETTINGS: "whitescreentools_settings",
+  HISTORY: "whitescreentools_history",
 } as const;
 
 export interface StoredSettings {

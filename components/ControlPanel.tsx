@@ -70,7 +70,7 @@ export function ControlPanel({ showColorTab = true }: ControlPanelProps) {
     if (typeof window === "undefined") return;
     
     // Check if this is the first load (no stored preference)
-    const storedPanelState = localStorage.getItem("whitescreenpro-panel-open");
+    const storedPanelState = localStorage.getItem("whitescreentools-panel-open");
     
     if (storedPanelState === null) {
       // First load: open on desktop, closed on mobile
@@ -93,7 +93,7 @@ export function ControlPanel({ showColorTab = true }: ControlPanelProps) {
   
   // Save panel state preference
   useEffect(() => {
-    localStorage.setItem("whitescreenpro-panel-open", panelOpen.toString());
+    localStorage.setItem("whitescreentools-panel-open", panelOpen.toString());
   }, [panelOpen]);
 
   // Close panel when clicking outside (mobile only)
