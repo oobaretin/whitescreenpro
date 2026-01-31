@@ -35,6 +35,11 @@ import { SignatureScreen } from "@/components/tools/SignatureScreen";
 import { TipScreen } from "@/components/tools/TipScreen";
 import { DeadPixelTest } from "@/components/tools/DeadPixelTest";
 import { ScreenStressTest } from "@/components/tools/ScreenStressTest";
+import { BurnInFixer } from "@/components/tools/BurnInFixer";
+import { MotionBlurTest } from "@/components/tools/MotionBlurTest";
+import { ReadingLight } from "@/components/tools/ReadingLight";
+import { ReflectionChecker } from "@/components/tools/ReflectionChecker";
+import { ScreenRuler } from "@/components/tools/ScreenRuler";
 import { BrokenScreen } from "@/components/pranks/BrokenScreen";
 import { BSODControls } from "@/components/pranks/BSODControls";
 import { FakeUpdateControls } from "@/components/pranks/FakeUpdateControls";
@@ -71,6 +76,11 @@ const TOOL_CONFIG: Record<string, { color?: string; mode?: string; name: string 
   "fake-update": { mode: "fake-update", name: "Fake Update" },
   "hacker-terminal": { mode: "hacker-terminal", name: "Hacker Terminal" },
   "screen-stress-test": { mode: "color-cycle", name: "Screen Stress Test" },
+  "burn-in-fixer": { mode: "burn-in-fixer", name: "Burn-In Fixer" },
+  "motion-blur-test": { mode: "motion-blur-test", name: "Motion Blur & Ghosting Test" },
+  "reading-light": { mode: "reading-light", name: "Reading Light" },
+  "reflection-checker": { mode: "reflection-checker", name: "Reflection Checker" },
+  "ruler": { mode: "ruler", name: "Screen Ruler" },
 };
 
 export default function ToolPage({ params }: { params: { tool: string } }) {
@@ -121,10 +131,14 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
     return () => clearTimeout(t);
   }, [useSkeleton]);
 
-  // Safety warning toast for tools with flashing colors (5s)
+  // Safety warning toast for tools with flashing / rapid changes (5s)
   useEffect(() => {
-    if (toolSlug === "dead-pixel-test" || toolSlug === "screen-stress-test") {
-      showToast("⚠️ Warning: This tool contains flashing colors. Use with caution.", 5000);
+    if (
+      toolSlug === "dead-pixel-test" ||
+      toolSlug === "screen-stress-test" ||
+      toolSlug === "burn-in-fixer"
+    ) {
+      showToast("⚠️ Warning: This tool contains flashing or rapid visual changes. Use with caution.", 5000);
     }
   }, [toolSlug, showToast]);
 
@@ -230,6 +244,51 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
       if (isFullPageMode) setShowSettings(true);
     }
   }, [isFullscreen, isFullPageMode]);
+
+  // Burn-In Fixer: full-screen static only (no nav/footer)
+  if (toolConfig && toolSlug === "burn-in-fixer") {
+    return (
+      <div className="fixed inset-0 z-[9998]">
+        <BurnInFixer />
+      </div>
+    );
+  }
+
+  // Motion Blur & Ghosting Test: full-screen UFO tracks (no nav/footer)
+  if (toolConfig && toolSlug === "motion-blur-test") {
+    return (
+      <div className="fixed inset-0 z-[9996]">
+        <MotionBlurTest />
+      </div>
+    );
+  }
+
+  // Reading Light: full-screen amber light only (no nav/footer, no visible buttons)
+  if (toolConfig && toolSlug === "reading-light") {
+    return (
+      <div className="fixed inset-0 z-[9995]">
+        <ReadingLight />
+      </div>
+    );
+  }
+
+  // Reflection Checker: deep black, checkerboard, edge grid (no nav/footer)
+  if (toolConfig && toolSlug === "reflection-checker") {
+    return (
+      <div className="fixed inset-0 z-[9994]">
+        <ReflectionChecker />
+      </div>
+    );
+  }
+
+  // Screen Ruler: full-screen rulers + grid (no nav/footer)
+  if (toolConfig && toolSlug === "ruler") {
+    return (
+      <div className="fixed inset-0 z-[9997] bg-page">
+        <ScreenRuler />
+      </div>
+    );
+  }
 
   if (!toolConfig) {
     return (

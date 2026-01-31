@@ -5,6 +5,7 @@ import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
 import { ThemeSync } from "@/components/ThemeSync";
 import { SettingsFab } from "@/components/SettingsFab";
 import { Toast } from "@/components/Toast";
+import { ChangelogModal } from "@/components/ChangelogModal";
 import { SEO } from "@/lib/seo";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -51,6 +52,7 @@ export default function RootLayout({
         {children}
         <SettingsFab />
         <Toast />
+        <ChangelogModal />
         <ServiceWorkerRegister />
       </body>
     </html>

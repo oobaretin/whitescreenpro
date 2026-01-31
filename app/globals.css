@@ -172,6 +172,16 @@ button {
   animation: fade-in 0.25s ease-out forwards;
 }
 
+/* Reading light – soft breathing (calm heart-rate style) */
+@keyframes reading-light-breathe {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+.reading-light-breathe {
+  animation: reading-light-breathe 8s ease-in-out infinite;
+}
+
 /* Toast container and toast (works in light and dark) */
 #toast-container {
   position: fixed;

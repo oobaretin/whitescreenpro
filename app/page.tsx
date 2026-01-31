@@ -1,15 +1,23 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useAppStore } from "@/lib/store";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
+import { CHANGELOG_SEEN_KEY } from "@/components/ChangelogModal";
 
 export default function Home() {
   const t = useTranslation();
-  const { setColor, setActiveMode, setActiveTab } = useAppStore();
+  const { setColor, setActiveMode, setActiveTab, setChangelogOpen } = useAppStore();
+  const [showChangelogBadge, setShowChangelogBadge] = useState(true);
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && localStorage.getItem(CHANGELOG_SEEN_KEY) === "true") {
+      setShowChangelogBadge(false);
+    }
+  }, []);
 
   // Reset to white when landing on homepage
   useEffect(() => {
@@ -60,6 +68,11 @@ export default function Home() {
                 { name: "Flip Clock", slug: "flip-clock", desc: "Digital clock" },
                 { name: "No Signal", slug: "no-signal", desc: "TV static" },
                 { name: "Screen Stress Test", slug: "screen-stress-test", desc: "Color cycle" },
+                { name: "Burn-In Fixer", slug: "burn-in-fixer", desc: "OLED pixel refresher" },
+                { name: "Motion Blur Test", slug: "motion-blur-test", desc: "Ghosting & response", badge: "New" as const },
+                { name: "Reading Light", slug: "reading-light", desc: "Soft amber, sleep-friendly" },
+                { name: "Reflection Checker", slug: "reflection-checker", desc: "Reflections & distortion" },
+                { name: "Screen Ruler", slug: "ruler", desc: "px / in / cm + 16:9 grid" },
               ].map((item) => (
                 <Link
                   key={item.name}
@@ -82,6 +95,20 @@ export default function Home() {
                 </Link>
               ))}
             </div>
+            {/* What's New trigger – hidden after user has seen v2 changelog */}
+            {showChangelogBadge && (
+              <div className="text-center mt-4">
+                <button
+                  type="button"
+                  id="changelog-trigger"
+                  onClick={() => setChangelogOpen(true)}
+                  className="py-1.5 px-3 rounded-full text-white text-xs font-bold cursor-pointer border-none transition-opacity hover:opacity-90"
+                  style={{ background: "var(--accent-color)" }}
+                >
+                  What&apos;s New in v2.0? ✨
+                </button>
+              </div>
+            )}
           </div>
         </div>
 

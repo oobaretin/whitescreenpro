@@ -66,9 +66,10 @@ export interface AppState {
   toastMessage: string | null;
   pixelShifterEnabled: boolean;
   ecoMode: boolean;
+  changelogOpen: boolean;
   
   // Active mode/tool
-  activeMode: "color" | "zoom-lighting" | "signature" | "tip-screen" | "dead-pixel" | "broken-screen" | "bsod" | "fake-update" | "hacker-terminal" | "dvd-screensaver" | "matrix-rain" | "flip-clock" | "no-signal" | "quote" | "white-noise" | "radar" | "color-cycle";
+  activeMode: "color" | "zoom-lighting" | "signature" | "tip-screen" | "dead-pixel" | "broken-screen" | "bsod" | "fake-update" | "hacker-terminal" | "dvd-screensaver" | "matrix-rain" | "flip-clock" | "no-signal" | "quote" | "white-noise" | "radar" | "color-cycle" | "burn-in-fixer" | "ruler" | "motion-blur-test" | "reading-light" | "reflection-checker";
   
   // Tool-specific configs
   zoomLighting: {
@@ -167,6 +168,7 @@ export interface AppState {
   showToast: (message: string, duration?: number) => void;
   setPixelShifterEnabled: (enabled: boolean) => void;
   setEcoMode: (enabled: boolean) => void;
+  setChangelogOpen: (open: boolean) => void;
   cycleColor: () => void;
   cycleToNextPreset: () => void;
   cycleToPreviousPreset: () => void;
@@ -249,6 +251,7 @@ export const useAppStore = create<AppState>()((set, get) => ({
       toastMessage: null,
       pixelShifterEnabled: (typeof window !== "undefined" && localStorage.getItem("whitescreentools-pixel-shifter") === "true") || false,
       ecoMode: (typeof window !== "undefined" && localStorage.getItem("whitescreentools-eco-mode") === "true") || false,
+      changelogOpen: false,
       
       // Active mode
       activeMode: "color",
@@ -463,6 +466,7 @@ export const useAppStore = create<AppState>()((set, get) => ({
           localStorage.setItem("whitescreentools-eco-mode", String(enabled));
         }
       },
+      setChangelogOpen: (open: boolean) => set({ changelogOpen: open }),
 
       cycleColor: () => {
         const { currentColor } = get();

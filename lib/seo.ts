@@ -27,6 +27,21 @@ export const SEO = {
     description:
       "Immersive falling code and Matrix rain animations for your display. Perfect for coding vibes, stream backgrounds, and digital art displays.",
   },
+  "motion-blur-test": {
+    title: "Motion Blur & Ghosting Test | Monitor Response Time Checker",
+    description:
+      "UFO-style motion test for ghosting and blur. Two-speed tracks to compare display clarity. Used by gamers and hardware reviewers for 60Hz–240Hz monitors.",
+  },
+  "reading-light": {
+    title: "Reading Light | Soft Amber Screen for Night & Reading",
+    description:
+      "Minimal full-screen amber light with a gentle breathing glow. Sleep-friendly, no blue light. Use as a virtual lamp for reading or a cozy desk backdrop.",
+  },
+  "reflection-checker": {
+    title: "Reflection Checker | Screen Glare & Distortion Test",
+    description:
+      "Deep black, checkerboard, and edge-to-edge grid modes. Find reflections, micro-scratches, and screen warping. Optimize your workspace and check screen cleaning.",
+  },
 } as const;
 
 export type ToolSlug = keyof Omit<typeof SEO, "home">;

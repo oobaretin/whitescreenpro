@@ -2,9 +2,11 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { useAppStore } from "@/lib/store";
 
 export function Footer() {
   const [currentYear, setCurrentYear] = useState(2025);
+  const setChangelogOpen = useAppStore((s) => s.setChangelogOpen);
 
   useEffect(() => {
     setCurrentYear(new Date().getFullYear());
@@ -28,6 +30,15 @@ export function Footer() {
         <div className="flex flex-col md:flex-row items-center justify-between space-y-2 md:space-y-0">
           {/* Links */}
           <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs md:text-sm text-page/80">
+            <button
+              type="button"
+              onClick={() => setChangelogOpen(true)}
+              className="bg-transparent border-none p-0 cursor-pointer hover:opacity-80 transition-opacity underline"
+              style={{ color: "var(--accent-color)" }}
+            >
+              What&apos;s New
+            </button>
+            <span className="hidden sm:inline">·</span>
             <Link href="/about" className="hover:opacity-80 transition-opacity">
               About Us
             </Link>

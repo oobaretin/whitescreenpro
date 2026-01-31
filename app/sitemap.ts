@@ -25,6 +25,11 @@ const tools = [
   "fake-update",
   "hacker-terminal",
   "screen-stress-test",
+  "burn-in-fixer",
+  "motion-blur-test",
+  "reading-light",
+  "reflection-checker",
+  "ruler",
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
