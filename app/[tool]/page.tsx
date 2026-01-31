@@ -43,6 +43,8 @@ import { MatrixControls } from "@/components/ambient/MatrixControls";
 import { FlipClockControls } from "@/components/ambient/FlipClockControls";
 import { NoSignalControls } from "@/components/ambient/NoSignalControls";
 import { ZoomLighting } from "@/components/tools/ZoomLighting";
+import { QuickNav } from "@/components/QuickNav";
+import { SkeletonTerminal } from "@/components/SkeletonTerminal";
 
 const TOOL_CONFIG: Record<string, { color?: string; mode?: string; name: string }> = {
   "black-screen": { color: "#000000", name: "Black Screen" },
@@ -87,6 +89,8 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
 
   const [mounted, setMounted] = useState(false);
   const [showSettings, setShowSettings] = useState(true);
+  const [showExitHint, setShowExitHint] = useState(false);
+  const [skeletonDone, setSkeletonDone] = useState(false);
   const containerRef = useFullscreen();
   const flickerVisible = useFlicker();
   useKeyboardShortcuts();
@@ -100,6 +104,17 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // Skeleton loader for Matrix Rain and Hacker Terminal (show for 400ms)
+  const useSkeleton = toolSlug === "matrix-rain" || toolSlug === "hacker-terminal";
+  useEffect(() => {
+    if (!useSkeleton) {
+      setSkeletonDone(true);
+      return;
+    }
+    const t = setTimeout(() => setSkeletonDone(true), 400);
+    return () => clearTimeout(t);
+  }, [useSkeleton]);
 
   useEffect(() => {
     if (!toolSlug) return;
@@ -164,12 +179,12 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
   const isZoomLightingPage = toolSlug === "zoom-lighting";
   const isFullPageMode = isColorPage || isZoomLightingPage;
 
-  // Handle ESC key to toggle settings panel for full page mode
+  // Handle ESC key to toggle settings panel for full page mode (when not in fullscreen)
   useEffect(() => {
     if (!isFullPageMode) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
+      if (e.key === "Escape" && !document.fullscreenElement) {
         setShowSettings((prev) => !prev);
       }
     };
@@ -177,6 +192,18 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isFullPageMode]);
+
+  // Show "Press ESC to exit" for 3 seconds when entering fullscreen; clear when exiting
+  useEffect(() => {
+    if (isFullscreen) {
+      setShowExitHint(true);
+      const t = setTimeout(() => setShowExitHint(false), 3000);
+      return () => clearTimeout(t);
+    } else {
+      setShowExitHint(false);
+      if (isFullPageMode) setShowSettings(true);
+    }
+  }, [isFullscreen, isFullPageMode]);
 
   if (!toolConfig) {
     return (
@@ -196,6 +223,15 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
 
   return (
     <div className={`${isFullPageMode ? "fixed inset-0" : "min-h-screen bg-gray-50"}`}>
+      {/* Exit fullscreen hint - shown for 3s when entering fullscreen */}
+      {isFullscreen && showExitHint && (
+        <div
+          className="fixed top-5 left-1/2 -translate-x-1/2 bg-black/50 text-white px-5 py-2.5 rounded-full z-[9999] pointer-events-none text-sm font-medium"
+          aria-live="polite"
+        >
+          {t.home.pressEscToExit}
+        </div>
+      )}
       {!isFullPageMode && <Navigation />}
       
       {/* Back Button - only show if not full page mode */}
@@ -225,6 +261,7 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
         <div className="relative w-full h-full">
           {/* Full Page Background */}
           <div
+            id="screen-container"
             ref={containerRef}
             data-display-area
             className={`${
@@ -337,6 +374,8 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
         </div>
       ) : (
         /* Regular Layout for Other Tools */
+        <>
+          {!isFullscreen && <QuickNav />}
         <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
           {/* Title */}
           <div className="text-center mb-6">
@@ -369,6 +408,7 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
             </div>
           ) : (
             <div
+              id="screen-container"
               ref={containerRef}
               data-display-area
               className={`${
@@ -389,15 +429,16 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
               }}
               onClick={!isFullscreen ? () => useAppStore.getState().toggleFullscreen() : undefined}
             >
+              {useSkeleton && !skeletonDone && <SkeletonTerminal />}
               {shouldShowBackground && <PatternOverlay pattern={pattern} />}
               {shouldShowBackground && <TimerDisplay />}
               {activeMode === "zoom-lighting" && <ZoomLightingDisplay />}
               {activeMode === "broken-screen" && <BrokenScreenOverlay />}
               {activeMode === "bsod" && <BSOD />}
               {activeMode === "fake-update" && <FakeUpdate />}
-              {activeMode === "hacker-terminal" && <HackerTerminal />}
+              {activeMode === "hacker-terminal" && skeletonDone && <HackerTerminal />}
               {activeMode === "dvd-screensaver" && <DVDScreensaver />}
-              {activeMode === "matrix-rain" && <MatrixRain />}
+              {activeMode === "matrix-rain" && skeletonDone && <MatrixRain />}
               {activeMode === "flip-clock" && <FlipClock />}
               {activeMode === "no-signal" && <NoSignal />}
               {shouldShowBackground && showHint && <HintIndicator />}
@@ -430,6 +471,7 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
             </div>
           )}
         </main>
+        </>
       )}
 
       {!isFullPageMode && <Footer />}

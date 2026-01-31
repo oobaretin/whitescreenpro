@@ -4,9 +4,25 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Color palette – light mode (default) */
 :root {
   --background: #ffffff;
   --foreground: #000000;
+  --bg-color: #f8f9fa;
+  --text-color: #212529;
+  --card-bg: #ffffff;
+  --accent-color: #007bff;
+  --border-color: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] {
+  --background: #121212;
+  --foreground: #e0e0e0;
+  --bg-color: #121212;
+  --text-color: #e0e0e0;
+  --card-bg: #1e1e1e;
+  --accent-color: #375a7f;
+  --border-color: rgba(255, 255, 255, 0.1);
 }
 
 * {
@@ -36,8 +52,38 @@ body {
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
+  color: var(--text-color);
+  background-color: var(--bg-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Theme-aware utility classes */
+.bg-page {
+  background-color: var(--bg-color);
+}
+.text-page {
+  color: var(--text-color);
+}
+.bg-card {
+  background-color: var(--card-bg);
+}
+.border-card {
+  border-color: var(--border-color);
+}
+.tool-card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.tool-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+.accent {
+  color: var(--accent-color);
+}
+.bg-accent {
+  background-color: var(--accent-color);
 }
 
 #__next {
@@ -111,6 +157,21 @@ button {
   animation: fade-out 3s ease-out forwards;
 }
 
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 8px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.25s ease-out forwards;
+}
+
 /* Science Gothic font for brand name */
 .science-gothic {
   font-family: "Science Gothic", sans-serif;
@@ -122,4 +183,3 @@ button {
     "wdth" 100,
     "CTRS" 0;
 }
-

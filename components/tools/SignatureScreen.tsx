@@ -6,7 +6,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 
 export function SignatureScreen() {
   const t = useTranslation();
-  const { signature, setSignature } = useAppStore();
+  const { signature, setSignature, showToast } = useAppStore();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isDrawing, setIsDrawing] = useState(false);
@@ -150,6 +150,7 @@ export function SignatureScreen() {
         a.download = `signature.${format}`;
         a.click();
         URL.revokeObjectURL(url);
+        showToast("Saved!");
       },
       `image/${format === "jpg" ? "jpeg" : format}`,
       1.0

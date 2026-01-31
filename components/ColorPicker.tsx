@@ -6,7 +6,7 @@ import { isValidColor, formatColor } from "@/lib/colorUtils";
 import { getStoredFavorites, saveFavorite, removeFavorite } from "@/lib/storageUtils";
 
 export function ColorPicker() {
-  const { currentColor, setColor } = useAppStore();
+  const { currentColor, setColor, showToast } = useAppStore();
   const [mounted, setMounted] = useState(false);
   const [inputValue, setInputValue] = useState("#FFFFFF");
   const [inputFormat, setInputFormat] = useState<"hex" | "rgb" | "hsl">("hex");
@@ -138,12 +138,29 @@ export function ColorPicker() {
         </button>
       </div>
 
-      {/* Current Color Info */}
+      {/* Copy HEX + Current Color Info */}
       <div className="pt-2 border-t border-gray-700">
-        <div className="text-xs text-gray-400 space-y-1">
-          <div>
+        <div className="flex items-center gap-2 mb-2">
+          <span className="text-xs text-gray-400 flex-1">
             <strong>HEX:</strong> {mounted && currentColor ? formatColor(currentColor, "hex") : "#FFFFFF"}
-          </div>
+          </span>
+          <button
+            type="button"
+            onClick={async () => {
+              const hex = mounted && currentColor ? formatColor(currentColor, "hex") : "#FFFFFF";
+              try {
+                await navigator.clipboard.writeText(hex);
+                showToast("Copied!");
+              } catch {
+                showToast("Copy failed");
+              }
+            }}
+            className="px-2 py-1 bg-gray-700 hover:bg-gray-600 text-white rounded text-xs"
+          >
+            Copy
+          </button>
+        </div>
+        <div className="text-xs text-gray-400 space-y-1">
           <div>
             <strong>RGB:</strong> {mounted && currentColor ? formatColor(currentColor, "rgb") : "rgb(255, 255, 255)"}
           </div>

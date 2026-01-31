@@ -14,12 +14,12 @@
 console.log(`
 To generate PWA icons:
 
-1. Create icon-192x192.png (192x192 pixels)
+1. Create icon-192.png (192x192 pixels)
    - White background (#FFFFFF)
    - Simple "WS" or "WSP" text centered
    - Or use a geometric shape
 
-2. Create icon-512x512.png (512x512 pixels)
+2. Create icon-512.png (512x512 pixels)
    - Same design, scaled up
 
 3. Place both files in /public/ directory

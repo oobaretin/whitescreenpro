@@ -48,7 +48,20 @@ export function useKeyboardShortcuts() {
           break;
 
         case "Escape":
-          setPanelOpen(false);
+          // Exit fullscreen first (browser syncs via fullscreenchange)
+          if (document.fullscreenElement ?? (document as any).webkitFullscreenElement ?? (document as any).mozFullScreenElement ?? (document as any).msFullscreenElement) {
+            if (document.exitFullscreen) {
+              document.exitFullscreen().catch(() => {});
+            } else if ((document as any).webkitExitFullscreen) {
+              (document as any).webkitExitFullscreen();
+            } else if ((document as any).mozCancelFullScreen) {
+              (document as any).mozCancelFullScreen();
+            } else if ((document as any).msExitFullscreen) {
+              (document as any).msExitFullscreen();
+            }
+          } else {
+            setPanelOpen(false);
+          }
           break;
 
         case "c":

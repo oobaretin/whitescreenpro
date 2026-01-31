@@ -62,6 +62,9 @@ export interface AppState {
   showHint: boolean;
   activeTab: "colors" | "tools" | "pranks" | "ambient" | "settings";
   language: "en" | "es" | "fr" | "de" | "it" | "pt" | "zh" | "ja" | "ko" | "ar" | "ru" | "hi" | "tr";
+  theme: "light" | "dark";
+  toastMessage: string | null;
+  pixelShifterEnabled: boolean;
   
   // Active mode/tool
   activeMode: "color" | "zoom-lighting" | "signature" | "tip-screen" | "dead-pixel" | "broken-screen" | "bsod" | "fake-update" | "hacker-terminal" | "dvd-screensaver" | "matrix-rain" | "flip-clock" | "no-signal" | "quote" | "white-noise" | "radar";
@@ -159,6 +162,9 @@ export interface AppState {
   setPanelOpen: (open: boolean) => void;
   setActiveTab: (tab: AppState["activeTab"]) => void;
   setLanguage: (language: AppState["language"]) => void;
+  setTheme: (theme: AppState["theme"]) => void;
+  showToast: (message: string) => void;
+  setPixelShifterEnabled: (enabled: boolean) => void;
   cycleColor: () => void;
   cycleToNextPreset: () => void;
   cycleToPreviousPreset: () => void;
@@ -237,6 +243,9 @@ export const useAppStore = create<AppState>()((set, get) => ({
       showHint: true,
       activeTab: "colors",
       language: (typeof window !== "undefined" && localStorage.getItem("whitescreentools-language")) as AppState["language"] || "en",
+      theme: (typeof window !== "undefined" && localStorage.getItem("whitescreentools-theme") === "dark") ? "dark" : "light",
+      toastMessage: null,
+      pixelShifterEnabled: (typeof window !== "undefined" && localStorage.getItem("whitescreentools-pixel-shifter") === "true") || false,
       
       // Active mode
       activeMode: "color",
@@ -424,6 +433,25 @@ export const useAppStore = create<AppState>()((set, get) => ({
         set({ language });
         if (typeof window !== "undefined") {
           localStorage.setItem("whitescreentools-language", language);
+        }
+      },
+      setTheme: (theme: AppState["theme"]) => {
+        set({ theme });
+        if (typeof window !== "undefined") {
+          localStorage.setItem("whitescreentools-theme", theme);
+          document.documentElement.setAttribute("data-theme", theme);
+        }
+      },
+      showToast: (message: string) => {
+        set({ toastMessage: message });
+        if (typeof window !== "undefined") {
+          setTimeout(() => set({ toastMessage: null }), 3000);
+        }
+      },
+      setPixelShifterEnabled: (enabled: boolean) => {
+        set({ pixelShifterEnabled: enabled });
+        if (typeof window !== "undefined") {
+          localStorage.setItem("whitescreentools-pixel-shifter", String(enabled));
         }
       },
 

@@ -36,7 +36,7 @@ export function Navigation() {
   const buttonRefMobile = useRef<HTMLButtonElement>(null);
   const dropdownRefDesktop = useRef<HTMLDivElement>(null);
   const dropdownRefMobile = useRef<HTMLDivElement>(null);
-  const { setColor, setActiveMode, setActiveTab, language, setLanguage } = useAppStore();
+  const { setColor, setActiveMode, setActiveTab, language, setLanguage, theme, setTheme } = useAppStore();
   const t = useTranslation();
 
   const resetToWhite = () => {
@@ -105,8 +105,13 @@ export function Navigation() {
     }
   }, [isLangMenuOpen]);
 
+  const toggleTheme = () => {
+    const next = theme === "dark" ? "light" : "dark";
+    setTheme(next);
+  };
+
   return (
-    <nav className="bg-white border-b border-gray-200 w-full relative z-50">
+    <nav className="bg-card border-b border-card w-full relative z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full overflow-x-hidden">
         <div className="flex items-center h-14 w-full min-w-0">
           {/* Logo */}
@@ -114,7 +119,7 @@ export function Navigation() {
             <Link 
               href="/" 
               onClick={resetToWhite}
-              className="science-gothic text-gray-900 text-xl md:text-2xl hover:text-gray-700 transition-colors"
+              className="science-gothic text-page text-xl md:text-2xl hover:opacity-80 transition-colors"
             >
               WhiteScreen Tools
             </Link>
@@ -125,26 +130,36 @@ export function Navigation() {
             <Link
               href="/"
               onClick={resetToWhite}
-              className="text-gray-700 hover:text-gray-900 transition-colors text-sm"
+              className="text-page hover:opacity-80 transition-colors text-sm"
             >
               {t.nav.home}
             </Link>
             <Link
               href="/about"
-              className="text-gray-700 hover:text-gray-900 transition-colors text-sm"
+              className="text-page hover:opacity-80 transition-colors text-sm"
             >
               {t.nav.about}
             </Link>
             <Link
               href="/contact"
-              className="text-gray-700 hover:text-gray-900 transition-colors text-sm"
+              className="text-page hover:opacity-80 transition-colors text-sm"
             >
               {t.nav.contact}
             </Link>
           </div>
 
-          {/* Language Selector - Far Right */}
-          <div className="hidden md:block ml-auto flex-shrink-0" ref={langMenuRefDesktop}>
+          {/* Theme toggle + Language - Far Right */}
+          <div className="hidden md:flex items-center gap-1 ml-auto flex-shrink-0">
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="p-2 text-page hover:opacity-80 transition-opacity text-xl leading-none"
+              aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+              title={theme === "dark" ? "Light mode" : "Dark mode"}
+            >
+              {theme === "dark" ? "☀️" : "🌙"}
+            </button>
+            <div ref={langMenuRefDesktop}>
             <div className="relative">
               <button
                 ref={buttonRefDesktop}
@@ -153,7 +168,7 @@ export function Navigation() {
                   e.stopPropagation();
                   setIsLangMenuOpen(!isLangMenuOpen);
                 }}
-                className="flex items-center gap-1.5 px-2 py-1 text-gray-700 hover:text-gray-900 transition-colors text-sm whitespace-nowrap"
+                className="flex items-center gap-1.5 px-2 py-1 text-page hover:opacity-80 transition-colors text-sm whitespace-nowrap"
               >
                 <span className="text-base">{currentLanguage.flag}</span>
                 <span className="truncate max-w-[120px]">{currentLanguage.name}</span>
@@ -173,7 +188,7 @@ export function Navigation() {
               {mounted && isLangMenuOpen && isDesktop && createPortal(
                 <div 
                   ref={dropdownRefDesktop}
-                  className="fixed w-48 bg-white rounded-lg shadow-xl border border-gray-200 py-1 max-h-64 overflow-y-auto"
+                  className="fixed w-48 bg-card rounded-lg shadow-xl border border-card py-1 max-h-64 overflow-y-auto"
                   onClick={(e) => e.stopPropagation()}
                   style={{ 
                     top: `${dropdownPosition.top}px`,
@@ -198,8 +213,8 @@ export function Navigation() {
                         setLanguage(lang.code);
                         setIsLangMenuOpen(false);
                       }}
-                      className={`w-full px-4 py-2 text-left text-sm hover:bg-gray-100 active:bg-gray-200 transition-colors flex items-center gap-2 ${
-                        language === lang.code ? "bg-blue-50 text-blue-700" : "text-gray-700"
+                      className={`w-full px-4 py-2 text-left text-sm hover:opacity-80 active:opacity-70 transition-colors flex items-center gap-2 text-page ${
+                        language === lang.code ? "bg-accent/10 accent" : ""
                       }`}
                     >
                       <span className="text-base">{lang.flag}</span>
@@ -220,6 +235,7 @@ export function Navigation() {
                 </div>,
                 document.body
               )}
+            </div>
             </div>
           </div>
 
