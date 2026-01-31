@@ -190,8 +190,8 @@ export const translations: Record<Language, Translations> = {
       confirm: "Confirm",
     },
     home: {
-      title: "White Screen Tools",
-      subtitle: "Free full screen color tool for display testing and creative projects",
+      title: "White Screen & Monitor Test Tools | Full Screen Colors & Lighting",
+      subtitle: "Free full-screen color tools for monitor testing, dead pixel detection, and video call lighting.",
       clickToFullscreen: "Click to Fullscreen",
       pressEscToExit: "Press ESC to exit",
       aboutTitle: "About WhiteScreen Tools",

@@ -36,7 +36,7 @@ export function FakeUpdate() {
               {/* Windows 95 Logo */}
               <img
                 src="/images/windows-95-logo.jpeg"
-                alt="Windows 95"
+                alt="Windows 95 logo for fake update prank screen"
                 className="mx-auto mb-8 w-80 h-auto object-contain"
               />
               

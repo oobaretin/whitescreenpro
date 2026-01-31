@@ -5,35 +5,33 @@ import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
 import { ThemeSync } from "@/components/ThemeSync";
 import { SettingsFab } from "@/components/SettingsFab";
 import { Toast } from "@/components/Toast";
+import { SEO } from "@/lib/seo";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "WhiteScreen Tools - Professional Screen Utility",
-  description:
-    "Advanced whitescreen utility for photography, videography, monitor testing, and focus. Features custom colors, gradients, patterns, timers, and more.",
+  title: SEO.home.title,
+  description: SEO.home.description,
   keywords: [
     "white screen",
-    "black screen",
     "monitor test",
+    "dead pixel test",
     "screen calibration",
-    "photography",
-    "videography",
-    "color picker",
+    "video call lighting",
+    "chroma key",
+    "full screen color",
     "screen utility",
   ],
   authors: [{ name: "WhiteScreen Tools" }],
   openGraph: {
-    title: "WhiteScreen Tools - Professional Screen Utility",
-    description:
-      "Advanced whitescreen utility for photography, videography, monitor testing, and focus.",
+    title: SEO.home.title,
+    description: SEO.home.description,
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "WhiteScreen Tools - Professional Screen Utility",
-    description:
-      "Advanced whitescreen utility for photography, videography, monitor testing, and focus.",
+    title: SEO.home.title,
+    description: SEO.home.description,
   },
   verification: {
     google: "BYuikEvuUf_6B-G2sZRL9FA0UQOy9VyR-V07oybT5es",

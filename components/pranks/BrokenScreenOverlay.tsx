@@ -32,7 +32,7 @@ export function BrokenScreenOverlay() {
       >
         <Image
           src={selectedPattern.src}
-          alt="Broken screen crack pattern"
+          alt="Broken screen crack pattern overlay for full-screen display prank"
           fill
           quality={100}
           priority

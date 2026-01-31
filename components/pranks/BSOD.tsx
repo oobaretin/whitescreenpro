@@ -67,7 +67,7 @@ export function BSOD() {
       >
         <img
           src={version.imageSrc}
-          alt="Blue Screen of Death"
+          alt="Blue Screen of Death (BSOD) display for monitor testing and prank"
           className={imageClass}
           style={{
             maxWidth: "100%",

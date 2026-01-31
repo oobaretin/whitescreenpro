@@ -45,6 +45,7 @@ import { NoSignalControls } from "@/components/ambient/NoSignalControls";
 import { ZoomLighting } from "@/components/tools/ZoomLighting";
 import { QuickNav } from "@/components/QuickNav";
 import { SkeletonTerminal } from "@/components/SkeletonTerminal";
+import { getToolMeta } from "@/lib/seo";
 
 const TOOL_CONFIG: Record<string, { color?: string; mode?: string; name: string }> = {
   "black-screen": { color: "#000000", name: "Black Screen" },
@@ -377,10 +378,10 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
         <>
           {!isFullscreen && <QuickNav />}
         <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
-          {/* Title */}
+          {/* Title - h1 matches SEO title when available */}
           <div className="text-center mb-6">
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
-              {toolConfig.name}
+              {getToolMeta(toolSlug)?.title ?? toolConfig.name}
             </h1>
             {toolSlug === "broken-screen" && (
               <p className="text-gray-600">

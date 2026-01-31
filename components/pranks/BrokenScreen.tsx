@@ -68,7 +68,7 @@ export function BrokenScreen() {
               <div className="absolute inset-0 scale-110" style={{ top: '-5%', bottom: '-10%' }}>
                 <Image
                   src={pattern.src}
-                  alt={pattern.name}
+                  alt={`Broken screen pattern: ${pattern.name} for monitor prank`}
                   fill
                   className="object-cover object-top"
                   sizes="(max-width: 768px) 50vw, 200px"

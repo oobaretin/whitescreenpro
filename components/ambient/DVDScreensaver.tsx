@@ -163,7 +163,7 @@ export function DVDScreensaver() {
           // Image logo (DVD, CD, Blu-ray)
           <img
             src={logoSrc}
-            alt={dvd.logoType.toUpperCase()}
+            alt={`${dvd.logoType === "dvd" ? "DVD" : dvd.logoType === "bluray" ? "Blu-ray" : "Custom"} logo for bouncing screensaver`}
             className="w-full h-full object-contain"
             style={{
               filter: `${colors[colorIndex]} ${isFlashing ? "brightness(1.5) drop-shadow(0 0 20px white)" : "drop-shadow(0 0 10px rgba(255,255,255,0.3))"}`,
