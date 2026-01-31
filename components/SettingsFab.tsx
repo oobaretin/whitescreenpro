@@ -6,7 +6,7 @@ import { useAppStore } from "@/lib/store";
 const MASTER_BRIGHTNESS_KEY = "whitescreentools-master-brightness";
 
 export function SettingsFab() {
-  const { theme, setTheme, isFullscreen, pixelShifterEnabled, setPixelShifterEnabled } = useAppStore();
+  const { theme, setTheme, isFullscreen, pixelShifterEnabled, setPixelShifterEnabled, showToast } = useAppStore();
   const [panelOpen, setPanelOpen] = useState(false);
   const [masterBrightness, setMasterBrightness] = useState(100);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -68,6 +68,7 @@ export function SettingsFab() {
   const handleThemeClick = () => {
     const next = theme === "dark" ? "light" : "dark";
     setTheme(next);
+    showToast(next === "dark" ? "Dark mode enabled" : "Light mode enabled");
   };
 
   if (isFullscreen) return null;

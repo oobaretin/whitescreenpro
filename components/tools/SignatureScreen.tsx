@@ -150,7 +150,7 @@ export function SignatureScreen() {
         a.download = `signature.${format}`;
         a.click();
         URL.revokeObjectURL(url);
-        showToast("Saved!");
+        showToast("Signature saved to your device!");
       },
       `image/${format === "jpg" ? "jpeg" : format}`,
       1.0

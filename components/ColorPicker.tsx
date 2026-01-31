@@ -150,7 +150,7 @@ export function ColorPicker() {
               const hex = mounted && currentColor ? formatColor(currentColor, "hex") : "#FFFFFF";
               try {
                 await navigator.clipboard.writeText(hex);
-                showToast("Copied!");
+                showToast("Color code copied!");
               } catch {
                 showToast("Copy failed");
               }

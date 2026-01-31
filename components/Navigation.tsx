@@ -36,7 +36,7 @@ export function Navigation() {
   const buttonRefMobile = useRef<HTMLButtonElement>(null);
   const dropdownRefDesktop = useRef<HTMLDivElement>(null);
   const dropdownRefMobile = useRef<HTMLDivElement>(null);
-  const { setColor, setActiveMode, setActiveTab, language, setLanguage, theme, setTheme } = useAppStore();
+  const { setColor, setActiveMode, setActiveTab, language, setLanguage, theme, setTheme, showToast } = useAppStore();
   const t = useTranslation();
 
   const resetToWhite = () => {
@@ -108,6 +108,7 @@ export function Navigation() {
   const toggleTheme = () => {
     const next = theme === "dark" ? "light" : "dark";
     setTheme(next);
+    showToast(next === "dark" ? "Dark mode enabled" : "Light mode enabled");
   };
 
   return (
