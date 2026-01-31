@@ -25,19 +25,22 @@ export function BurnInFixer() {
     if (!ctx) return;
 
     function resize() {
+      const c = canvasRef.current;
+      if (!c) return;
       const w = Math.floor(window.innerWidth / 2);
       const h = Math.floor(window.innerHeight / 2);
-      canvas.width = w;
-      canvas.height = h;
+      c.width = w;
+      c.height = h;
     }
 
     resize();
     window.addEventListener("resize", resize);
 
     function renderStatic() {
-      if (!runningRef.current || !canvas.width || !canvas.height) return;
+      const c = canvasRef.current;
+      if (!runningRef.current || !c || !ctx || !c.width || !c.height) return;
 
-      const idata = ctx.createImageData(canvas.width, canvas.height);
+      const idata = ctx.createImageData(c.width, c.height);
       const buffer32 = new Uint32Array(idata.data.buffer);
       const len = buffer32.length;
 

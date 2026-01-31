@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { useAppStore } from "@/lib/store";
 
 const CHANGELOG_SEEN_KEY = "whitescreentools-v2-seen";
@@ -9,12 +9,12 @@ export function ChangelogModal() {
   const changelogOpen = useAppStore((s) => s.changelogOpen);
   const setChangelogOpen = useAppStore((s) => s.setChangelogOpen);
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setChangelogOpen(false);
     if (typeof window !== "undefined") {
       localStorage.setItem(CHANGELOG_SEEN_KEY, "true");
     }
-  };
+  }, [setChangelogOpen]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -22,7 +22,7 @@ export function ChangelogModal() {
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [changelogOpen]);
+  }, [changelogOpen, handleClose]);
 
   if (!changelogOpen) return null;
 
