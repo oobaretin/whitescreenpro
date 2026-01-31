@@ -59,6 +59,7 @@ export default function Home() {
                 { name: "Matrix Rain", slug: "matrix-rain", desc: "Falling code" },
                 { name: "Flip Clock", slug: "flip-clock", desc: "Digital clock" },
                 { name: "No Signal", slug: "no-signal", desc: "TV static" },
+                { name: "Screen Stress Test", slug: "screen-stress-test", desc: "Color cycle" },
               ].map((item) => (
                 <Link
                   key={item.name}

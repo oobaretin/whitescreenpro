@@ -6,7 +6,7 @@ import { useAppStore } from "@/lib/store";
 const MASTER_BRIGHTNESS_KEY = "whitescreentools-master-brightness";
 
 export function SettingsFab() {
-  const { theme, setTheme, isFullscreen, pixelShifterEnabled, setPixelShifterEnabled, showToast } = useAppStore();
+  const { theme, setTheme, isFullscreen, pixelShifterEnabled, setPixelShifterEnabled, ecoMode, setEcoMode, showToast } = useAppStore();
   const [panelOpen, setPanelOpen] = useState(false);
   const [masterBrightness, setMasterBrightness] = useState(100);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -125,6 +125,20 @@ export function SettingsFab() {
               }}
             />
           </div>
+
+          <div className="flex justify-between items-center mb-5">
+            <span className="text-page text-sm">OLED Eco-Mode</span>
+            <button
+              type="button"
+              onClick={() => setEcoMode(!ecoMode)}
+              className="px-3 py-1 rounded text-sm border border-card text-page hover:opacity-80"
+            >
+              {ecoMode ? "On" : "Off"}
+            </button>
+          </div>
+          <p className="text-page/70 text-xs mb-4 -mt-2">
+            Uses warm off-white instead of pure white to reduce battery drain on OLED/laptops.
+          </p>
 
           <div className="flex justify-between items-center mb-5">
             <span className="text-page text-sm">Pixel Shifter</span>

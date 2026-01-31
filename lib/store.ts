@@ -65,9 +65,10 @@ export interface AppState {
   theme: "light" | "dark";
   toastMessage: string | null;
   pixelShifterEnabled: boolean;
+  ecoMode: boolean;
   
   // Active mode/tool
-  activeMode: "color" | "zoom-lighting" | "signature" | "tip-screen" | "dead-pixel" | "broken-screen" | "bsod" | "fake-update" | "hacker-terminal" | "dvd-screensaver" | "matrix-rain" | "flip-clock" | "no-signal" | "quote" | "white-noise" | "radar";
+  activeMode: "color" | "zoom-lighting" | "signature" | "tip-screen" | "dead-pixel" | "broken-screen" | "bsod" | "fake-update" | "hacker-terminal" | "dvd-screensaver" | "matrix-rain" | "flip-clock" | "no-signal" | "quote" | "white-noise" | "radar" | "color-cycle";
   
   // Tool-specific configs
   zoomLighting: {
@@ -163,8 +164,9 @@ export interface AppState {
   setActiveTab: (tab: AppState["activeTab"]) => void;
   setLanguage: (language: AppState["language"]) => void;
   setTheme: (theme: AppState["theme"]) => void;
-  showToast: (message: string) => void;
+  showToast: (message: string, duration?: number) => void;
   setPixelShifterEnabled: (enabled: boolean) => void;
+  setEcoMode: (enabled: boolean) => void;
   cycleColor: () => void;
   cycleToNextPreset: () => void;
   cycleToPreviousPreset: () => void;
@@ -246,6 +248,7 @@ export const useAppStore = create<AppState>()((set, get) => ({
       theme: (typeof window !== "undefined" && localStorage.getItem("whitescreentools-theme") === "dark") ? "dark" : "light",
       toastMessage: null,
       pixelShifterEnabled: (typeof window !== "undefined" && localStorage.getItem("whitescreentools-pixel-shifter") === "true") || false,
+      ecoMode: (typeof window !== "undefined" && localStorage.getItem("whitescreentools-eco-mode") === "true") || false,
       
       // Active mode
       activeMode: "color",
@@ -442,16 +445,22 @@ export const useAppStore = create<AppState>()((set, get) => ({
           document.documentElement.setAttribute("data-theme", theme);
         }
       },
-      showToast: (message: string) => {
+      showToast: (message: string, duration = 3000) => {
         set({ toastMessage: message });
         if (typeof window !== "undefined") {
-          setTimeout(() => set({ toastMessage: null }), 3000);
+          setTimeout(() => set({ toastMessage: null }), duration);
         }
       },
       setPixelShifterEnabled: (enabled: boolean) => {
         set({ pixelShifterEnabled: enabled });
         if (typeof window !== "undefined") {
           localStorage.setItem("whitescreentools-pixel-shifter", String(enabled));
+        }
+      },
+      setEcoMode: (enabled: boolean) => {
+        set({ ecoMode: enabled });
+        if (typeof window !== "undefined") {
+          localStorage.setItem("whitescreentools-eco-mode", String(enabled));
         }
       },
 

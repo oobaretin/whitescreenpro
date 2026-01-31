@@ -1,5 +1,7 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { useAppStore } from "@/lib/store";
 
 const BSOD_VERSIONS = {
@@ -42,7 +44,8 @@ const BSOD_VERSIONS = {
 };
 
 export function BSOD() {
-  const { bsod, activeMode } = useAppStore();
+  const router = useRouter();
+  const { bsod, activeMode, toggleFullscreen } = useAppStore();
 
   if (activeMode !== "bsod") return null;
 
@@ -99,6 +102,16 @@ export function BSOD() {
             )}
           </div>
         )}
+        {/* Exit prank - visible on hover, shows it's a simulation */}
+        <Link
+          href="/"
+          onClick={(e) => { e.preventDefault(); toggleFullscreen(); router.push("/"); }}
+          className="absolute top-3 right-3 w-9 h-9 flex items-center justify-center rounded-full bg-black/30 text-white/90 opacity-0 hover:opacity-100 focus:opacity-100 transition-opacity pointer-events-auto z-10 text-sm font-medium"
+          aria-label="Exit prank simulation"
+          title="Exit (this is a simulation)"
+        >
+          ✕
+        </Link>
       </div>
     );
   }
@@ -134,6 +147,16 @@ export function BSOD() {
           </div>
         )}
       </div>
+      {/* Exit prank - visible on hover */}
+      <Link
+        href="/"
+        onClick={(e) => { e.preventDefault(); toggleFullscreen(); router.push("/"); }}
+        className="absolute top-3 right-3 w-9 h-9 flex items-center justify-center rounded-full bg-black/30 text-white/90 opacity-0 hover:opacity-100 focus:opacity-100 transition-opacity pointer-events-auto z-10 text-sm font-medium"
+        aria-label="Exit prank simulation"
+        title="Exit (this is a simulation)"
+      >
+        ✕
+      </Link>
     </div>
   );
 }

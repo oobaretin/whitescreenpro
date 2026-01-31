@@ -34,6 +34,7 @@ import { NoSignal } from "@/components/ambient/NoSignal";
 import { SignatureScreen } from "@/components/tools/SignatureScreen";
 import { TipScreen } from "@/components/tools/TipScreen";
 import { DeadPixelTest } from "@/components/tools/DeadPixelTest";
+import { ScreenStressTest } from "@/components/tools/ScreenStressTest";
 import { BrokenScreen } from "@/components/pranks/BrokenScreen";
 import { BSODControls } from "@/components/pranks/BSODControls";
 import { FakeUpdateControls } from "@/components/pranks/FakeUpdateControls";
@@ -69,6 +70,7 @@ const TOOL_CONFIG: Record<string, { color?: string; mode?: string; name: string 
   "no-signal": { mode: "no-signal", name: "No Signal" },
   "fake-update": { mode: "fake-update", name: "Fake Update" },
   "hacker-terminal": { mode: "hacker-terminal", name: "Hacker Terminal" },
+  "screen-stress-test": { mode: "color-cycle", name: "Screen Stress Test" },
 };
 
 export default function ToolPage({ params }: { params: { tool: string } }) {
@@ -86,6 +88,8 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
     activeMode,
     zoomLighting,
     isFullscreen,
+    ecoMode,
+    showToast,
   } = useAppStore();
 
   const [mounted, setMounted] = useState(false);
@@ -117,6 +121,13 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
     return () => clearTimeout(t);
   }, [useSkeleton]);
 
+  // Safety warning toast for tools with flashing colors (5s)
+  useEffect(() => {
+    if (toolSlug === "dead-pixel-test" || toolSlug === "screen-stress-test") {
+      showToast("⚠️ Warning: This tool contains flashing colors. Use with caution.", 5000);
+    }
+  }, [toolSlug, showToast]);
+
   useEffect(() => {
     if (!toolSlug) return;
     
@@ -146,6 +157,10 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
     }
   }, [showHint]);
 
+  // Eco-Mode: use warm off-white instead of pure white to reduce OLED power
+  const ECO_WHITE = "#FAFAF5";
+  const isWhiteHex = (hex: string) => (hex || "").replace(/#/g, "").toUpperCase() === "FFFFFF";
+
   // Calculate final color based on active mode
   // Use default white until mounted to prevent hydration mismatch
   let displayColor = mounted ? currentColor : "#FFFFFF";
@@ -154,8 +169,10 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
     displayColor = zoomLighting.preset === "custom" 
       ? zoomLighting.customColor 
       : getColorFromTemperature(zoomLighting.colorTemperature);
+    if (ecoMode && isWhiteHex(displayColor)) displayColor = ECO_WHITE;
     displayColor = getColorString(displayColor, zoomLighting.brightness);
   } else if (mounted) {
+    if (ecoMode && isWhiteHex(displayColor)) displayColor = ECO_WHITE;
     if (colorTemperature !== 0) {
       displayColor = adjustColorTemperature(displayColor, colorTemperature);
     }
@@ -165,6 +182,18 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
   const gradientCSS = getGradientCSS(gradient);
   const backgroundColor = mounted && gradient.enabled ? gradientCSS : displayColor;
 
+  const isColorPage = !toolConfig.mode;
+  const isZoomLightingPage = toolSlug === "zoom-lighting";
+  const isFullPageMode = isColorPage || isZoomLightingPage;
+
+  // ARIA label for screen readers (WCAG 2.1)
+  const displayAriaLabel =
+    isZoomLightingPage
+      ? "Full screen display for video call lighting"
+      : isColorPage
+        ? `Full screen solid ${toolConfig.name.toLowerCase()} display`
+        : "Display area";
+
   const shouldShowBackground = ![
     "bsod",
     "fake-update",
@@ -173,12 +202,8 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
     "matrix-rain",
     "flip-clock",
     "no-signal",
+    "color-cycle",
   ].includes(activeMode);
-
-  // Check if this is a color page or zoom-lighting page
-  const isColorPage = !toolConfig.mode;
-  const isZoomLightingPage = toolSlug === "zoom-lighting";
-  const isFullPageMode = isColorPage || isZoomLightingPage;
 
   // Handle ESC key to toggle settings panel for full page mode (when not in fullscreen)
   useEffect(() => {
@@ -265,6 +290,8 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
             id="screen-container"
             ref={containerRef}
             data-display-area
+            role="img"
+            aria-label={displayAriaLabel}
             className={`${
               isFullscreen ? "fixed inset-0 z-50" : "fixed inset-0"
             } overflow-hidden group`}
@@ -398,20 +425,47 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
               </div>
             </div>
           ) : toolSlug === "dead-pixel-test" ? (
-            <div className="relative h-[500px] rounded-xl shadow-md mb-6 overflow-hidden">
-              <DeadPixelTest />
-            </div>
+            <>
+              <div className="relative h-[500px] rounded-xl shadow-md mb-4 overflow-hidden">
+                <DeadPixelTest />
+              </div>
+              <p className="text-center text-sm text-gray-600 mb-6">
+                Found too many dead pixels?{" "}
+                <a
+                  href="https://www.amazon.com/s?k=4k+monitor"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-accent hover:underline"
+                  style={{ color: "var(--accent-color)" }}
+                >
+                  View top-rated 4K monitors
+                </a>
+              </p>
+            </>
           ) : toolSlug === "tip-screen" ? (
             <div className="flex justify-center mb-6">
               <div className="relative h-[500px] w-full max-w-md overflow-hidden">
                 <TipScreen />
               </div>
             </div>
+          ) : toolSlug === "screen-stress-test" ? (
+            <div
+              ref={containerRef}
+              data-display-area
+              className={`${
+                isFullscreen ? "fixed inset-0 z-50" : "relative h-[500px] rounded-xl shadow-md mb-6 overflow-hidden"
+              }`}
+              onClick={!isFullscreen ? () => useAppStore.getState().toggleFullscreen() : undefined}
+            >
+              <ScreenStressTest />
+            </div>
           ) : (
             <div
               id="screen-container"
               ref={containerRef}
               data-display-area
+              role="img"
+              aria-label={displayAriaLabel}
               className={`${
                 isFullscreen ? "fixed inset-0 z-50" : "relative h-[500px] rounded-xl shadow-md mb-6 cursor-pointer"
               } overflow-hidden group`}
@@ -456,7 +510,7 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
           )}
 
           {/* Controls Section */}
-          {!["tip-screen", "signature-screen", "dead-pixel-test"].includes(toolSlug) && (
+          {!["tip-screen", "signature-screen", "dead-pixel-test", "screen-stress-test"].includes(toolSlug) && (
             <div className="bg-white rounded-xl shadow-md p-6 mb-6">
               <h2 className="text-xl font-bold text-gray-900 mb-4">{t.common.settings}</h2>
               

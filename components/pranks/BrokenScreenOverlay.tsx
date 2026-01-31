@@ -1,5 +1,7 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { useAppStore } from "@/lib/store";
 import Image from "next/image";
 
@@ -12,17 +14,18 @@ const PATTERNS = [
 ];
 
 export function BrokenScreenOverlay() {
-  const { activeMode, brokenScreen } = useAppStore();
+  const router = useRouter();
+  const { activeMode, brokenScreen, toggleFullscreen } = useAppStore();
 
   if (activeMode !== "broken-screen") return null;
 
   const selectedPattern = PATTERNS.find(p => p.id === brokenScreen.pattern) || PATTERNS[0];
 
   return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 5 }}>
+    <div className="absolute inset-0 overflow-hidden" style={{ zIndex: 5 }}>
       {/* Scale up slightly and position to crop out bottom camera icon */}
       <div 
-        className="absolute inset-0" 
+        className="absolute inset-0 pointer-events-none" 
         style={{ 
           top: '-2%', 
           bottom: '-5%',
@@ -43,6 +46,16 @@ export function BrokenScreenOverlay() {
           sizes="100vw"
         />
       </div>
+      {/* Exit prank - visible on hover, shows it's a simulation */}
+      <Link
+        href="/"
+        onClick={(e) => { e.preventDefault(); toggleFullscreen(); router.push("/"); }}
+        className="absolute top-3 right-3 w-9 h-9 flex items-center justify-center rounded-full bg-black/30 text-white/90 opacity-0 hover:opacity-100 focus:opacity-100 transition-opacity pointer-events-auto z-10 text-sm font-medium"
+        aria-label="Exit prank simulation"
+        title="Exit (this is a simulation)"
+      >
+        ✕
+      </Link>
     </div>
   );
 }
