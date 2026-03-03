@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
+import { ContactForm } from "@/components/ContactForm";
 
 export const metadata: Metadata = {
   title: "Contact Us - WhiteScreen Tools",
@@ -50,6 +51,9 @@ export default function ContactPage() {
                   </a>
                 </div>
               </div>
+
+              {/* Direct contact form (sends to osagie.codes@gmail.com via Resend) */}
+              <ContactForm />
             </section>
 
             <section>
