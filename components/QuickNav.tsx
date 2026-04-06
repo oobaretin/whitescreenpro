@@ -32,7 +32,7 @@ export function QuickNav() {
   return (
     <nav
       ref={navRef}
-      className="fixed left-0 w-full h-[50px] flex items-center justify-center gap-4 transition-[top] duration-300 z-[10001]"
+      className="zen-ui fixed left-0 w-full h-[50px] flex items-center justify-center gap-4 transition-[top] duration-300 z-[10001]"
       style={{
         top: visible ? 0 : -60,
         background: "rgba(0,0,0,0.8)",

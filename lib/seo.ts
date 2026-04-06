@@ -27,6 +27,11 @@ export const SEO = {
     description:
       "Immersive falling code and Matrix rain animations for your display. Perfect for coding vibes, stream backgrounds, and digital art displays.",
   },
+  "gray-screen": {
+    title: "Gray Screen | 50% Gray Monitor Uniformity Test",
+    description:
+      "Full-screen neutral gray (#808080) for checking panel uniformity, vignetting, and dirty screen effect. Ideal for display calibration and health checks.",
+  },
   "motion-blur-test": {
     title: "Motion Blur & Ghosting Test | Monitor Response Time Checker",
     description:

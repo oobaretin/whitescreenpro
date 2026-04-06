@@ -39,6 +39,16 @@ body {
   width: 100%;
 }
 
+/* Zen Mode: fade out chrome after idle on tool pages */
+.zen-ui {
+  transition: opacity 0.8s ease-in-out;
+  will-change: opacity;
+}
+
+body.tool-active {
+  overflow: hidden;
+}
+
 /* Navigation and Footer visibility in fullscreen */
 :fullscreen nav,
 :fullscreen footer,
@@ -180,6 +190,23 @@ button {
 
 .reading-light-breathe {
   animation: reading-light-breathe 8s ease-in-out infinite;
+}
+
+/* Context help ? bubble — pulse when tool context changes */
+@keyframes pulse-hint {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.35);
+  }
+  70% {
+    box-shadow: 0 0 0 14px rgba(255, 255, 255, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+  }
+}
+
+.hint-pulse {
+  animation: pulse-hint 2s ease-out 3;
 }
 
 /* Toast container and toast (works in light and dark) */

@@ -6,6 +6,9 @@ import { ThemeSync } from "@/components/ThemeSync";
 import { SettingsFab } from "@/components/SettingsFab";
 import { Toast } from "@/components/Toast";
 import { ChangelogModal } from "@/components/ChangelogModal";
+import { MultiMonitorSync } from "@/components/MultiMonitorSync";
+import { MonitorHealthWizard } from "@/components/MonitorHealthWizard";
+import { ContextHelpBubble } from "@/components/ContextHelpBubble";
 import { SEO } from "@/lib/seo";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -49,8 +52,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <ThemeSync />
+        <MultiMonitorSync />
+        <MonitorHealthWizard />
         {children}
         <SettingsFab />
+        <ContextHelpBubble />
         <Toast />
         <ChangelogModal />
         <ServiceWorkerRegister />

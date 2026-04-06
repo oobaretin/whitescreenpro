@@ -7,13 +7,14 @@ import { useAppStore } from "@/lib/store";
 export function Footer() {
   const [currentYear, setCurrentYear] = useState(2025);
   const setChangelogOpen = useAppStore((s) => s.setChangelogOpen);
+  const setHealthDashboardOpen = useAppStore((s) => s.setHealthDashboardOpen);
 
   useEffect(() => {
     setCurrentYear(new Date().getFullYear());
   }, []);
 
   return (
-    <footer className="bg-card border-t border-card mt-12">
+    <footer className="zen-ui bg-card border-t border-card mt-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         {/* Legal notice (condensed) */}
         <p className="text-center text-xs text-page/80 mb-3 max-w-2xl mx-auto">
@@ -37,6 +38,15 @@ export function Footer() {
               style={{ color: "var(--accent-color)" }}
             >
               What&apos;s New
+            </button>
+            <span className="hidden sm:inline">·</span>
+            <button
+              type="button"
+              onClick={() => setHealthDashboardOpen(true)}
+              className="bg-transparent border-none p-0 cursor-pointer hover:opacity-80 transition-opacity underline"
+              style={{ color: "var(--accent-color)" }}
+            >
+              Monitor Health
             </button>
             <span className="hidden sm:inline">·</span>
             <Link href="/about" className="hover:opacity-80 transition-opacity">

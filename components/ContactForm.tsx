@@ -28,8 +28,12 @@ export function ContactForm() {
         body: JSON.stringify(body),
       });
 
+      const json = await res.json().catch(() => ({}));
+
       if (!res.ok) {
-        throw new Error("Request failed");
+        setStatus("error");
+        setError(json.error || "Something went wrong. Please try again.");
+        return;
       }
 
       setStatus("success");

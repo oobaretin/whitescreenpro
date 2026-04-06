@@ -63,6 +63,7 @@ const TOOL_CONFIG: Record<string, { color?: string; mode?: string; name: string 
   "pink-screen": { color: "#FFC0CB", name: "Pink Screen" },
   "purple-screen": { color: "#800080", name: "Purple Screen" },
   "white-screen": { color: "#FFFFFF", name: "White Screen" },
+  "gray-screen": { color: "#808080", name: "Gray Screen" },
   "zoom-lighting": { mode: "zoom-lighting", name: "Zoom Lighting" },
   "tip-screen": { mode: "tip-screen", name: "Tip Screen" },
   "signature-screen": { mode: "signature", name: "Signature Screen" },
@@ -321,7 +322,7 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
       
       {/* Back Button - only show if not full page mode */}
       {!isFullPageMode && (
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-4">
+        <div className="zen-ui max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-4">
           <Link
             href="/"
             className="inline-flex items-center gap-2 text-gray-700 hover:text-gray-900 transition-colors"

@@ -55,6 +55,7 @@ export default function Home() {
                 { name: "Orange Screen", slug: "orange-screen", desc: "Warm lighting" },
                 { name: "Yellow Screen", slug: "yellow-screen", desc: "Bright" },
                 { name: "White Screen", slug: "white-screen", desc: "Clean display", badge: "Popular" as const },
+                { name: "Gray Screen", slug: "gray-screen", desc: "Uniformity / 50% gray" },
                 { name: "Zoom Lighting", slug: "zoom-lighting", desc: "Video call", badge: "New" as const },
                 { name: "Tip Screen", slug: "tip-screen", desc: "POS tipping" },
                 { name: "Signature Screen", slug: "signature-screen", desc: "Digital signature" },

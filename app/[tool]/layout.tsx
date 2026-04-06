@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getToolMetadata } from "@/lib/seo";
+import { ZenMode } from "@/components/ZenMode";
 
 export async function generateMetadata({
   params,
@@ -20,5 +21,10 @@ export default function ToolLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return (
+    <>
+      <ZenMode />
+      {children}
+    </>
+  );
 }

@@ -12,6 +12,7 @@ const tools = [
   "pink-screen",
   "purple-screen",
   "white-screen",
+  "gray-screen",
   "zoom-lighting",
   "tip-screen",
   "signature-screen",

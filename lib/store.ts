@@ -1,5 +1,6 @@
 import { create } from "zustand";
-import { COLOR_PRESETS, GradientConfig } from "./colorUtils";
+import { COLOR_PRESETS, GradientConfig, kelvinToHex } from "./colorUtils";
+import { postWhiteScreenSync } from "./broadcastSync";
 import { getStoredSettings, saveSettings } from "./storageUtils";
 
 export interface PatternConfig {
@@ -67,6 +68,18 @@ export interface AppState {
   pixelShifterEnabled: boolean;
   ecoMode: boolean;
   changelogOpen: boolean;
+  /** Master warmth slider (2000K–10000K); moving it sets display color via kelvinToHex */
+  masterKelvin: number;
+  /** Global brightness filter (20–100), same as Master Controls slider */
+  masterBrightness: number;
+  /** BroadcastChannel sync across tabs (local only) */
+  multiMonitorSyncEnabled: boolean;
+
+  /** Monitor Health Check wizard */
+  healthDashboardOpen: boolean;
+  /** 0 = idle, 1–4 = active diagnostic step */
+  healthDiagnosticStep: number;
+  healthDiagnosticComplete: boolean;
   
   // Active mode/tool
   activeMode: "color" | "zoom-lighting" | "signature" | "tip-screen" | "dead-pixel" | "broken-screen" | "bsod" | "fake-update" | "hacker-terminal" | "dvd-screensaver" | "matrix-rain" | "flip-clock" | "no-signal" | "quote" | "white-noise" | "radar" | "color-cycle" | "burn-in-fixer" | "ruler" | "motion-blur-test" | "reading-light" | "reflection-checker";
@@ -144,7 +157,10 @@ export interface AppState {
   };
   
   // Actions
-  setColor: (color: string) => void;
+  setColor: (
+    color: string,
+    opts?: { fromSync?: boolean; internalFromKelvin?: boolean },
+  ) => void;
   setBrightness: (brightness: number) => void;
   setColorTemperature: (temp: number) => void;
   setGradient: (gradient: Partial<GradientConfig>) => void;
@@ -169,6 +185,12 @@ export interface AppState {
   setPixelShifterEnabled: (enabled: boolean) => void;
   setEcoMode: (enabled: boolean) => void;
   setChangelogOpen: (open: boolean) => void;
+  setMasterKelvin: (kelvin: number, opts?: { fromSync?: boolean }) => void;
+  setMasterBrightness: (value: number, opts?: { fromSync?: boolean }) => void;
+  setMultiMonitorSyncEnabled: (enabled: boolean) => void;
+  setHealthDashboardOpen: (open: boolean) => void;
+  startHealthDiagnostic: () => void;
+  advanceHealthDiagnostic: () => void;
   cycleColor: () => void;
   cycleToNextPreset: () => void;
   cycleToPreviousPreset: () => void;
@@ -226,6 +248,27 @@ const defaultAutoCycle = {
 // Load initial settings from localStorage
 const storedSettings = typeof window !== "undefined" ? getStoredSettings() : {};
 
+function readMasterKelvin(): number {
+  if (typeof window === "undefined") return 6500;
+  const raw = localStorage.getItem("whitescreentools-master-kelvin");
+  const n = raw ? parseInt(raw, 10) : 6500;
+  if (Number.isNaN(n)) return 6500;
+  return Math.min(10000, Math.max(2000, n));
+}
+
+function readMasterBrightness(): number {
+  if (typeof window === "undefined") return 100;
+  const raw = localStorage.getItem("whitescreentools-master-brightness");
+  const n = raw ? parseInt(raw, 10) : 100;
+  if (Number.isNaN(n)) return 100;
+  return Math.min(100, Math.max(20, n));
+}
+
+function readMultiMonitorSync(): boolean {
+  if (typeof window === "undefined") return true;
+  return localStorage.getItem("whitescreentools-multi-sync") !== "false";
+}
+
 export const useAppStore = create<AppState>()((set, get) => ({
       // Initial state
       currentColor: storedSettings.lastColor || COLOR_PRESETS[0].hex,
@@ -252,6 +295,12 @@ export const useAppStore = create<AppState>()((set, get) => ({
       pixelShifterEnabled: (typeof window !== "undefined" && localStorage.getItem("whitescreentools-pixel-shifter") === "true") || false,
       ecoMode: (typeof window !== "undefined" && localStorage.getItem("whitescreentools-eco-mode") === "true") || false,
       changelogOpen: false,
+      masterKelvin: readMasterKelvin(),
+      masterBrightness: readMasterBrightness(),
+      multiMonitorSyncEnabled: readMultiMonitorSync(),
+      healthDashboardOpen: false,
+      healthDiagnosticStep: 0,
+      healthDiagnosticComplete: false,
       
       // Active mode
       activeMode: "color",
@@ -329,10 +378,18 @@ export const useAppStore = create<AppState>()((set, get) => ({
       },
 
       // Actions
-      setColor: (color: string) => {
+      setColor: (color: string, opts?: { fromSync?: boolean; internalFromKelvin?: boolean }) => {
         set({ currentColor: color });
         if (typeof window !== "undefined") {
           saveSettings({ lastColor: color });
+        }
+        const { multiMonitorSyncEnabled } = get();
+        if (
+          multiMonitorSyncEnabled &&
+          !opts?.fromSync &&
+          !opts?.internalFromKelvin
+        ) {
+          postWhiteScreenSync("color", color);
         }
       },
 
@@ -467,6 +524,68 @@ export const useAppStore = create<AppState>()((set, get) => ({
         }
       },
       setChangelogOpen: (open: boolean) => set({ changelogOpen: open }),
+
+      setMasterKelvin: (kelvin: number, opts?: { fromSync?: boolean }) => {
+        const k = Math.min(10000, Math.max(2000, kelvin));
+        set({ masterKelvin: k });
+        const hex = kelvinToHex(k);
+        get().setColor(hex, {
+          fromSync: opts?.fromSync,
+          internalFromKelvin: true,
+        });
+        if (typeof window !== "undefined") {
+          localStorage.setItem("whitescreentools-master-kelvin", String(k));
+        }
+        if (get().multiMonitorSyncEnabled && !opts?.fromSync) {
+          postWhiteScreenSync("kelvin", k);
+        }
+      },
+
+      setMasterBrightness: (value: number, opts?: { fromSync?: boolean }) => {
+        const b = Math.min(100, Math.max(20, value));
+        set({ masterBrightness: b });
+        if (typeof window !== "undefined") {
+          localStorage.setItem("whitescreentools-master-brightness", String(b));
+        }
+        if (get().multiMonitorSyncEnabled && !opts?.fromSync) {
+          postWhiteScreenSync("brightness", b);
+        }
+      },
+
+      setMultiMonitorSyncEnabled: (enabled: boolean) => {
+        set({ multiMonitorSyncEnabled: enabled });
+        if (typeof window !== "undefined") {
+          localStorage.setItem(
+            "whitescreentools-multi-sync",
+            enabled ? "true" : "false",
+          );
+        }
+      },
+
+      setHealthDashboardOpen: (open: boolean) =>
+        set({ healthDashboardOpen: open }),
+
+      startHealthDiagnostic: () => {
+        set({
+          healthDiagnosticComplete: false,
+          healthDashboardOpen: false,
+          healthDiagnosticStep: 1,
+        });
+      },
+
+      advanceHealthDiagnostic: () => {
+        const s = get().healthDiagnosticStep;
+        if (s === 4) {
+          set({
+            healthDiagnosticStep: 0,
+            healthDashboardOpen: true,
+            healthDiagnosticComplete: true,
+          });
+          get().showToast("🎉 Monitor Health Check Complete!", 5000);
+        } else if (s >= 1 && s < 4) {
+          set({ healthDiagnosticStep: s + 1 });
+        }
+      },
 
       cycleColor: () => {
         const { currentColor } = get();

@@ -3,29 +3,31 @@
 import { useState, useRef, useEffect } from "react";
 import { useAppStore } from "@/lib/store";
 
-const MASTER_BRIGHTNESS_KEY = "whitescreentools-master-brightness";
-
 export function SettingsFab() {
-  const { theme, setTheme, isFullscreen, pixelShifterEnabled, setPixelShifterEnabled, ecoMode, setEcoMode, showToast } = useAppStore();
+  const {
+    theme,
+    setTheme,
+    isFullscreen,
+    pixelShifterEnabled,
+    setPixelShifterEnabled,
+    ecoMode,
+    setEcoMode,
+    showToast,
+    masterKelvin,
+    setMasterKelvin,
+    masterBrightness,
+    setMasterBrightness,
+    multiMonitorSyncEnabled,
+    setMultiMonitorSyncEnabled,
+    setHealthDashboardOpen,
+  } = useAppStore();
   const [panelOpen, setPanelOpen] = useState(false);
-  const [masterBrightness, setMasterBrightness] = useState(100);
   const panelRef = useRef<HTMLDivElement>(null);
   const btnRef = useRef<HTMLButtonElement>(null);
 
-  // Hydrate master brightness from localStorage on mount
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const stored = localStorage.getItem(MASTER_BRIGHTNESS_KEY);
-    const val = stored ? Math.min(100, Math.max(20, parseInt(stored, 10))) : 100;
-    setMasterBrightness(val);
-  }, []);
-
-  // Apply master brightness to body and persist
+  // Apply master brightness to body (store holds source of truth; sync can update it)
   useEffect(() => {
     document.body.style.filter = `brightness(${masterBrightness}%)`;
-    if (typeof window !== "undefined") {
-      localStorage.setItem(MASTER_BRIGHTNESS_KEY, String(masterBrightness));
-    }
     return () => {
       document.body.style.filter = "";
     };
@@ -83,7 +85,7 @@ export function SettingsFab() {
           e.stopPropagation();
           setPanelOpen((prev) => !prev);
         }}
-        className="fixed bottom-5 right-5 z-[1000] rounded-full w-12 h-12 flex items-center justify-center text-xl text-white border-0 cursor-pointer shadow-lg hover:opacity-90 transition-opacity"
+        className="zen-ui fixed bottom-5 right-5 z-[1000] rounded-full w-12 h-12 flex items-center justify-center text-xl text-white border-0 cursor-pointer shadow-lg hover:opacity-90 transition-opacity"
         style={{
           background: "var(--accent-color)",
           boxShadow: "0 4px 10px rgba(0,0,0,0.3)",
@@ -125,6 +127,88 @@ export function SettingsFab() {
               }}
             />
           </div>
+
+          <div
+            className="zen-ui mt-5 mb-5 border-t pt-4"
+            style={{ borderColor: "var(--border-color)" }}
+          >
+            <label className="flex justify-between items-center text-sm text-page mb-2">
+              <span>Warmth (Kelvin)</span>
+              <span className="tabular-nums">{masterKelvin}K</span>
+            </label>
+            <input
+              type="range"
+              id="kelvin-slider"
+              min={2000}
+              max={10000}
+              step={100}
+              value={masterKelvin}
+              onChange={(e) =>
+                setMasterKelvin(parseInt(e.target.value, 10))
+              }
+              className="w-full h-2 rounded-full appearance-none cursor-pointer"
+              style={{
+                background: `linear-gradient(to right, #ff8c42 0%, #fff5e6 50%, #cfe8ff 100%)`,
+              }}
+              aria-valuemin={2000}
+              aria-valuemax={10000}
+              aria-valuenow={masterKelvin}
+              aria-label="Color temperature in Kelvin"
+            />
+            <div className="flex justify-between text-[10px] text-page/60 mt-1.5">
+              <span>Warm</span>
+              <span>Cool</span>
+            </div>
+            <p className="text-page/60 text-[11px] mt-2 leading-snug">
+              Sets display color from 2000K (warm) to 10000K (cool daylight).
+            </p>
+          </div>
+
+          <div
+            className="zen-ui flex justify-between items-center gap-3 mb-5 pb-5 border-b"
+            style={{ borderColor: "var(--border-color)" }}
+          >
+            <div className="min-w-0">
+              <span className="text-page text-sm font-medium block">
+                Multi-Monitor Sync
+              </span>
+              <span className="text-page/60 text-[10px] leading-tight block mt-0.5">
+                Sync color, Kelvin & brightness across open tabs (local only).
+              </span>
+            </div>
+            <button
+              type="button"
+              role="switch"
+              aria-checked={multiMonitorSyncEnabled}
+              onClick={() =>
+                setMultiMonitorSyncEnabled(!multiMonitorSyncEnabled)
+              }
+              className={`relative shrink-0 w-11 h-6 rounded-full transition-colors border border-transparent ${
+                multiMonitorSyncEnabled ? "" : "bg-page/25"
+              }`}
+              style={
+                multiMonitorSyncEnabled
+                  ? { background: "var(--accent-color)" }
+                  : undefined
+              }
+              aria-label="Toggle multi-monitor sync"
+            >
+              <span
+                className={`absolute top-1 w-4 h-4 rounded-full bg-white shadow transition-transform ${
+                  multiMonitorSyncEnabled ? "translate-x-6" : "translate-x-1"
+                }`}
+              />
+            </button>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => setHealthDashboardOpen(true)}
+            className="zen-ui w-full py-2.5 px-4 mb-5 rounded-lg border text-sm font-medium text-page cursor-pointer transition-opacity hover:opacity-90"
+            style={{ borderColor: "var(--border-color)", background: "var(--card-bg)" }}
+          >
+            Monitor Health Check
+          </button>
 
           <div className="flex justify-between items-center mb-5">
             <span className="text-page text-sm">OLED Eco-Mode</span>

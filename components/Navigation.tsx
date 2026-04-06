@@ -112,7 +112,7 @@ export function Navigation() {
   };
 
   return (
-    <nav className="bg-card border-b border-card w-full relative z-50">
+    <nav className="zen-ui bg-card border-b border-card w-full relative z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full overflow-x-hidden">
         <div className="flex items-center h-14 w-full min-w-0">
           {/* Logo */}
