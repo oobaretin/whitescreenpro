@@ -2,51 +2,42 @@
 
 import { useState } from "react";
 
-type Status = "idle" | "sending" | "success" | "error";
+const CONTACT_EMAIL = "contact@whitescreentools.com";
+
+type Status = "idle" | "opening" | "done";
 
 export function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
-  const [error, setError] = useState<string | null>(null);
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setStatus("sending");
-    setError(null);
+    setStatus("opening");
 
     const form = e.currentTarget;
     const formData = new FormData(form);
-    const body = {
-      name: (formData.get("name") as string) || "",
-      email: (formData.get("email") as string) || "",
-      message: (formData.get("message") as string) || "",
-    };
+    const name = (formData.get("name") as string) || "";
+    const email = (formData.get("email") as string) || "";
+    const message = (formData.get("message") as string) || "";
 
-    try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
+    const subject = encodeURIComponent(
+      `WhiteScreen Tools contact${name ? ` from ${name}` : ""}`,
+    );
+    const body = encodeURIComponent(
+      `${message}\n\n---\nFrom: ${name || "(no name)"}\nReply-To: ${email}`,
+    );
+    const href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
 
-      const json = await res.json().catch(() => ({}));
-
-      if (!res.ok) {
-        setStatus("error");
-        setError(json.error || "Something went wrong. Please try again.");
-        return;
-      }
-
-      setStatus("success");
-      form.reset();
-    } catch (err) {
-      console.error(err);
-      setStatus("error");
-      setError("Something went wrong. Please try again.");
-    }
+    window.location.href = href;
+    setStatus("done");
+    form.reset();
   }
 
   return (
     <form onSubmit={handleSubmit} className="mt-8 space-y-4">
+      <p className="text-sm text-gray-600">
+        This opens your email app with your message addressed to{" "}
+        <span className="font-medium text-gray-800">{CONTACT_EMAIL}</span>.
+      </p>
       <div className="grid md:grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium text-gray-800 mb-1">
@@ -84,22 +75,25 @@ export function ContactForm() {
           placeholder="How can we help?"
         />
       </div>
-      {status === "success" && (
+      {status === "done" && (
         <p className="text-sm text-green-600">
-          Thanks! Your message has been sent.
+          If your mail app didn&apos;t open, email us directly at{" "}
+          <a
+            href={`mailto:${CONTACT_EMAIL}`}
+            className="underline font-medium"
+          >
+            {CONTACT_EMAIL}
+          </a>
+          .
         </p>
-      )}
-      {status === "error" && error && (
-        <p className="text-sm text-red-600">{error}</p>
       )}
       <button
         type="submit"
-        disabled={status === "sending"}
+        disabled={status === "opening"}
         className="inline-flex items-center justify-center rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed"
       >
-        {status === "sending" ? "Sending..." : "Send Message"}
+        {status === "opening" ? "Opening…" : "Open in email app"}
       </button>
     </form>
   );
 }
-

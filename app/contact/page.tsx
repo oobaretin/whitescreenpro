@@ -52,7 +52,7 @@ export default function ContactPage() {
                 </div>
               </div>
 
-              {/* Direct contact form (sends to osagie.codes@gmail.com via Resend) */}
+              {/* Opens visitor's mail app (mailto: contact@whitescreentools.com) */}
               <ContactForm />
             </section>
 
