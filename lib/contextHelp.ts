@@ -21,7 +21,7 @@ const BY_SLUG: Record<string, ContextHelpBlock> = {
   },
   "dead-pixel-test": {
     title: "The lens trick",
-    text: "Use a magnifying glass or your phone's zoom to see if a speck is dust or a dead/stuck pixel. Cycle colors; bad pixels won't match the fill.",
+    text: "Use a magnifying glass or your phone's zoom to see if a speck is dust or a dead/stuck pixel. Cycle colors; bad pixels won't match the fill. Use Fullscreen (or F) so the test covers the whole display.",
   },
   "motion-blur-test": {
     title: "Sync check",

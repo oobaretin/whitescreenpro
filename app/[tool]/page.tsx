@@ -486,21 +486,31 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
             </div>
           ) : toolSlug === "dead-pixel-test" ? (
             <>
-              <div className="relative h-[500px] rounded-xl shadow-md mb-4 overflow-hidden">
+              <div
+                ref={containerRef}
+                data-display-area
+                className={
+                  isFullscreen
+                    ? "fixed inset-0 z-50 mb-0 overflow-hidden bg-black"
+                    : "relative h-[500px] rounded-xl shadow-md mb-4 overflow-hidden"
+                }
+              >
                 <DeadPixelTest />
               </div>
-              <p className="text-center text-sm text-gray-600 mb-6">
-                Found too many dead pixels?{" "}
-                <a
-                  href="https://www.amazon.com/s?k=4k+monitor"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-accent hover:underline"
-                  style={{ color: "var(--accent-color)" }}
-                >
-                  View top-rated 4K monitors
-                </a>
-              </p>
+              {!isFullscreen && (
+                <p className="text-center text-sm text-gray-600 mb-6">
+                  Found too many dead pixels?{" "}
+                  <a
+                    href="https://www.amazon.com/s?k=4k+monitor"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-accent hover:underline"
+                    style={{ color: "var(--accent-color)" }}
+                  >
+                    View top-rated 4K monitors
+                  </a>
+                </p>
+              )}
             </>
           ) : toolSlug === "tip-screen" ? (
             <div className="flex justify-center mb-6">

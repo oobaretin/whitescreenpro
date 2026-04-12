@@ -8,9 +8,96 @@ import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { CHANGELOG_SEEN_KEY } from "@/components/ChangelogModal";
 
+type ToolBadge = "Popular" | "New";
+
+type ToolGridEntry =
+  | {
+      type: "route";
+      name: string;
+      slug: string;
+      desc: string;
+      badge?: ToolBadge;
+    }
+  | { type: "open-health"; name: string; desc: string; badge?: ToolBadge }
+  | { type: "open-settings"; name: string; desc: string; badge?: ToolBadge };
+
+/** Shown first in All Tools — same cards as full-screen tools */
+const PRIORITY_TOOL_ENTRIES: ToolGridEntry[] = [
+  {
+    type: "open-health",
+    name: "Monitor Health Check",
+    desc: "Wizard: dead pixels, bleed, gray, motion blur",
+    badge: "New",
+  },
+  {
+    type: "open-settings",
+    name: "Master warmth & sync",
+    desc: "Kelvin, brightness, match tabs — opens ⚙️",
+    badge: "New",
+  },
+  {
+    type: "route",
+    name: "Zen Mode",
+    slug: "motion-blur-test",
+    desc: "On any tool: idle 3s → cursor & UI fade",
+  },
+  {
+    type: "route",
+    name: "Context tips (?)",
+    slug: "dead-pixel-test",
+    desc: "Bottom-left ? — hints change per tool",
+  },
+];
+
+const ROUTE_TOOL_ROWS: Array<{
+  name: string;
+  slug: string;
+  desc: string;
+  badge?: ToolBadge;
+}> = [
+  { name: "Black Screen", slug: "black-screen", desc: "Most popular", badge: "Popular" },
+  { name: "Red Screen", slug: "red-screen", desc: "Lighting effect" },
+  { name: "Blue Screen", slug: "blue-screen", desc: "Chroma key" },
+  { name: "Green Screen", slug: "green-screen", desc: "Video production" },
+  { name: "Pink Screen", slug: "pink-screen", desc: "Aesthetic" },
+  { name: "Purple Screen", slug: "purple-screen", desc: "Creative" },
+  { name: "Orange Screen", slug: "orange-screen", desc: "Warm lighting" },
+  { name: "Yellow Screen", slug: "yellow-screen", desc: "Bright" },
+  { name: "White Screen", slug: "white-screen", desc: "Clean display", badge: "Popular" },
+  { name: "Gray Screen", slug: "gray-screen", desc: "Uniformity / 50% gray" },
+  { name: "Zoom Lighting", slug: "zoom-lighting", desc: "Video call", badge: "New" },
+  { name: "Tip Screen", slug: "tip-screen", desc: "POS tipping" },
+  { name: "Signature Screen", slug: "signature-screen", desc: "Digital signature" },
+  { name: "DVD Screensaver", slug: "dvd-screensaver", desc: "Nostalgic" },
+  { name: "Broken Screen", slug: "broken-screen", desc: "Prank tool" },
+  { name: "Dead Pixel Test", slug: "dead-pixel-test", desc: "Display checker" },
+  { name: "BSOD", slug: "bsod", desc: "Blue screen of death" },
+  { name: "Fake Update", slug: "fake-update", desc: "Prank screens" },
+  { name: "Hacker Terminal", slug: "hacker-terminal", desc: "Matrix-style" },
+  { name: "Matrix Rain", slug: "matrix-rain", desc: "Falling code" },
+  { name: "Flip Clock", slug: "flip-clock", desc: "Digital clock" },
+  { name: "No Signal", slug: "no-signal", desc: "TV static" },
+  { name: "Screen Stress Test", slug: "screen-stress-test", desc: "Color cycle" },
+  { name: "Burn-In Fixer", slug: "burn-in-fixer", desc: "OLED pixel refresher" },
+  { name: "Motion Blur Test", slug: "motion-blur-test", desc: "Ghosting & response", badge: "New" },
+  { name: "Reading Light", slug: "reading-light", desc: "Soft amber, sleep-friendly" },
+  { name: "Reflection Checker", slug: "reflection-checker", desc: "Reflections & distortion" },
+  { name: "Screen Ruler", slug: "ruler", desc: "px / in / cm + 16:9 grid" },
+];
+
+const ROUTE_TOOL_ENTRIES: Extract<ToolGridEntry, { type: "route" }>[] =
+  ROUTE_TOOL_ROWS.map((row) => ({ type: "route" as const, ...row }));
+
 export default function Home() {
   const t = useTranslation();
-  const { setColor, setActiveMode, setActiveTab, setChangelogOpen } = useAppStore();
+  const {
+    setColor,
+    setActiveMode,
+    setActiveTab,
+    setChangelogOpen,
+    setHealthDashboardOpen,
+    requestOpenSettingsFab,
+  } = useAppStore();
   const [showChangelogBadge, setShowChangelogBadge] = useState(true);
 
   useEffect(() => {
@@ -45,56 +132,57 @@ export default function Home() {
           <div className="bg-card rounded-xl shadow-md p-6 border border-card">
             <h2 className="text-2xl font-bold text-page mb-4">All Tools</h2>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-              {[
-                { name: "Black Screen", slug: "black-screen", desc: "Most popular", badge: "Popular" as const },
-                { name: "Red Screen", slug: "red-screen", desc: "Lighting effect" },
-                { name: "Blue Screen", slug: "blue-screen", desc: "Chroma key" },
-                { name: "Green Screen", slug: "green-screen", desc: "Video production" },
-                { name: "Pink Screen", slug: "pink-screen", desc: "Aesthetic" },
-                { name: "Purple Screen", slug: "purple-screen", desc: "Creative" },
-                { name: "Orange Screen", slug: "orange-screen", desc: "Warm lighting" },
-                { name: "Yellow Screen", slug: "yellow-screen", desc: "Bright" },
-                { name: "White Screen", slug: "white-screen", desc: "Clean display", badge: "Popular" as const },
-                { name: "Gray Screen", slug: "gray-screen", desc: "Uniformity / 50% gray" },
-                { name: "Zoom Lighting", slug: "zoom-lighting", desc: "Video call", badge: "New" as const },
-                { name: "Tip Screen", slug: "tip-screen", desc: "POS tipping" },
-                { name: "Signature Screen", slug: "signature-screen", desc: "Digital signature" },
-                { name: "DVD Screensaver", slug: "dvd-screensaver", desc: "Nostalgic" },
-                { name: "Broken Screen", slug: "broken-screen", desc: "Prank tool" },
-                { name: "Dead Pixel Test", slug: "dead-pixel-test", desc: "Display checker" },
-                { name: "BSOD", slug: "bsod", desc: "Blue screen of death" },
-                { name: "Fake Update", slug: "fake-update", desc: "Prank screens" },
-                { name: "Hacker Terminal", slug: "hacker-terminal", desc: "Matrix-style" },
-                { name: "Matrix Rain", slug: "matrix-rain", desc: "Falling code" },
-                { name: "Flip Clock", slug: "flip-clock", desc: "Digital clock" },
-                { name: "No Signal", slug: "no-signal", desc: "TV static" },
-                { name: "Screen Stress Test", slug: "screen-stress-test", desc: "Color cycle" },
-                { name: "Burn-In Fixer", slug: "burn-in-fixer", desc: "OLED pixel refresher" },
-                { name: "Motion Blur Test", slug: "motion-blur-test", desc: "Ghosting & response", badge: "New" as const },
-                { name: "Reading Light", slug: "reading-light", desc: "Soft amber, sleep-friendly" },
-                { name: "Reflection Checker", slug: "reflection-checker", desc: "Reflections & distortion" },
-                { name: "Screen Ruler", slug: "ruler", desc: "px / in / cm + 16:9 grid" },
-              ].map((item) => (
-                <Link
-                  key={item.name}
-                  href={`/${item.slug}`}
-                  className="tool-card relative text-left p-3 rounded-lg block"
-                >
-                  {item.badge && (
-                    <span
-                      className={`absolute top-2 right-2 text-[10px] font-semibold px-1.5 py-0.5 rounded ${
-                        item.badge === "Popular"
-                          ? "bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-200"
-                          : "bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-200"
-                      }`}
+              {[...PRIORITY_TOOL_ENTRIES, ...ROUTE_TOOL_ENTRIES].map((item) => {
+                const cardInner = (
+                  <>
+                    {"badge" in item && item.badge && (
+                      <span
+                        className={`absolute top-2 right-2 text-[10px] font-semibold px-1.5 py-0.5 rounded ${
+                          item.badge === "Popular"
+                            ? "bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-200"
+                            : "bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-200"
+                        }`}
+                      >
+                        {item.badge}
+                      </span>
+                    )}
+                    <div className="font-medium text-page">{item.name}</div>
+                    <div className="text-xs text-page/70 mt-1">{item.desc}</div>
+                  </>
+                );
+                const cardClass =
+                  "tool-card relative text-left p-3 rounded-lg block w-full cursor-pointer";
+
+                if (item.type === "route") {
+                  return (
+                    <Link key={item.name} href={`/${item.slug}`} className={cardClass}>
+                      {cardInner}
+                    </Link>
+                  );
+                }
+                if (item.type === "open-health") {
+                  return (
+                    <button
+                      key={item.name}
+                      type="button"
+                      className={cardClass}
+                      onClick={() => setHealthDashboardOpen(true)}
                     >
-                      {item.badge}
-                    </span>
-                  )}
-                  <div className="font-medium text-page">{item.name}</div>
-                  <div className="text-xs text-page/70 mt-1">{item.desc}</div>
-                </Link>
-              ))}
+                      {cardInner}
+                    </button>
+                  );
+                }
+                return (
+                  <button
+                    key={item.name}
+                    type="button"
+                    className={cardClass}
+                    onClick={() => requestOpenSettingsFab()}
+                  >
+                    {cardInner}
+                  </button>
+                );
+              })}
             </div>
             {/* What's New trigger – hidden after user has seen v2 changelog */}
             {showChangelogBadge && (
@@ -106,7 +194,7 @@ export default function Home() {
                   className="py-1.5 px-3 rounded-full text-white text-xs font-bold cursor-pointer border-none transition-opacity hover:opacity-90"
                   style={{ background: "var(--accent-color)" }}
                 >
-                  What&apos;s New in v2.0? ✨
+                  What&apos;s New in v2.1? ✨
                 </button>
               </div>
             )}

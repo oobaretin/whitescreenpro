@@ -20,10 +20,19 @@ export function SettingsFab() {
     multiMonitorSyncEnabled,
     setMultiMonitorSyncEnabled,
     setHealthDashboardOpen,
+    settingsOpenNonce,
   } = useAppStore();
   const [panelOpen, setPanelOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
   const btnRef = useRef<HTMLButtonElement>(null);
+  const lastSettingsNonceRef = useRef(0);
+
+  useEffect(() => {
+    if (settingsOpenNonce > lastSettingsNonceRef.current) {
+      lastSettingsNonceRef.current = settingsOpenNonce;
+      setPanelOpen(true);
+    }
+  }, [settingsOpenNonce]);
 
   // Apply master brightness to body (store holds source of truth; sync can update it)
   useEffect(() => {

@@ -3,7 +3,7 @@
 import { useEffect, useCallback } from "react";
 import { useAppStore } from "@/lib/store";
 
-const CHANGELOG_SEEN_KEY = "whitescreentools-v2-seen";
+const CHANGELOG_SEEN_KEY = "whitescreentools-v2.1-seen";
 
 export function ChangelogModal() {
   const changelogOpen = useAppStore((s) => s.changelogOpen);
@@ -40,11 +40,32 @@ export function ChangelogModal() {
         style={{ boxShadow: "0 20px 40px rgba(0,0,0,0.4)" }}
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 id="changelog-title" className="text-xl font-bold mt-0 mb-4 text-page">
-          Release Notes v2.0
+        <h2 id="changelog-title" className="text-xl font-bold mt-0 mb-1 text-page">
+          Release Notes
         </h2>
+        <p className="text-sm text-page/70 mb-4">Version 2.1</p>
         <div className="max-h-[350px] overflow-y-auto text-left pr-2">
           <h4 className="text-sm font-semibold mt-4 mb-2 first:mt-0" style={{ color: "var(--accent-color)" }}>
+            Zen Mode, warmth, sync &amp; help
+          </h4>
+          <ul className="list-disc pl-5 space-y-1 text-sm text-page/90 mb-4">
+            <li>
+              <strong>Zen Mode:</strong> On tool pages, after a few seconds without input the cursor hides and extra UI fades away; move the mouse or use the keyboard to bring everything back (smooth transitions).
+            </li>
+            <li>
+              <strong>Master warmth (Kelvin):</strong> Fine-tune white balance with a Kelvin-based warmth slider in Master Controls.
+            </li>
+            <li>
+              <strong>Multi-monitor sync:</strong> Optionally match color, brightness, and warmth across other tabs or windows on this device—local only, nothing sent to a server.
+            </li>
+            <li>
+              <strong>Monitor Health Check:</strong> Step-by-step wizard (dead pixels, bleed, gray uniformity, motion blur), including the gray screen tool—open from the footer or settings.
+            </li>
+            <li>
+              <strong>Context help:</strong> Bottom-left <strong>?</strong> button with short tips for each tool; a quick pulse when you change page or mode.
+            </li>
+          </ul>
+          <h4 className="text-sm font-semibold mt-4 mb-2" style={{ color: "var(--accent-color)" }}>
             🚀 New Power Tools
           </h4>
           <ul className="list-disc pl-5 space-y-1 text-sm text-page/90 mb-4">

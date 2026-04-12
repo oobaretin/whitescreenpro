@@ -68,6 +68,8 @@ export interface AppState {
   pixelShifterEnabled: boolean;
   ecoMode: boolean;
   changelogOpen: boolean;
+  /** Bumped from homepage etc. so SettingsFab can open its panel */
+  settingsOpenNonce: number;
   /** Master warmth slider (2000K–10000K); moving it sets display color via kelvinToHex */
   masterKelvin: number;
   /** Global brightness filter (20–100), same as Master Controls slider */
@@ -185,6 +187,7 @@ export interface AppState {
   setPixelShifterEnabled: (enabled: boolean) => void;
   setEcoMode: (enabled: boolean) => void;
   setChangelogOpen: (open: boolean) => void;
+  requestOpenSettingsFab: () => void;
   setMasterKelvin: (kelvin: number, opts?: { fromSync?: boolean }) => void;
   setMasterBrightness: (value: number, opts?: { fromSync?: boolean }) => void;
   setMultiMonitorSyncEnabled: (enabled: boolean) => void;
@@ -295,6 +298,7 @@ export const useAppStore = create<AppState>()((set, get) => ({
       pixelShifterEnabled: (typeof window !== "undefined" && localStorage.getItem("whitescreentools-pixel-shifter") === "true") || false,
       ecoMode: (typeof window !== "undefined" && localStorage.getItem("whitescreentools-eco-mode") === "true") || false,
       changelogOpen: false,
+      settingsOpenNonce: 0,
       masterKelvin: readMasterKelvin(),
       masterBrightness: readMasterBrightness(),
       multiMonitorSyncEnabled: readMultiMonitorSync(),
@@ -524,6 +528,9 @@ export const useAppStore = create<AppState>()((set, get) => ({
         }
       },
       setChangelogOpen: (open: boolean) => set({ changelogOpen: open }),
+
+      requestOpenSettingsFab: () =>
+        set((s) => ({ settingsOpenNonce: s.settingsOpenNonce + 1 })),
 
       setMasterKelvin: (kelvin: number, opts?: { fromSync?: boolean }) => {
         const k = Math.min(10000, Math.max(2000, kelvin));

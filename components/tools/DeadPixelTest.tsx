@@ -15,7 +15,14 @@ const TEST_COLORS = [
 ];
 
 export function DeadPixelTest() {
-  const { deadPixel, setDeadPixel, setColor, activeMode } = useAppStore();
+  const {
+    deadPixel,
+    setDeadPixel,
+    setColor,
+    activeMode,
+    isFullscreen,
+    toggleFullscreen,
+  } = useAppStore();
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const [markedPixels, setMarkedPixels] = useState<Array<{ x: number; y: number }>>([]);
 
@@ -174,7 +181,7 @@ export function DeadPixelTest() {
         </div>
 
         {/* Control Buttons */}
-        <div className="grid grid-cols-4 gap-2">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
           <button
             onClick={() => setDeadPixel({ autoCycle: !deadPixel.autoCycle })}
             className={`py-3 rounded-lg font-semibold text-sm transition-all ${
@@ -213,6 +220,17 @@ export function DeadPixelTest() {
             Clear ({markedPixels.length})
           </button>
         </div>
+        <button
+          type="button"
+          onClick={() => toggleFullscreen()}
+          className={`mt-2 w-full py-3 rounded-lg font-semibold text-sm transition-all ${
+            isFullscreen
+              ? "bg-amber-600 text-white hover:bg-amber-500"
+              : "bg-indigo-600 text-white hover:bg-indigo-500"
+          }`}
+        >
+          {isFullscreen ? "Exit fullscreen" : "⛶ Fullscreen (F)"}
+        </button>
 
         {/* Auto-Cycle Speed */}
         {deadPixel.autoCycle && (
