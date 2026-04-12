@@ -7,36 +7,41 @@ export function NoSignalControls() {
   const { noSignal, setNoSignal } = useAppStore();
 
   return (
-    <div className="space-y-4 mt-4 p-4 bg-gray-800/50 rounded-lg border border-gray-700">
-      <h3 className="text-lg font-semibold text-white mb-4">No Signal</h3>
-      
+    <div className="space-y-3 p-3 rounded-t-xl border-t border-gray-600 bg-gray-950/95 backdrop-blur-md shadow-[0_-12px_32px_rgba(0,0,0,0.55)]">
+      <h3 className="text-base font-semibold text-white mb-1">No Signal</h3>
+      <p className="text-[11px] text-gray-500 mb-2">
+        Docked on the canvas so these controls stay visible in browser fullscreen.
+      </p>
+
       {/* Signal Type */}
       <div>
         <label className="text-sm font-medium text-gray-300 mb-2 block">
-          Signal Type
+          Signal type
         </label>
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           <button
+            type="button"
             onClick={() => setNoSignal({ type: "static" })}
-            className={`px-4 py-3 rounded transition-colors ${
+            className={`px-4 py-3 rounded-lg text-left transition-colors ${
               noSignal.type === "static"
-                ? "bg-blue-600 text-white"
+                ? "bg-blue-600 text-white ring-2 ring-blue-300/80"
                 : "bg-gray-700 text-gray-300 hover:bg-gray-600"
             }`}
           >
-            <div className="font-medium">📺 TV Static</div>
-            <div className="text-xs opacity-70">Classic noise</div>
+            <div className="font-medium">📺 TV static</div>
+            <div className="text-xs opacity-80">Classic noise</div>
           </button>
           <button
+            type="button"
             onClick={() => setNoSignal({ type: "colorbars" })}
-            className={`px-4 py-3 rounded transition-colors ${
+            className={`px-4 py-3 rounded-lg text-left transition-colors ${
               noSignal.type === "colorbars"
-                ? "bg-blue-600 text-white"
+                ? "bg-violet-600 text-white ring-2 ring-violet-300/80"
                 : "bg-gray-700 text-gray-300 hover:bg-gray-600"
             }`}
           >
-            <div className="font-medium">🌈 Color Bars</div>
-            <div className="text-xs opacity-70">90s test pattern</div>
+            <div className="font-medium">🌈 Color bars</div>
+            <div className="text-xs opacity-80">SMPTE-style pattern</div>
           </button>
         </div>
       </div>

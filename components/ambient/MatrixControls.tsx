@@ -52,12 +52,16 @@ const CHARSET_OPTIONS: {
   },
 ];
 
+/** Bottom-docked on the Matrix canvas (inside fullscreen element so options stay visible). */
 export function MatrixControls() {
   const { matrix, setMatrix } = useAppStore();
 
   return (
-    <div className="space-y-4 mt-4 p-4 bg-gray-800/50 rounded-lg border border-gray-700">
-      <h3 className="text-lg font-semibold text-white mb-4">Matrix Rain</h3>
+    <div className="space-y-3 p-3 rounded-t-xl border-t border-gray-600 bg-gray-950/95 backdrop-blur-md shadow-[0_-12px_32px_rgba(0,0,0,0.55)]">
+      <h3 className="text-base font-semibold text-white mb-1">Matrix Rain</h3>
+      <p className="text-[11px] text-gray-500 mb-2">
+        Docked on the canvas so these controls stay visible in browser fullscreen.
+      </p>
 
       <div>
         <label className="text-sm font-medium text-gray-300 mb-2 block">
@@ -85,9 +89,6 @@ export function MatrixControls() {
         <label className="text-sm font-medium text-gray-300 mb-2 block">
           Character set
         </label>
-        <p className="text-xs text-gray-500 mb-2">
-          Same four sets as always; tap a row to switch.
-        </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           {CHARSET_OPTIONS.map(({ id, label, sample, activeClass }) => {
             const on = matrix.characterSet === id;

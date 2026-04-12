@@ -564,8 +564,30 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
               {activeMode === "hacker-terminal" && skeletonDone && <HackerTerminal />}
               {activeMode === "dvd-screensaver" && <DVDScreensaver />}
               {activeMode === "matrix-rain" && skeletonDone && <MatrixRain />}
+              {toolSlug === "matrix-rain" && (
+                <div
+                  className="absolute inset-x-0 bottom-0 z-[45] max-h-[min(55vh,440px)] overflow-y-auto overscroll-y-contain"
+                  onPointerDown={(e) => e.stopPropagation()}
+                  onClick={(e) => e.stopPropagation()}
+                  role="region"
+                  aria-label="Matrix Rain options"
+                >
+                  <MatrixControls />
+                </div>
+              )}
               {activeMode === "flip-clock" && <FlipClock />}
               {activeMode === "no-signal" && <NoSignal />}
+              {toolSlug === "no-signal" && (
+                <div
+                  className="absolute inset-x-0 bottom-0 z-[45] max-h-[min(50vh,400px)] overflow-y-auto overscroll-y-contain"
+                  onPointerDown={(e) => e.stopPropagation()}
+                  onClick={(e) => e.stopPropagation()}
+                  role="region"
+                  aria-label="No Signal options"
+                >
+                  <NoSignalControls />
+                </div>
+              )}
               {shouldShowBackground && showHint && <HintIndicator />}
               
               {/* Fullscreen Button Overlay - hidden for broken-screen (it has its own), hover for others */}
@@ -580,7 +602,7 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
           )}
 
           {/* Controls Section */}
-          {!["tip-screen", "signature-screen", "dead-pixel-test", "screen-stress-test"].includes(toolSlug) && (
+          {!["tip-screen", "signature-screen", "dead-pixel-test", "screen-stress-test", "matrix-rain", "no-signal"].includes(toolSlug) && (
             <div className="bg-white rounded-xl shadow-md p-6 mb-6">
               <h2 className="text-xl font-bold text-gray-900 mb-4">{t.common.settings}</h2>
               
@@ -590,9 +612,7 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
               {toolSlug === "fake-update" && <FakeUpdateControls />}
               {toolSlug === "hacker-terminal" && <HackerTerminalControls />}
               {toolSlug === "dvd-screensaver" && <DVDControls />}
-              {toolSlug === "matrix-rain" && <MatrixControls />}
               {toolSlug === "flip-clock" && <FlipClockControls />}
-              {toolSlug === "no-signal" && <NoSignalControls />}
             </div>
           )}
         </main>
