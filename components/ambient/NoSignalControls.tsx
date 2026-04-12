@@ -1,16 +1,45 @@
 "use client";
 
+import { useState } from "react";
 import { useAppStore } from "@/lib/store";
 import * as Switch from "@radix-ui/react-switch";
 
 export function NoSignalControls() {
   const { noSignal, setNoSignal } = useAppStore();
+  const [panelHidden, setPanelHidden] = useState(false);
+
+  if (panelHidden) {
+    return (
+      <div className="flex justify-center border-t border-gray-600 bg-gray-950/90 py-2 px-3 rounded-t-xl backdrop-blur-md shadow-[0_-8px_24px_rgba(0,0,0,0.45)]">
+        <button
+          type="button"
+          onClick={() => setPanelHidden(false)}
+          className="rounded-full border border-gray-600 bg-gray-800 px-4 py-2 text-sm font-medium text-gray-100 shadow-md transition-colors hover:bg-gray-700"
+          aria-expanded={false}
+        >
+          Show No Signal options
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-3 p-3 rounded-t-xl border-t border-gray-600 bg-gray-950/95 backdrop-blur-md shadow-[0_-12px_32px_rgba(0,0,0,0.55)]">
-      <h3 className="text-base font-semibold text-white mb-1">No Signal</h3>
-      <p className="text-[11px] text-gray-500 mb-2">
-        Docked on the canvas so these controls stay visible in browser fullscreen.
+      <div className="flex items-start justify-between gap-2">
+        <h3 className="text-base font-semibold text-white leading-tight">
+          No Signal
+        </h3>
+        <button
+          type="button"
+          onClick={() => setPanelHidden(true)}
+          className="shrink-0 rounded-md border border-gray-600 bg-gray-800 px-2.5 py-1 text-xs font-medium text-gray-200 transition-colors hover:bg-gray-700"
+          aria-expanded
+        >
+          Hide
+        </button>
+      </div>
+      <p className="text-[11px] text-gray-500 -mt-1 mb-1">
+        Docked for fullscreen; use Hide for an unobstructed view.
       </p>
 
       {/* Signal Type */}
