@@ -27,11 +27,11 @@ export function Footer() {
             className="block max-w-3xl w-full rounded-xl shadow-md overflow-hidden transition-transform duration-200 ease-out hover:scale-[1.02] hover:shadow-lg"
           >
             <img
-              src="https://placehold.co/1200x280/1e293b/94a3b8?text=Micro1+jobs+referral"
-              alt="Micro1 jobs referral"
+              src="/images/micro1-referral-banner.png"
+              alt="micro1 — job referral"
               className="w-full h-auto align-middle block"
-              width={1200}
-              height={280}
+              width={684}
+              height={292}
               loading="lazy"
               decoding="async"
             />
