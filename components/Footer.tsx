@@ -24,14 +24,14 @@ export function Footer() {
             href={MICRO1_REFERRAL_URL}
             target="_blank"
             rel="noopener noreferrer nofollow sponsored"
-            className="block max-w-3xl w-full rounded-xl shadow-md overflow-hidden transition-transform duration-200 ease-out hover:scale-[1.02] hover:shadow-lg"
+            className="block w-full max-w-[360px] rounded-xl shadow-md overflow-hidden transition-transform duration-200 ease-out hover:scale-[1.02] hover:shadow-lg"
           >
             <img
               src="/images/micro1-referral-banner.png"
               alt="micro1 — job referral"
               className="w-full h-auto align-middle block"
-              width={684}
-              height={292}
+              width={360}
+              height={153}
               loading="lazy"
               decoding="async"
             />
