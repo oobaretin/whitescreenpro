@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { useAppStore } from "@/lib/store";
 import Image from "next/image";
 
@@ -14,8 +15,98 @@ const PATTERNS = [
 export function BrokenScreen() {
   const { brokenScreen, setBrokenScreen, setActiveMode, activeMode } = useAppStore();
 
+  // #region agent log
+  useEffect(() => {
+    const s = useAppStore.getState();
+    fetch("http://127.0.0.1:7303/ingest/e83460c1-ccc1-4416-8b5e-ee486110d3e1", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Debug-Session-Id": "5567c8",
+      },
+      body: JSON.stringify({
+        sessionId: "5567c8",
+        hypothesisId: "H2",
+        location: "BrokenScreen.tsx:mount",
+        message: "BrokenScreen mounted",
+        data: {
+          patternsCount: PATTERNS.length,
+          patternIds: PATTERNS.map((p) => p.id),
+          storePattern: s.brokenScreen.pattern,
+          activeMode: s.activeMode,
+        },
+        timestamp: Date.now(),
+      }),
+    }).catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    fetch("http://127.0.0.1:7303/ingest/e83460c1-ccc1-4416-8b5e-ee486110d3e1", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Debug-Session-Id": "5567c8",
+      },
+      body: JSON.stringify({
+        sessionId: "5567c8",
+        hypothesisId: "H1-H5",
+        location: "BrokenScreen.tsx:storePattern",
+        message: "brokenScreen.pattern or activeMode changed",
+        data: { storePattern: brokenScreen.pattern, activeMode },
+        timestamp: Date.now(),
+      }),
+    }).catch(() => {});
+  }, [brokenScreen.pattern, activeMode]);
+  // #endregion
+
   const handlePatternSelect = (patternId: string) => {
+    // #region agent log
+    fetch("http://127.0.0.1:7303/ingest/e83460c1-ccc1-4416-8b5e-ee486110d3e1", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Debug-Session-Id": "5567c8",
+      },
+      body: JSON.stringify({
+        sessionId: "5567c8",
+        hypothesisId: "H4-H5",
+        location: "BrokenScreen.tsx:handlePatternSelect:entry",
+        message: "Pattern button clicked",
+        data: {
+          clickedId: patternId,
+          activeModeBefore: useAppStore.getState().activeMode,
+          patternBefore: useAppStore.getState().brokenScreen.pattern,
+        },
+        timestamp: Date.now(),
+      }),
+    }).catch(() => {});
+    // #endregion
+
     setBrokenScreen({ pattern: patternId });
+
+    // #region agent log
+    queueMicrotask(() => {
+      const s = useAppStore.getState();
+      fetch("http://127.0.0.1:7303/ingest/e83460c1-ccc1-4416-8b5e-ee486110d3e1", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Debug-Session-Id": "5567c8",
+        },
+        body: JSON.stringify({
+          sessionId: "5567c8",
+          hypothesisId: "H3",
+          location: "BrokenScreen.tsx:handlePatternSelect:afterSet",
+          message: "Store after setBrokenScreen (microtask)",
+          data: {
+            patternAfter: s.brokenScreen.pattern,
+            activeModeAfter: s.activeMode,
+          },
+          timestamp: Date.now(),
+        }),
+      }).catch(() => {});
+    });
+    // #endregion
     
     // Play a subtle click sound
     try {

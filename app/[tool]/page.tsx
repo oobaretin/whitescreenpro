@@ -156,6 +156,29 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
     }
     
     if (toolConfig.mode) {
+      // #region agent log
+      if (toolSlug === "broken-screen") {
+        fetch("http://127.0.0.1:7303/ingest/e83460c1-ccc1-4416-8b5e-ee486110d3e1", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Debug-Session-Id": "5567c8",
+          },
+          body: JSON.stringify({
+            sessionId: "5567c8",
+            hypothesisId: "H3",
+            location: "[tool]/page.tsx:toolEffect",
+            message: "Sync effect sets activeMode from tool config",
+            data: {
+              modeFromConfig: toolConfig.mode,
+              storePatternBefore: useAppStore.getState().brokenScreen.pattern,
+              activeModeBefore: useAppStore.getState().activeMode,
+            },
+            timestamp: Date.now(),
+          }),
+        }).catch(() => {});
+      }
+      // #endregion
       setActiveMode(toolConfig.mode as any);
     } else {
       setActiveMode("color");
