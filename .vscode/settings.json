@@ -1,0 +1,12 @@
+{
+  "portsAttributes": {
+    "3000": {
+      "label": "Next.js (dev)",
+      "onAutoForward": "openBrowser"
+    },
+    "3001": {
+      "label": "Next.js (dev fallback)",
+      "onAutoForward": "openBrowser"
+    }
+  }
+}
