@@ -46,7 +46,9 @@ body {
 }
 
 body.tool-active {
-  overflow: hidden;
+  /* Keep horizontal clip; allow vertical scroll so settings/options below the display stay reachable */
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 /* Navigation and Footer visibility in fullscreen */
