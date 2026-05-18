@@ -3,9 +3,6 @@
 import Link from "next/link";
 import { useAppStore } from "@/lib/store";
 
-const MICRO1_REFERRAL_URL =
-  "https://refer.micro1.ai/referral/jobs?referralCode=41368bfc-baf0-44d3-ba6d-ab0a692eb8d6&utm_source=referral&utm_medium=share&utm_campaign=job_referral";
-
 export function Footer() {
   const currentYear = new Date().getFullYear();
   const setChangelogOpen = useAppStore((s) => s.setChangelogOpen);
@@ -14,24 +11,6 @@ export function Footer() {
   return (
     <footer className="zen-ui bg-card border-t border-card mt-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-        <div className="flex justify-center mb-4">
-          <a
-            href={MICRO1_REFERRAL_URL}
-            target="_blank"
-            rel="noopener noreferrer nofollow sponsored"
-            className="block w-full max-w-[360px] rounded-xl shadow-md overflow-hidden transition-transform duration-200 ease-out hover:scale-[1.02] hover:shadow-lg"
-          >
-            <img
-              src="/images/micro1-referral-banner.png"
-              alt="micro1 — job referral"
-              className="w-full h-auto align-middle block"
-              width={360}
-              height={153}
-              loading="lazy"
-              decoding="async"
-            />
-          </a>
-        </div>
         {/* Legal notice (condensed) */}
         <p className="text-center text-xs text-page/80 mb-3 max-w-2xl mx-auto">
           Notice: Tools are provided for testing and entertainment. Use at your own risk. Warning: Some tools may contain flashing lights. By using this site, you agree to our{" "}

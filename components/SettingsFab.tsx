@@ -3,6 +3,10 @@
 import { useState, useRef, useEffect } from "react";
 import { useAppStore } from "@/lib/store";
 
+/** Inset from viewport bottom/right with iOS/Android safe-area. */
+const edgeBottom = "max(1.25rem, env(safe-area-inset-bottom, 0px))";
+const edgeRight = "max(1.25rem, env(safe-area-inset-right, 0px))";
+
 export function SettingsFab() {
   const {
     theme,
@@ -60,7 +64,7 @@ export function SettingsFab() {
     };
   }, [pixelShifterEnabled]);
 
-  // Close panel when clicking outside
+  // Close panel when clicking outside controls
   useEffect(() => {
     if (!panelOpen) return;
     const handleClick = (e: MouseEvent) => {
@@ -76,6 +80,18 @@ export function SettingsFab() {
     return () => document.removeEventListener("mousedown", handleClick);
   }, [panelOpen]);
 
+  useEffect(() => {
+    if (!panelOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        setPanelOpen(false);
+      }
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [panelOpen]);
+
   const handleThemeClick = () => {
     const next = theme === "dark" ? "light" : "dark";
     setTheme(next);
@@ -86,6 +102,13 @@ export function SettingsFab() {
 
   return (
     <>
+      {panelOpen && (
+        <div
+          className="zen-ui fixed inset-0 z-[998] bg-black/25 backdrop-blur-[1px] dark:bg-black/45"
+          aria-hidden
+          onClick={() => setPanelOpen(false)}
+        />
+      )}
       <button
         ref={btnRef}
         id="settings-btn"
@@ -94,31 +117,47 @@ export function SettingsFab() {
           e.stopPropagation();
           setPanelOpen((prev) => !prev);
         }}
-        className="zen-ui fixed bottom-5 right-5 z-[1000] rounded-full w-12 h-12 flex items-center justify-center text-xl text-white border-0 cursor-pointer shadow-lg hover:opacity-90 transition-opacity"
+        aria-label={panelOpen ? "Close settings" : "Open settings"}
+        aria-expanded={panelOpen}
+        aria-haspopup="dialog"
+        aria-controls="settings-panel"
+        className="zen-ui fixed z-[1001] flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border-0 text-xl text-white shadow-lg transition-opacity hover:opacity-90 min-h-[48px] min-w-[48px]"
         style={{
+          bottom: edgeBottom,
+          right: edgeRight,
           background: "var(--accent-color)",
           boxShadow: "0 4px 10px rgba(0,0,0,0.3)",
         }}
-        aria-label="Open settings"
       >
-        ⚙️
+        {panelOpen ? "✕" : "⚙️"}
       </button>
 
       {panelOpen && (
         <div
           ref={panelRef}
           id="settings-panel"
-          className="fixed bottom-20 right-5 w-[280px] rounded-xl p-5 shadow-xl z-[1000] border"
+          role="dialog"
+          aria-modal="false"
+          aria-labelledby="master-controls-heading"
+          className="zen-ui fixed z-[1001] flex w-[280px] max-w-[calc(100vw-1.75rem)] flex-col overflow-hidden rounded-xl border shadow-xl"
           style={{
+            bottom: `calc(${edgeBottom} + 3.75rem)`,
+            right: edgeRight,
+            maxHeight: "min(32rem, calc(100svh - 6rem))",
             background: "var(--card-bg)",
             borderColor: "var(--border-color)",
             boxShadow: "0 10px 25px rgba(0,0,0,0.2)",
           }}
+          onClick={(e) => e.stopPropagation()}
         >
-          <h3 className="mt-0 mb-4 text-lg font-semibold text-page">
+          <h3
+            id="master-controls-heading"
+            className="shrink-0 border-b px-5 py-4 text-lg font-semibold text-page"
+            style={{ borderColor: "var(--border-color)" }}
+          >
             Master Controls
           </h3>
-
+          <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 py-4">
           <div className="mb-5">
             <label className="block text-page text-sm mb-1">Brightness</label>
             <input
@@ -138,7 +177,7 @@ export function SettingsFab() {
           </div>
 
           <div
-            className="zen-ui mt-5 mb-5 border-t pt-4"
+            className="zen-ui mt-2 mb-5 border-t pt-5"
             style={{ borderColor: "var(--border-color)" }}
           >
             <label className="flex justify-between items-center text-sm text-page mb-2">
@@ -269,9 +308,15 @@ export function SettingsFab() {
             Toggle Fullscreen (F)
           </button>
 
-          <p className="text-center text-page/70 text-xs mt-4">
-            Press <b>ESC</b> to exit any tool.
+          <p className="text-center text-page/70 text-xs mt-4 leading-relaxed space-y-1">
+            <span className="block">
+              Tap outside, backdrop, this button (<b>✕</b>), or <b>Escape</b> to close settings.
+            </span>
+            <span className="block">
+              <b>Escape</b> in a fullscreen tool exits that tool.
+            </span>
           </p>
+          </div>
         </div>
       )}
     </>

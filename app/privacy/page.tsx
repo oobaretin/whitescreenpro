@@ -65,8 +65,8 @@ export default function PrivacyPage() {
             <section>
               <h2 className="text-2xl font-semibold text-black mb-4">Third-Party Services</h2>
               <p className="text-lg text-gray-700">
-                We do not use any third-party analytics, advertising, or tracking services. 
-                The application is completely self-contained and operates independently. No 
+                We do not use any third-party analytics, advertising, or tracking services.
+                The application is completely self-contained and operates independently. No
                 external scripts or services are loaded that could compromise your privacy.
               </p>
             </section>

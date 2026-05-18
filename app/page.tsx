@@ -201,133 +201,170 @@ export default function Home() {
           </div>
         </div>
 
-        {/* About Section */}
-        <div className="bg-card rounded-xl shadow-md p-6 mb-6 border border-card">
-          <h2 className="text-2xl font-bold text-page mb-4">{t.home.aboutTitle}</h2>
-          <p className="text-page/90 mb-6 leading-relaxed">{t.home.aboutDescription}</p>
-          
+        {/* About — collapsed by default; full copy still in DOM for SEO */}
+        <details className="group bg-card rounded-xl shadow-md mb-6 border border-card">
+          <summary className="cursor-pointer select-none list-none flex items-center justify-between gap-3 p-6 [&::-webkit-details-marker]:hidden">
+            <h2 className="text-2xl font-bold text-page">{t.home.aboutTitle}</h2>
+            <span className="flex-shrink-0 text-page/50 transition-transform duration-200 group-open:rotate-180" aria-hidden="true">
+              ▼
+            </span>
+          </summary>
+          <div className="px-6 pb-6 pt-0 space-y-6 border-t border-card">
+          <p className="text-page/90 leading-relaxed">{t.home.aboutDescription}</p>
+
+          <div>
           <h3 className="text-xl font-semibold text-page mb-3">{t.home.definitionTitle}</h3>
           <p className="text-page/90 mb-6 leading-relaxed">{t.home.definition}</p>
 
           <h3 className="text-xl font-semibold text-page mb-3">{t.home.featuresTitle}</h3>
-          <div className="grid md:grid-cols-2 gap-4 mb-6">
+          <div className="grid md:grid-cols-2 gap-4 mb-2">
             <div>
-              <h4 className="font-semibold text-gray-800 mb-2">{t.about.useCases}</h4>
-              <ul className="space-y-2 text-gray-700 text-sm">
-                <li className="flex items-start">
-                  <span className="text-blue-600 mr-2">•</span>
+              <h4 className="font-semibold text-page mb-2">{t.about.useCases}</h4>
+              <ul className="space-y-2 text-page/85 text-sm">
+                <li className="flex items-start gap-2">
+                  <span className="flex-shrink-0" style={{ color: "var(--accent-color)" }} aria-hidden="true">
+                    •
+                  </span>
                   <span>{t.about.professional}</span>
                 </li>
-                <li className="flex items-start">
-                  <span className="text-blue-600 mr-2">•</span>
+                <li className="flex items-start gap-2">
+                  <span className="flex-shrink-0" style={{ color: "var(--accent-color)" }} aria-hidden="true">
+                    •
+                  </span>
                   <span>{t.about.creative}</span>
                 </li>
-                <li className="flex items-start">
-                  <span className="text-blue-600 mr-2">•</span>
+                <li className="flex items-start gap-2">
+                  <span className="flex-shrink-0" style={{ color: "var(--accent-color)" }} aria-hidden="true">
+                    •
+                  </span>
                   <span>{t.about.testing}</span>
                 </li>
-                <li className="flex items-start">
-                  <span className="text-blue-600 mr-2">•</span>
+                <li className="flex items-start gap-2">
+                  <span className="flex-shrink-0" style={{ color: "var(--accent-color)" }} aria-hidden="true">
+                    •
+                  </span>
                   <span>{t.about.entertainment}</span>
                 </li>
               </ul>
             </div>
           </div>
-        </div>
+          </div>
+          <p className="pt-2">
+            <Link
+              href="/about"
+              className="inline-flex items-center gap-1 text-sm font-medium underline underline-offset-2 hover:opacity-80"
+              style={{ color: "var(--accent-color)" }}
+            >
+              {t.nav.about}
+              <span aria-hidden="true">→</span>
+            </Link>
+          </p>
+          </div>
+        </details>
 
-        {/* How Tools Work Section */}
-        <div className="bg-white rounded-xl shadow-md p-6 mb-6">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">{t.home.toolsTitle}</h2>
-          <div className="space-y-4">
-            <div className="border-l-4 border-blue-500 pl-4">
-              <h4 className="font-semibold text-gray-800 mb-2">Color Screens</h4>
-              <p className="text-gray-700 text-sm">{t.toolExplanations.colorScreens}</p>
+        {/* How Tools Work */}
+        <details className="group bg-card rounded-xl shadow-md mb-6 border border-card">
+          <summary className="cursor-pointer select-none list-none flex items-center justify-between gap-3 p-6 [&::-webkit-details-marker]:hidden">
+            <h2 className="text-2xl font-bold text-page">{t.home.toolsTitle}</h2>
+            <span className="flex-shrink-0 text-page/50 transition-transform duration-200 group-open:rotate-180" aria-hidden="true">
+              ▼
+            </span>
+          </summary>
+          <div className="px-6 pb-6 pt-0 space-y-4 border-t border-card">
+            <div className="border-l-4 pl-4" style={{ borderLeftColor: "var(--accent-color)" }}>
+              <h3 className="font-semibold text-page mb-2">Color Screens</h3>
+              <p className="text-page/85 text-sm">{t.toolExplanations.colorScreens}</p>
             </div>
-            <div className="border-l-4 border-blue-500 pl-4">
-              <h4 className="font-semibold text-gray-800 mb-2">{t.tools.zoomLighting}</h4>
-              <p className="text-gray-700 text-sm">{t.toolExplanations.zoomLighting}</p>
+            <div className="border-l-4 pl-4" style={{ borderLeftColor: "var(--accent-color)" }}>
+              <h3 className="font-semibold text-page mb-2">{t.tools.zoomLighting}</h3>
+              <p className="text-page/85 text-sm">{t.toolExplanations.zoomLighting}</p>
             </div>
-            <div className="border-l-4 border-blue-500 pl-4">
-              <h4 className="font-semibold text-gray-800 mb-2">{t.tools.signature}</h4>
-              <p className="text-gray-700 text-sm">{t.toolExplanations.signature}</p>
+            <div className="border-l-4 pl-4" style={{ borderLeftColor: "var(--accent-color)" }}>
+              <h3 className="font-semibold text-page mb-2">{t.tools.signature}</h3>
+              <p className="text-page/85 text-sm">{t.toolExplanations.signature}</p>
             </div>
-            <div className="border-l-4 border-blue-500 pl-4">
-              <h4 className="font-semibold text-gray-800 mb-2">{t.tools.tipScreen}</h4>
-              <p className="text-gray-700 text-sm">{t.toolExplanations.tipScreen}</p>
+            <div className="border-l-4 pl-4" style={{ borderLeftColor: "var(--accent-color)" }}>
+              <h3 className="font-semibold text-page mb-2">{t.tools.tipScreen}</h3>
+              <p className="text-page/85 text-sm">{t.toolExplanations.tipScreen}</p>
             </div>
-            <div className="border-l-4 border-blue-500 pl-4">
-              <h4 className="font-semibold text-gray-800 mb-2">{t.tools.deadPixelTest}</h4>
-              <p className="text-gray-700 text-sm">{t.toolExplanations.deadPixel}</p>
+            <div className="border-l-4 pl-4" style={{ borderLeftColor: "var(--accent-color)" }}>
+              <h3 className="font-semibold text-page mb-2">{t.tools.deadPixelTest}</h3>
+              <p className="text-page/85 text-sm">{t.toolExplanations.deadPixel}</p>
             </div>
-            <div className="border-l-4 border-blue-500 pl-4">
-              <h4 className="font-semibold text-gray-800 mb-2">{t.pranks.brokenScreen}</h4>
-              <p className="text-gray-700 text-sm">{t.toolExplanations.brokenScreen}</p>
+            <div className="border-l-4 pl-4" style={{ borderLeftColor: "var(--accent-color)" }}>
+              <h3 className="font-semibold text-page mb-2">{t.pranks.brokenScreen}</h3>
+              <p className="text-page/85 text-sm">{t.toolExplanations.brokenScreen}</p>
             </div>
-            <div className="border-l-4 border-blue-500 pl-4">
-              <h4 className="font-semibold text-gray-800 mb-2">{t.pranks.bsod}</h4>
-              <p className="text-gray-700 text-sm">{t.toolExplanations.bsod}</p>
+            <div className="border-l-4 pl-4" style={{ borderLeftColor: "var(--accent-color)" }}>
+              <h3 className="font-semibold text-page mb-2">{t.pranks.bsod}</h3>
+              <p className="text-page/85 text-sm">{t.toolExplanations.bsod}</p>
             </div>
-            <div className="border-l-4 border-blue-500 pl-4">
-              <h4 className="font-semibold text-gray-800 mb-2">{t.pranks.fakeUpdate}</h4>
-              <p className="text-gray-700 text-sm">{t.toolExplanations.fakeUpdate}</p>
+            <div className="border-l-4 pl-4" style={{ borderLeftColor: "var(--accent-color)" }}>
+              <h3 className="font-semibold text-page mb-2">{t.pranks.fakeUpdate}</h3>
+              <p className="text-page/85 text-sm">{t.toolExplanations.fakeUpdate}</p>
             </div>
-            <div className="border-l-4 border-blue-500 pl-4">
-              <h4 className="font-semibold text-gray-800 mb-2">{t.pranks.hackerTerminal}</h4>
-              <p className="text-gray-700 text-sm">{t.toolExplanations.hackerTerminal}</p>
+            <div className="border-l-4 pl-4" style={{ borderLeftColor: "var(--accent-color)" }}>
+              <h3 className="font-semibold text-page mb-2">{t.pranks.hackerTerminal}</h3>
+              <p className="text-page/85 text-sm">{t.toolExplanations.hackerTerminal}</p>
             </div>
-            <div className="border-l-4 border-blue-500 pl-4">
-              <h4 className="font-semibold text-gray-800 mb-2">{t.ambient.dvdScreensaver}</h4>
-              <p className="text-gray-700 text-sm">{t.toolExplanations.dvdScreensaver}</p>
+            <div className="border-l-4 pl-4" style={{ borderLeftColor: "var(--accent-color)" }}>
+              <h3 className="font-semibold text-page mb-2">{t.ambient.dvdScreensaver}</h3>
+              <p className="text-page/85 text-sm">{t.toolExplanations.dvdScreensaver}</p>
             </div>
-            <div className="border-l-4 border-blue-500 pl-4">
-              <h4 className="font-semibold text-gray-800 mb-2">{t.ambient.matrixRain}</h4>
-              <p className="text-gray-700 text-sm">{t.toolExplanations.matrixRain}</p>
+            <div className="border-l-4 pl-4" style={{ borderLeftColor: "var(--accent-color)" }}>
+              <h3 className="font-semibold text-page mb-2">{t.ambient.matrixRain}</h3>
+              <p className="text-page/85 text-sm">{t.toolExplanations.matrixRain}</p>
             </div>
-            <div className="border-l-4 border-blue-500 pl-4">
-              <h4 className="font-semibold text-gray-800 mb-2">{t.ambient.flipClock}</h4>
-              <p className="text-gray-700 text-sm">{t.toolExplanations.flipClock}</p>
+            <div className="border-l-4 pl-4" style={{ borderLeftColor: "var(--accent-color)" }}>
+              <h3 className="font-semibold text-page mb-2">{t.ambient.flipClock}</h3>
+              <p className="text-page/85 text-sm">{t.toolExplanations.flipClock}</p>
             </div>
-            <div className="border-l-4 border-blue-500 pl-4">
-              <h4 className="font-semibold text-gray-800 mb-2">{t.ambient.noSignal}</h4>
-              <p className="text-gray-700 text-sm">{t.toolExplanations.noSignal}</p>
+            <div className="border-l-4 pl-4" style={{ borderLeftColor: "var(--accent-color)" }}>
+              <h3 className="font-semibold text-page mb-2">{t.ambient.noSignal}</h3>
+              <p className="text-page/85 text-sm">{t.toolExplanations.noSignal}</p>
             </div>
           </div>
-        </div>
+        </details>
 
-        {/* Q&A Section */}
-        <div className="bg-white rounded-xl shadow-md p-6 mb-6">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">{t.home.qaTitle}</h2>
-          <div className="space-y-6">
+        {/* Q&A */}
+        <details className="group bg-card rounded-xl shadow-md mb-6 border border-card">
+          <summary className="cursor-pointer select-none list-none flex items-center justify-between gap-3 p-6 [&::-webkit-details-marker]:hidden">
+            <h2 className="text-2xl font-bold text-page">{t.home.qaTitle}</h2>
+            <span className="flex-shrink-0 text-page/50 transition-transform duration-200 group-open:rotate-180" aria-hidden="true">
+              ▼
+            </span>
+          </summary>
+          <div className="px-6 pb-6 pt-0 space-y-6 border-t border-card">
             <div>
-              <h4 className="font-semibold text-gray-900 mb-2">Q: {t.qa.q1}</h4>
-              <p className="text-gray-700 text-sm pl-4">{t.qa.a1}</p>
+              <h3 className="font-semibold text-page mb-2">Q: {t.qa.q1}</h3>
+              <p className="text-page/85 text-sm pl-0 sm:pl-4">{t.qa.a1}</p>
             </div>
             <div>
-              <h4 className="font-semibold text-gray-900 mb-2">Q: {t.qa.q2}</h4>
-              <p className="text-gray-700 text-sm pl-4">{t.qa.a2}</p>
+              <h3 className="font-semibold text-page mb-2">Q: {t.qa.q2}</h3>
+              <p className="text-page/85 text-sm pl-0 sm:pl-4">{t.qa.a2}</p>
             </div>
             <div>
-              <h4 className="font-semibold text-gray-900 mb-2">Q: {t.qa.q3}</h4>
-              <p className="text-gray-700 text-sm pl-4">{t.qa.a3}</p>
+              <h3 className="font-semibold text-page mb-2">Q: {t.qa.q3}</h3>
+              <p className="text-page/85 text-sm pl-0 sm:pl-4">{t.qa.a3}</p>
             </div>
             <div>
-              <h4 className="font-semibold text-gray-900 mb-2">Q: {t.qa.q4}</h4>
-              <p className="text-gray-700 text-sm pl-4">{t.qa.a4}</p>
+              <h3 className="font-semibold text-page mb-2">Q: {t.qa.q4}</h3>
+              <p className="text-page/85 text-sm pl-0 sm:pl-4">{t.qa.a4}</p>
             </div>
             <div>
-              <h4 className="font-semibold text-gray-900 mb-2">Q: {t.qa.q5}</h4>
-              <p className="text-gray-700 text-sm pl-4">{t.qa.a5}</p>
+              <h3 className="font-semibold text-page mb-2">Q: {t.qa.q5}</h3>
+              <p className="text-page/85 text-sm pl-0 sm:pl-4">{t.qa.a5}</p>
             </div>
             <div>
-              <h4 className="font-semibold text-gray-900 mb-2">Q: {t.qa.q6}</h4>
-              <p className="text-gray-700 text-sm pl-4">{t.qa.a6}</p>
+              <h3 className="font-semibold text-page mb-2">Q: {t.qa.q6}</h3>
+              <p className="text-page/85 text-sm pl-0 sm:pl-4">{t.qa.a6}</p>
             </div>
             <div>
-              <h4 className="font-semibold text-gray-900 mb-2">Q: {t.qa.q7}</h4>
-              <p className="text-gray-700 text-sm pl-4">{t.qa.a7}</p>
+              <h3 className="font-semibold text-page mb-2">Q: {t.qa.q7}</h3>
+              <p className="text-page/85 text-sm pl-0 sm:pl-4">{t.qa.a7}</p>
             </div>
           </div>
-        </div>
+        </details>
       </main>
 
       <Footer />

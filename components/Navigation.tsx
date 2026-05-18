@@ -29,6 +29,7 @@ export function Navigation() {
   const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
+  const [navScrolled, setNavScrolled] = useState(false);
   const [dropdownPosition, setDropdownPosition] = useState({ top: 56, right: 16 });
   const langMenuRefDesktop = useRef<HTMLDivElement>(null);
   const langMenuRefMobile = useRef<HTMLDivElement>(null);
@@ -56,6 +57,13 @@ export function Navigation() {
     checkScreenSize();
     window.addEventListener('resize', checkScreenSize);
     return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
+
+  useEffect(() => {
+    const onScroll = () => setNavScrolled(window.scrollY > 6);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   // Update dropdown position when menu opens
@@ -112,7 +120,11 @@ export function Navigation() {
   };
 
   return (
-    <nav className="zen-ui bg-card border-b border-card w-full relative z-50">
+    <nav
+      className={`zen-ui sticky top-0 z-50 w-full border-b border-card bg-card/95 backdrop-blur-sm transition-shadow duration-200 ${
+        navScrolled ? 'shadow-md' : 'shadow-sm'
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full overflow-x-hidden">
         <div className="flex items-center h-14 w-full min-w-0">
           {/* Logo */}
@@ -311,7 +323,7 @@ export function Navigation() {
             
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="p-2 text-gray-700 hover:text-gray-900 transition-colors"
+              className="p-2 text-page hover:opacity-80 transition-opacity"
               aria-label="Toggle menu"
             >
               <svg
@@ -337,7 +349,7 @@ export function Navigation() {
           <div className="md:hidden pb-4 space-y-2">
             <Link
               href="/"
-              className="block px-2 py-2 text-gray-700 hover:text-gray-900 transition-colors"
+              className="block px-2 py-2 text-page hover:opacity-80 transition-opacity"
               onClick={() => {
                 setIsMenuOpen(false);
                 resetToWhite();
@@ -347,14 +359,14 @@ export function Navigation() {
             </Link>
             <Link
               href="/about"
-              className="block px-2 py-2 text-gray-700 hover:text-gray-900 transition-colors"
+              className="block px-2 py-2 text-page hover:opacity-80 transition-opacity"
               onClick={() => setIsMenuOpen(false)}
             >
               {t.nav.about}
             </Link>
             <Link
               href="/contact"
-              className="block px-2 py-2 text-gray-700 hover:text-gray-900 transition-colors"
+              className="block px-2 py-2 text-page hover:opacity-80 transition-opacity"
               onClick={() => setIsMenuOpen(false)}
             >
               {t.nav.contact}
