@@ -1,20 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
 import { useAppStore } from "@/lib/store";
 
 const MICRO1_REFERRAL_URL =
   "https://refer.micro1.ai/referral/jobs?referralCode=41368bfc-baf0-44d3-ba6d-ab0a692eb8d6&utm_source=referral&utm_medium=share&utm_campaign=job_referral";
 
 export function Footer() {
-  const [currentYear, setCurrentYear] = useState(2025);
+  const currentYear = new Date().getFullYear();
   const setChangelogOpen = useAppStore((s) => s.setChangelogOpen);
   const setHealthDashboardOpen = useAppStore((s) => s.setHealthDashboardOpen);
-
-  useEffect(() => {
-    setCurrentYear(new Date().getFullYear());
-  }, []);
 
   return (
     <footer className="zen-ui bg-card border-t border-card mt-12">
@@ -104,4 +99,3 @@ export function Footer() {
     </footer>
   );
 }
-
