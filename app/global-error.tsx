@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import "./globals.css";
 
 export default function GlobalError({
   error,
@@ -10,15 +11,14 @@ export default function GlobalError({
   reset: () => void;
 }) {
   useEffect(() => {
-    // Log the error to an error reporting service
     console.error("Global Error:", error);
   }, [error]);
 
   return (
-    <html>
-      <body>
-        <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
-          <div className="max-w-md w-full bg-white rounded-xl shadow-md p-8 text-center">
+    <html lang="en">
+      <body style={{ margin: 0, fontFamily: "system-ui, sans-serif" }}>
+        <div className="min-h-screen bg-page flex items-center justify-center px-4">
+          <div className="max-w-md w-full bg-card rounded-xl shadow-md p-8 text-center border border-card">
             <div className="mb-6">
               <svg
                 className="mx-auto h-16 w-16 text-red-500"
@@ -34,15 +34,15 @@ export default function GlobalError({
                 />
               </svg>
             </div>
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">
+            <h1 className="text-2xl font-bold text-page mb-2">
               Something went wrong!
             </h1>
-            <p className="text-gray-600 mb-6">
+            <p className="text-page/80 mb-6">
               {error.message || "An unexpected error occurred. Please refresh the page."}
             </p>
             <button
               onClick={reset}
-              className="px-6 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors"
+              className="px-6 py-3 bg-accent text-white rounded-lg hover:opacity-90 transition-opacity"
             >
               Try again
             </button>
@@ -52,5 +52,3 @@ export default function GlobalError({
     </html>
   );
 }
-
-

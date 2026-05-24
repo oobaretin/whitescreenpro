@@ -2,7 +2,6 @@
 
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useEffect } from "react";
 import { useAppStore } from "@/lib/store";
 import Image from "next/image";
 
@@ -18,42 +17,10 @@ export function BrokenScreenOverlay() {
   const router = useRouter();
   const { activeMode, brokenScreen, toggleFullscreen } = useAppStore();
 
-  const selectedPattern =
-    activeMode === "broken-screen"
-      ? PATTERNS.find((p) => p.id === brokenScreen.pattern) || PATTERNS[0]
-      : PATTERNS[0];
-
-  // #region agent log
-  useEffect(() => {
-    if (activeMode !== "broken-screen") return;
-    const resolved = PATTERNS.find((p) => p.id === brokenScreen.pattern);
-    fetch("http://127.0.0.1:7303/ingest/e83460c1-ccc1-4416-8b5e-ee486110d3e1", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Debug-Session-Id": "5567c8",
-      },
-      body: JSON.stringify({
-        sessionId: "5567c8",
-        hypothesisId: "H1",
-        location: "BrokenScreenOverlay.tsx:patternResolved",
-        message: "Overlay pattern resolution",
-        data: {
-          storePatternId: brokenScreen.pattern,
-          findHit: !!resolved,
-          resolvedId: resolved?.id ?? "(fallback-first)",
-          resolvedSrcTail:
-            resolved?.src?.slice(-32) ??
-            selectedPattern.src?.slice(-32),
-          fallbackUsed: !resolved,
-        },
-        timestamp: Date.now(),
-      }),
-    }).catch(() => {});
-  }, [activeMode, brokenScreen.pattern]);
-  // #endregion
-
   if (activeMode !== "broken-screen") return null;
+
+  const selectedPattern =
+    PATTERNS.find((p) => p.id === brokenScreen.pattern) || PATTERNS[0];
 
   return (
     <div className="absolute inset-0 overflow-hidden" style={{ zIndex: 5 }}>

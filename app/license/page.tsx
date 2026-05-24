@@ -10,13 +10,13 @@ export const metadata: Metadata = {
 
 export default function LicensePage() {
   return (
-    <div className="min-h-screen bg-white text-black">
+    <div className="min-h-screen bg-page text-page">
       <Navigation />
       <main className="pt-16 pb-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors mb-8"
+            className="inline-flex items-center gap-2 text-page/80 hover:text-page transition-colors mb-8"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M19 12H5M12 19l-7-7 7-7" />
@@ -25,12 +25,12 @@ export default function LicensePage() {
           </Link>
           <h1 className="text-4xl md:text-5xl font-bold mb-4 text-center">License</h1>
         
-          <div className="space-y-8 text-gray-700 leading-relaxed">
-            <section className="bg-gray-50 p-8 rounded-lg">
+          <div className="space-y-8 text-page/90 leading-relaxed">
+            <section className="bg-card border border-card p-8 rounded-lg">
               <h2 className="text-2xl font-semibold text-black mb-4">MIT License</h2>
-              <p className="text-sm text-gray-600 mb-6">Copyright (c) {new Date().getFullYear()} WhiteScreen Pro</p>
+              <p className="text-sm text-page/70 mb-6">Copyright (c) {new Date().getFullYear()} WhiteScreen Pro</p>
             
-              <p className="mb-4 text-gray-700">
+              <p className="mb-4 text-page/90">
                 Permission is hereby granted, free of charge, to any person obtaining a copy
                 of this software and associated documentation files (the &quot;Software&quot;), to deal
                 in the Software without restriction, including without limitation the rights
@@ -39,12 +39,12 @@ export default function LicensePage() {
                 furnished to do so, subject to the following conditions:
               </p>
 
-              <p className="mb-4 text-gray-700">
+              <p className="mb-4 text-page/90">
                 The above copyright notice and this permission notice shall be included in all
                 copies or substantial portions of the Software.
               </p>
 
-              <p className="mb-4 text-gray-700 font-mono text-sm bg-white p-4 rounded border">
+              <p className="mb-4 text-page/90 font-mono text-sm bg-page p-4 rounded border border-card">
                 THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
                 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
                 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -57,11 +57,11 @@ export default function LicensePage() {
 
             <section>
               <h2 className="text-2xl font-semibold text-black mb-4">Third-Party Licenses</h2>
-              <p className="text-lg text-gray-700 mb-4">
+              <p className="text-lg text-page/90 mb-4">
                 WhiteScreen Pro uses the following open-source libraries, all of which are 
                 licensed under permissive open-source licenses:
               </p>
-              <ul className="list-disc list-inside space-y-2 ml-4 text-gray-700">
+              <ul className="list-disc list-inside space-y-2 ml-4 text-page/90">
                 <li><strong>Next.js</strong> - MIT License</li>
                 <li><strong>React</strong> - MIT License</li>
                 <li><strong>Tailwind CSS</strong> - MIT License</li>
@@ -75,7 +75,7 @@ export default function LicensePage() {
 
             <section className="bg-blue-50 p-6 rounded-lg">
               <h2 className="text-2xl font-semibold text-black mb-4">Open Source</h2>
-              <p className="text-lg text-gray-700">
+              <p className="text-lg text-page/90">
                 WhiteScreen Pro is built with open-source technologies and is committed to 
                 the open-source community. We believe in transparency, collaboration, and 
                 the power of open-source software.

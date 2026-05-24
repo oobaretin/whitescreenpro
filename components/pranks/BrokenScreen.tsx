@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
 import { useAppStore } from "@/lib/store";
 import Image from "next/image";
 
@@ -15,99 +14,9 @@ const PATTERNS = [
 export function BrokenScreen() {
   const { brokenScreen, setBrokenScreen, setActiveMode, activeMode } = useAppStore();
 
-  // #region agent log
-  useEffect(() => {
-    const s = useAppStore.getState();
-    fetch("http://127.0.0.1:7303/ingest/e83460c1-ccc1-4416-8b5e-ee486110d3e1", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Debug-Session-Id": "5567c8",
-      },
-      body: JSON.stringify({
-        sessionId: "5567c8",
-        hypothesisId: "H2",
-        location: "BrokenScreen.tsx:mount",
-        message: "BrokenScreen mounted",
-        data: {
-          patternsCount: PATTERNS.length,
-          patternIds: PATTERNS.map((p) => p.id),
-          storePattern: s.brokenScreen.pattern,
-          activeMode: s.activeMode,
-        },
-        timestamp: Date.now(),
-      }),
-    }).catch(() => {});
-  }, []);
-
-  useEffect(() => {
-    fetch("http://127.0.0.1:7303/ingest/e83460c1-ccc1-4416-8b5e-ee486110d3e1", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Debug-Session-Id": "5567c8",
-      },
-      body: JSON.stringify({
-        sessionId: "5567c8",
-        hypothesisId: "H1-H5",
-        location: "BrokenScreen.tsx:storePattern",
-        message: "brokenScreen.pattern or activeMode changed",
-        data: { storePattern: brokenScreen.pattern, activeMode },
-        timestamp: Date.now(),
-      }),
-    }).catch(() => {});
-  }, [brokenScreen.pattern, activeMode]);
-  // #endregion
-
   const handlePatternSelect = (patternId: string) => {
-    // #region agent log
-    fetch("http://127.0.0.1:7303/ingest/e83460c1-ccc1-4416-8b5e-ee486110d3e1", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Debug-Session-Id": "5567c8",
-      },
-      body: JSON.stringify({
-        sessionId: "5567c8",
-        hypothesisId: "H4-H5",
-        location: "BrokenScreen.tsx:handlePatternSelect:entry",
-        message: "Pattern button clicked",
-        data: {
-          clickedId: patternId,
-          activeModeBefore: useAppStore.getState().activeMode,
-          patternBefore: useAppStore.getState().brokenScreen.pattern,
-        },
-        timestamp: Date.now(),
-      }),
-    }).catch(() => {});
-    // #endregion
-
     setBrokenScreen({ pattern: patternId });
 
-    // #region agent log
-    queueMicrotask(() => {
-      const s = useAppStore.getState();
-      fetch("http://127.0.0.1:7303/ingest/e83460c1-ccc1-4416-8b5e-ee486110d3e1", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Debug-Session-Id": "5567c8",
-        },
-        body: JSON.stringify({
-          sessionId: "5567c8",
-          hypothesisId: "H3",
-          location: "BrokenScreen.tsx:handlePatternSelect:afterSet",
-          message: "Store after setBrokenScreen (microtask)",
-          data: {
-            patternAfter: s.brokenScreen.pattern,
-            activeModeAfter: s.activeMode,
-          },
-          timestamp: Date.now(),
-        }),
-      }).catch(() => {});
-    });
-    // #endregion
-    
     // Play a subtle click sound
     try {
       const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
@@ -127,20 +36,20 @@ export function BrokenScreen() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className="text-base font-semibold text-gray-900">Broken Screen</h3>
+        <h3 className="text-base font-semibold text-page">Broken Screen</h3>
         <button
           onClick={() => setActiveMode(activeMode === "broken-screen" ? "color" : "broken-screen")}
           className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
             activeMode === "broken-screen"
               ? "bg-red-600 text-white"
-              : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+              : "bg-page border border-card text-page/90 hover:opacity-90"
           }`}
         >
           {activeMode === "broken-screen" ? "Active" : "Activate"}
         </button>
       </div>
 
-      <p className="text-sm text-gray-500">Select a crack pattern:</p>
+      <p className="text-sm text-page/70">Select a crack pattern:</p>
 
       {/* Pattern selector */}
       <div className="grid grid-cols-2 gap-3">
@@ -150,8 +59,8 @@ export function BrokenScreen() {
             onClick={() => handlePatternSelect(pattern.id)}
             className={`relative p-2 rounded-xl border-2 transition-all ${
               brokenScreen.pattern === pattern.id
-                ? "border-blue-500 bg-blue-50"
-                : "border-gray-200 bg-gray-50 hover:border-gray-300 hover:bg-gray-100"
+                ? "border-[color:var(--accent-color)] bg-card ring-1 ring-[color:var(--accent-color)]"
+                : "border-card bg-page hover:border-page/30 hover:bg-card"
             }`}
           >
             {/* Pattern preview - cropped to hide camera icon */}
@@ -166,7 +75,7 @@ export function BrokenScreen() {
                 />
               </div>
             </div>
-            <div className="text-xs font-medium text-gray-700 truncate">
+            <div className="text-xs font-medium text-page/90 truncate">
               {pattern.name}
             </div>
           </button>

@@ -11,13 +11,12 @@ export default function Error({
   reset: () => void;
 }) {
   useEffect(() => {
-    // Log the error to an error reporting service
     console.error("Error:", error);
   }, [error]);
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
-      <div className="max-w-md w-full bg-white rounded-xl shadow-md p-8 text-center">
+    <div className="min-h-screen bg-page flex items-center justify-center px-4">
+      <div className="max-w-md w-full bg-card rounded-xl shadow-md p-8 text-center border border-card">
         <div className="mb-6">
           <svg
             className="mx-auto h-16 w-16 text-red-500"
@@ -33,20 +32,20 @@ export default function Error({
             />
           </svg>
         </div>
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">Something went wrong!</h1>
-        <p className="text-gray-600 mb-6">
+        <h1 className="text-2xl font-bold text-page mb-2">Something went wrong!</h1>
+        <p className="text-page/80 mb-6">
           {error.message || "An unexpected error occurred. Please try again."}
         </p>
         <div className="flex gap-3 justify-center">
           <button
             onClick={reset}
-            className="px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors"
+            className="px-4 py-2 bg-accent text-white rounded-lg hover:opacity-90 transition-opacity"
           >
             Try again
           </button>
           <Link
             href="/"
-            className="px-4 py-2 bg-gray-200 text-gray-900 rounded-lg hover:bg-gray-300 transition-colors"
+            className="px-4 py-2 bg-card border border-card text-page rounded-lg hover:opacity-90 transition-opacity"
           >
             Go home
           </Link>
@@ -55,5 +54,3 @@ export default function Error({
     </div>
   );
 }
-
-

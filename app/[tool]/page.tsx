@@ -156,29 +156,6 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
     }
     
     if (toolConfig.mode) {
-      // #region agent log
-      if (toolSlug === "broken-screen") {
-        fetch("http://127.0.0.1:7303/ingest/e83460c1-ccc1-4416-8b5e-ee486110d3e1", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "X-Debug-Session-Id": "5567c8",
-          },
-          body: JSON.stringify({
-            sessionId: "5567c8",
-            hypothesisId: "H3",
-            location: "[tool]/page.tsx:toolEffect",
-            message: "Sync effect sets activeMode from tool config",
-            data: {
-              modeFromConfig: toolConfig.mode,
-              storePatternBefore: useAppStore.getState().brokenScreen.pattern,
-              activeModeBefore: useAppStore.getState().activeMode,
-            },
-            timestamp: Date.now(),
-          }),
-        }).catch(() => {});
-      }
-      // #endregion
       setActiveMode(toolConfig.mode as any);
     } else {
       setActiveMode("color");
@@ -220,15 +197,15 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
   const gradientCSS = getGradientCSS(gradient);
   const backgroundColor = mounted && gradient.enabled ? gradientCSS : displayColor;
 
-  const isColorPage = !toolConfig.mode;
+  const isColorPage = Boolean(toolConfig && !toolConfig.mode);
   const isZoomLightingPage = toolSlug === "zoom-lighting";
-  const isFullPageMode = isColorPage || isZoomLightingPage;
+  const isFullPageMode = Boolean(toolConfig && (isColorPage || isZoomLightingPage));
 
   // ARIA label for screen readers (WCAG 2.1)
   const displayAriaLabel =
     isZoomLightingPage
       ? "Full screen display for video call lighting"
-      : isColorPage
+      : isColorPage && toolConfig
         ? `Full screen solid ${toolConfig.name.toLowerCase()} display`
         : "Display area";
 
@@ -316,12 +293,12 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
 
   if (!toolConfig) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-page flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Tool Not Found</h1>
+          <h1 className="text-2xl font-bold text-page mb-4">Tool Not Found</h1>
           <Link
             href="/"
-            className="inline-block px-6 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors"
+            className="inline-block px-6 py-3 bg-accent text-white rounded-lg hover:opacity-90 transition-opacity"
           >
             Go back home
           </Link>
@@ -331,7 +308,7 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
   }
 
   return (
-    <div className={`${isFullPageMode ? "fixed inset-0" : "min-h-screen bg-gray-50"}`}>
+    <div className={`${isFullPageMode ? "fixed inset-0" : "min-h-screen bg-page text-page"}`}>
       {/* Exit fullscreen hint - shown for 3s when entering fullscreen */}
       {isFullscreen && showExitHint && (
         <div
@@ -348,7 +325,7 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
         <div className="zen-ui max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-4">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-gray-700 hover:text-gray-900 transition-colors"
+            className="inline-flex items-center gap-2 text-page/80 hover:text-page transition-colors"
           >
             <svg
               width="20"
@@ -408,7 +385,7 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
             {/* Click to Fullscreen Overlay - only show when settings are visible */}
             {showSettings && !isFullscreen && (
               <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-30">
-                <div className="px-6 py-3 bg-white/95 text-gray-900 font-semibold rounded-lg shadow-lg backdrop-blur-sm border border-gray-200">
+                <div className="px-6 py-3 bg-card/95 text-page font-semibold rounded-lg shadow-lg backdrop-blur-sm border border-card">
                   {t.home.clickToFullscreen}
                 </div>
               </div>
@@ -421,7 +398,7 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
                   e.stopPropagation();
                   setShowSettings(true);
                 }}
-                className="absolute top-4 right-4 z-50 px-4 py-2 bg-white/90 hover:bg-white text-gray-900 font-medium rounded-lg shadow-lg backdrop-blur-sm border border-gray-200 transition-all"
+                className="absolute top-4 right-4 z-50 px-4 py-2 bg-card/90 hover:bg-card text-page font-medium rounded-lg shadow-lg backdrop-blur-sm border border-card transition-all"
                 title="Show Settings"
               >
                 ⚙️ Settings
@@ -433,16 +410,16 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
           {showSettings && (
             <div className="fixed inset-0 z-40 flex items-center justify-center pointer-events-none">
               <div className="w-full max-w-md mx-4 pointer-events-auto max-h-[90vh] overflow-y-auto">
-                <div className="bg-white rounded-xl shadow-2xl p-6 border border-gray-200">
+                <div className="bg-card rounded-xl shadow-2xl p-6 border border-card">
                   <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-xl font-bold text-gray-900">{t.common.settings}</h2>
+                    <h2 className="text-xl font-bold text-page">{t.common.settings}</h2>
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => {
                           setShowSettings(false);
                           useAppStore.getState().toggleFullscreen();
                         }}
-                        className="text-gray-500 hover:text-gray-700 transition-colors"
+                        className="text-page/60 hover:text-page transition-colors"
                         title="Fullscreen"
                       >
                         <svg
@@ -458,7 +435,7 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
                       </button>
                       <Link
                         href="/"
-                        className="text-gray-500 hover:text-gray-700 transition-colors"
+                        className="text-page/60 hover:text-page transition-colors"
                         title="Back to Home"
                       >
                         <svg
@@ -490,11 +467,11 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
         <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
           {/* Title - h1 matches SEO title when available */}
           <div className="text-center mb-6">
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+            <h1 className="text-3xl md:text-4xl font-bold text-page mb-2">
               {getToolMeta(toolSlug)?.title ?? toolConfig.name}
             </h1>
             {toolSlug === "broken-screen" && (
-              <p className="text-gray-600">
+              <p className="text-page/80">
                 👆 Click on the display below to enter fullscreen mode
               </p>
             )}
@@ -521,7 +498,7 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
                 <DeadPixelTest />
               </div>
               {!isFullscreen && (
-                <p className="text-center text-sm text-gray-600 mb-6">
+                <p className="text-center text-sm text-page/80 mb-6">
                   Found too many dead pixels?{" "}
                   <a
                     href="https://www.amazon.com/s?k=4k+monitor"
@@ -616,7 +593,7 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
               {/* Fullscreen Button Overlay - hidden for broken-screen (it has its own), hover for others */}
               {!isFullscreen && activeMode !== "broken-screen" && (
                 <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-30">
-                  <div className="px-6 py-3 bg-white/95 text-gray-900 font-semibold rounded-lg shadow-lg backdrop-blur-sm border border-gray-200">
+                  <div className="px-6 py-3 bg-card/95 text-page font-semibold rounded-lg shadow-lg backdrop-blur-sm border border-card">
                     {t.home.clickToFullscreen}
                   </div>
                 </div>
@@ -626,8 +603,8 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
 
           {/* Controls Section */}
           {!["tip-screen", "signature-screen", "dead-pixel-test", "screen-stress-test", "matrix-rain", "no-signal"].includes(toolSlug) && (
-            <div className="bg-white rounded-xl shadow-md p-6 mb-6">
-              <h2 className="text-xl font-bold text-gray-900 mb-4">{t.common.settings}</h2>
+            <div className="bg-card rounded-xl shadow-md p-6 mb-6 border border-card">
+              <h2 className="text-xl font-bold text-page mb-4">{t.common.settings}</h2>
               
               {/* Tool-specific controls */}
               {toolSlug === "broken-screen" && <BrokenScreen />}
