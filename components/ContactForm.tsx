@@ -5,6 +5,9 @@ import { useState } from "react";
 const CONTACT_EMAIL = "contact@whitescreentools.com";
 const WEB3FORMS_ENDPOINT = "https://api.web3forms.com/submit";
 
+const inputClass =
+  "w-full rounded-lg border border-card bg-page/5 px-3 py-2.5 text-sm text-page placeholder:text-page/45 focus:outline-none focus:ring-2 focus:ring-[color:var(--accent-color)]";
+
 type Status = "idle" | "submitting" | "success" | "error";
 
 export function ContactForm() {
@@ -12,7 +15,8 @@ export function ContactForm() {
   const [errorMessage, setErrorMessage] = useState("");
 
   const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY;
-  const isConfigured = Boolean(accessKey);
+  const showConfigHint =
+    process.env.NODE_ENV === "development" && !accessKey;
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -64,7 +68,9 @@ export function ContactForm() {
       }
 
       setStatus("error");
-      setErrorMessage(data.message || "Could not send your message. Please try again.");
+      setErrorMessage(
+        data.message || "Could not send your message. Please try again.",
+      );
     } catch {
       setStatus("error");
       setErrorMessage("Network error. Please try again or email us directly.");
@@ -72,21 +78,15 @@ export function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="mt-8 space-y-4">
-      <p className="text-sm text-gray-600">
-        Send a message and we&apos;ll reply to your email. Messages go to{" "}
-        <span className="font-medium text-gray-800">{CONTACT_EMAIL}</span>.
-      </p>
-
-      {!isConfigured && (
-        <p className="text-sm text-amber-700 bg-amber-50 border border-amber-200 rounded-md px-3 py-2">
-          Form delivery isn&apos;t active until{" "}
-          <code className="text-xs">NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY</code> is
-          set in Vercel (or <code className="text-xs">.env.local</code> locally).
+    <form onSubmit={handleSubmit} className="space-y-4">
+      {showConfigHint && (
+        <p className="text-sm text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 rounded-lg px-3 py-2">
+          Add{" "}
+          <code className="text-xs">NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY</code> to{" "}
+          <code className="text-xs">.env.local</code> to test locally.
         </p>
       )}
 
-      {/* Honeypot — hidden from users, catches bots (Web3Forms botcheck) */}
       <input
         type="checkbox"
         name="botcheck"
@@ -96,56 +96,68 @@ export function ContactForm() {
         aria-hidden="true"
       />
 
-      <div className="grid md:grid-cols-2 gap-4">
+      <div className="grid sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-800 mb-1">
+          <label htmlFor="contact-name" className="block text-sm font-medium text-page mb-1.5">
             Name
           </label>
           <input
+            id="contact-name"
             name="name"
             type="text"
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            autoComplete="name"
+            className={inputClass}
             placeholder="Your name"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-800 mb-1">
-            Email
+          <label htmlFor="contact-email" className="block text-sm font-medium text-page mb-1.5">
+            Email <span className="text-page/50">*</span>
           </label>
           <input
+            id="contact-email"
             name="email"
             type="email"
             required
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            autoComplete="email"
+            className={inputClass}
             placeholder="you@example.com"
           />
         </div>
       </div>
+
       <div>
-        <label className="block text-sm font-medium text-gray-800 mb-1">
-          Message
+        <label htmlFor="contact-message" className="block text-sm font-medium text-page mb-1.5">
+          Message <span className="text-page/50">*</span>
         </label>
         <textarea
+          id="contact-message"
           name="message"
           required
-          rows={4}
-          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          rows={5}
+          className={`${inputClass} resize-y min-h-[7rem]`}
           placeholder="How can we help?"
         />
       </div>
 
       {status === "success" && (
-        <p className="text-sm text-green-600" role="status">
+        <p
+          className="text-sm text-green-700 dark:text-green-400 bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-800 rounded-lg px-3 py-2"
+          role="status"
+        >
           Thanks — your message was sent. We&apos;ll get back to you soon.
         </p>
       )}
 
       {status === "error" && (
-        <p className="text-sm text-red-600" role="alert">
+        <p
+          className="text-sm text-red-700 dark:text-red-400 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 rounded-lg px-3 py-2"
+          role="alert"
+        >
           {errorMessage}{" "}
           <a
             href={`mailto:${CONTACT_EMAIL}`}
-            className="underline font-medium"
+            className="underline font-medium text-[color:var(--accent-color)]"
           >
             Email us directly
           </a>
@@ -156,7 +168,8 @@ export function ContactForm() {
       <button
         type="submit"
         disabled={status === "submitting"}
-        className="inline-flex items-center justify-center rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed"
+        className="inline-flex items-center justify-center rounded-lg px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-60 disabled:cursor-not-allowed"
+        style={{ background: "var(--accent-color)" }}
       >
         {status === "submitting" ? "Sending…" : "Send message"}
       </button>
