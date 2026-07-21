@@ -155,6 +155,31 @@ describe("keyboardShortcuts", () => {
   });
 });
 
+describe("pinnedTools", () => {
+  it("resolves pin ids and toggles pins", async () => {
+    const { getToolPinId, togglePinnedTool, getPinnedTools } = await import(
+      "@/lib/pinnedTools"
+    );
+    expect(getToolPinId({ type: "route", slug: "white-screen" })).toBe(
+      "white-screen",
+    );
+    expect(getToolPinId({ type: "open-health" })).toBe("open-health");
+
+    const store: Record<string, string> = {};
+    vi.stubGlobal("localStorage", {
+      getItem: (k: string) => store[k] ?? null,
+      setItem: (k: string, v: string) => {
+        store[k] = v;
+      },
+    });
+
+    expect(togglePinnedTool("white-screen")).toBe(true);
+    expect(getPinnedTools()).toContain("white-screen");
+    expect(togglePinnedTool("white-screen")).toBe(false);
+    vi.unstubAllGlobals();
+  });
+});
+
 describe("translations", () => {
   it("loads English synchronously and Spanish lazily", async () => {
     const { en, loadLocale } = await import("@/lib/translations");

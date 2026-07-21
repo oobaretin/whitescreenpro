@@ -22,4 +22,12 @@ test.describe("smoke", () => {
       page.getByRole("dialog", { name: /keyboard shortcuts/i }),
     ).toBeVisible();
   });
+
+  test("tool pin adds pinned section on homepage", async ({ page }) => {
+    await page.goto("/");
+    const pinButton = page.getByRole("button", { name: /pin white screen/i }).first();
+    await pinButton.click();
+    await expect(page.getByRole("heading", { name: "Pinned", exact: true })).toBeVisible();
+    await expect(page.getByRole("link", { name: /white screen/i }).first()).toBeVisible();
+  });
 });
