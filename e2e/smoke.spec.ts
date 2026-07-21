@@ -30,4 +30,11 @@ test.describe("smoke", () => {
     await expect(page.getByRole("heading", { name: "Pinned", exact: true })).toBeVisible();
     await expect(page.getByRole("link", { name: /white screen/i }).first()).toBeVisible();
   });
+
+  test("changelog badge opens v2.2 release notes", async ({ page }) => {
+    await page.goto("/");
+    await page.getByRole("button", { name: /what's new in v2\.2/i }).click();
+    await expect(page.getByRole("dialog", { name: /release notes/i })).toBeVisible();
+    await expect(page.getByText("Version 2.2")).toBeVisible();
+  });
 });
