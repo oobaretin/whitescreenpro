@@ -107,6 +107,8 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
     isFullscreen,
     ecoMode,
     showToast,
+    obsOverlayMode,
+    toggleFullscreen,
   } = useAppStore();
 
   const [mounted, setMounted] = useState(false);
@@ -124,6 +126,15 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
 
   useShareLinkRestore();
   useToolDeepLinks(toolSlug);
+
+  // OBS browser source: hide chrome and enter fullscreen
+  useEffect(() => {
+    if (!obsOverlayMode) return;
+    setShowSettings(false);
+    if (!isFullscreen) {
+      toggleFullscreen();
+    }
+  }, [obsOverlayMode, isFullscreen, toggleFullscreen]);
 
   // Track client-side mount to prevent hydration mismatch
   useEffect(() => {
@@ -216,6 +227,7 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
   const isColorPage = Boolean(toolConfig && !toolConfig.mode);
   const isZoomLightingPage = toolSlug === "zoom-lighting";
   const isFullPageMode = Boolean(toolConfig && (isColorPage || isZoomLightingPage));
+  const hideChrome = obsOverlayMode;
 
   // ARIA label for screen readers (WCAG 2.1)
   const displayAriaLabel =
@@ -326,7 +338,7 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
   return (
     <div className={`${isFullPageMode ? "fixed inset-0" : "min-h-screen bg-page text-page"}`}>
       {/* Exit fullscreen hint - shown for 3s when entering fullscreen */}
-      {isFullscreen && showExitHint && (
+      {!hideChrome && isFullscreen && showExitHint && (
         <div
           className="fixed top-5 left-1/2 -translate-x-1/2 bg-black/50 text-white px-5 py-2.5 rounded-full z-[9999] pointer-events-none text-sm font-medium"
           aria-live="polite"
@@ -334,10 +346,10 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
           {t.home.pressEscToExit}
         </div>
       )}
-      {!isFullPageMode && <Navigation />}
+      {!hideChrome && !isFullPageMode && <Navigation />}
       
       {/* Back Button - only show if not full page mode */}
-      {!isFullPageMode && (
+      {!hideChrome && !isFullPageMode && (
         <div className="zen-ui max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-4">
           <Link
             href="/"
@@ -396,10 +408,10 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
             {shouldShowBackground && <PatternOverlay pattern={pattern} />}
             {shouldShowBackground && <TimerDisplay />}
             {activeMode === "zoom-lighting" && <ZoomLightingDisplay />}
-            {shouldShowBackground && showHint && <HintIndicator />}
+            {shouldShowBackground && !hideChrome && showHint && <HintIndicator />}
             
             {/* Click to Fullscreen Overlay - only show when settings are visible */}
-            {showSettings && !isFullscreen && (
+            {!hideChrome && showSettings && !isFullscreen && (
               <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-30">
                 <div className="px-6 py-3 bg-card/95 text-page font-semibold rounded-lg shadow-lg backdrop-blur-sm border border-card">
                   {t.home.clickToFullscreen}
@@ -408,7 +420,7 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
             )}
             
             {/* Settings Toggle Button - show when settings are hidden */}
-            {!showSettings && (
+            {!hideChrome && !showSettings && (
               <button
                 onClick={(e) => {
                   e.stopPropagation();
@@ -423,7 +435,7 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
           </div>
 
           {/* Centered Settings Panel - only show when showSettings is true */}
-          {showSettings && (
+          {!hideChrome && showSettings && (
             <div className="fixed inset-0 z-40 flex items-center justify-center pointer-events-none">
               <div className="w-full max-w-md mx-4 pointer-events-auto max-h-[90vh] overflow-y-auto">
                 <div className="bg-card rounded-xl shadow-2xl p-6 border border-card">
@@ -479,9 +491,9 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
       ) : (
         /* Regular Layout for Other Tools */
         <>
-          {!isFullscreen && <QuickNav />}
-        <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
-          {/* Title - h1 matches SEO title when available */}
+          {!hideChrome && !isFullscreen && <QuickNav />}
+        <main className={hideChrome ? "fixed inset-0 z-50" : "max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-8"}>
+          {!hideChrome && (
           <div className="text-center mb-6">
             <h1 className="text-3xl md:text-4xl font-bold text-page mb-2">
               {getToolMeta(toolSlug)?.title ?? toolConfig.name}
@@ -492,6 +504,7 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
               </p>
             )}
           </div>
+          )}
 
           {/* Display Area - Interactive tools have their own standalone layouts */}
           {toolSlug === "signature-screen" ? (
@@ -580,7 +593,7 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
               {activeMode === "hacker-terminal" && skeletonDone && <HackerTerminal />}
               {activeMode === "dvd-screensaver" && <DVDScreensaver />}
               {activeMode === "matrix-rain" && skeletonDone && <MatrixRain />}
-              {toolSlug === "matrix-rain" && (
+              {toolSlug === "matrix-rain" && !hideChrome && (
                 <div
                   className="absolute inset-x-0 bottom-0 z-[45] max-h-[min(55vh,440px)] overflow-y-auto overscroll-y-contain"
                   onPointerDown={(e) => e.stopPropagation()}
@@ -593,7 +606,7 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
               )}
               {activeMode === "flip-clock" && <FlipClock />}
               {activeMode === "no-signal" && <NoSignal />}
-              {toolSlug === "no-signal" && (
+              {toolSlug === "no-signal" && !hideChrome && (
                 <div
                   className="absolute inset-x-0 bottom-0 z-[45] max-h-[min(50vh,400px)] overflow-y-auto overscroll-y-contain"
                   onPointerDown={(e) => e.stopPropagation()}
@@ -604,10 +617,10 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
                   <NoSignalControls />
                 </div>
               )}
-              {shouldShowBackground && showHint && <HintIndicator />}
+              {shouldShowBackground && !hideChrome && showHint && <HintIndicator />}
               
               {/* Fullscreen Button Overlay - hidden for broken-screen (it has its own), hover for others */}
-              {!isFullscreen && activeMode !== "broken-screen" && (
+              {!hideChrome && !isFullscreen && activeMode !== "broken-screen" && (
                 <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-30">
                   <div className="px-6 py-3 bg-card/95 text-page font-semibold rounded-lg shadow-lg backdrop-blur-sm border border-card">
                     {t.home.clickToFullscreen}
@@ -618,7 +631,8 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
           )}
 
           {/* Controls Section */}
-          {!["tip-screen", "signature-screen", "dead-pixel-test", "screen-stress-test", "matrix-rain", "no-signal"].includes(toolSlug) && (
+          {!hideChrome &&
+            !["tip-screen", "signature-screen", "dead-pixel-test", "screen-stress-test", "matrix-rain", "no-signal"].includes(toolSlug) && (
             <div className="bg-card rounded-xl shadow-md p-6 mb-6 border border-card">
               <h2 className="text-xl font-bold text-page mb-4">{t.common.settings}</h2>
               
@@ -635,7 +649,7 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
         </>
       )}
 
-      {!isFullPageMode && <Footer />}
+      {!hideChrome && !isFullPageMode && <Footer />}
     </div>
   );
 }

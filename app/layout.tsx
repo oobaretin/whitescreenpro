@@ -9,6 +9,7 @@ import { Toast } from "@/components/Toast";
 import { ChangelogModal } from "@/components/ChangelogModal";
 import { KeyboardShortcutsModal } from "@/components/KeyboardShortcutsModal";
 import { MultiMonitorSync } from "@/components/MultiMonitorSync";
+import { ObsOverlaySync } from "@/hooks/useObsOverlay";
 import { MonitorHealthWizard } from "@/components/MonitorHealthWizard";
 import { ContextHelpBubble } from "@/components/ContextHelpBubble";
 import { SEO, getDefaultMetadata } from "@/lib/seo";
@@ -63,6 +64,7 @@ export default function RootLayout({
         <ThemeSync />
         <LangSync />
         <MultiMonitorSync />
+        <ObsOverlaySync />
         <MonitorHealthWizard />
         {children}
         <SettingsFab />

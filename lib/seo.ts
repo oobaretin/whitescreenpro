@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { OG_IMAGE, SITE_URL } from "./site";
+import { toolOgImagePath } from "./ogImageTheme";
 
 const ogImages = [
   {
@@ -168,6 +169,7 @@ export function getToolMeta(slug: string): { title: string; description: string 
 export function getToolMetadata(slug: string): Metadata | null {
   const meta = getToolMeta(slug);
   if (!meta) return null;
+  const toolOg = toolOgImagePath(slug);
   return {
     title: meta.title,
     description: meta.description,
@@ -176,13 +178,20 @@ export function getToolMetadata(slug: string): Metadata | null {
       description: meta.description,
       type: "website",
       url: `${SITE_URL}/${slug}`,
-      images: ogImages,
+      images: [
+        {
+          url: toolOg,
+          width: 1200,
+          height: 630,
+          alt: meta.title,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title: meta.title,
       description: meta.description,
-      images: [OG_IMAGE.url],
+      images: [toolOg],
     },
   };
 }

@@ -7,6 +7,7 @@ import QRCode from "react-qr-code";
 import { COLOR_PRESETS } from "@/lib/colorUtils";
 import { getStoredFavorites } from "@/lib/storageUtils";
 import { buildShareLink } from "@/lib/shareLink";
+import { appendObsParam } from "@/lib/obsOverlay";
 
 export function ExportTools() {
   const t = useTranslation();
@@ -116,6 +117,17 @@ export function ExportTools() {
     try {
       await navigator.clipboard.writeText(link);
       showToast("Share link copied to clipboard!");
+    } catch (err) {
+      console.error("Failed to copy:", err);
+      showToast("Could not copy link. Please copy it manually.");
+    }
+  };
+
+  const copyObsLink = async () => {
+    const link = appendObsParam(generateShareLink());
+    try {
+      await navigator.clipboard.writeText(link);
+      showToast("OBS overlay link copied — paste as Browser Source in OBS");
     } catch (err) {
       console.error("Failed to copy:", err);
       showToast("Could not copy link. Please copy it manually.");
@@ -236,6 +248,13 @@ export function ExportTools() {
             {t.common.copy}
           </button>
         </div>
+        <button
+          type="button"
+          onClick={copyObsLink}
+          className="mt-2 w-full px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded text-sm transition-colors"
+        >
+          Copy OBS overlay link (?obs=1)
+        </button>
       </div>
 
       {/* QR Code */}

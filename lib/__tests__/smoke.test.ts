@@ -155,6 +155,35 @@ describe("keyboardShortcuts", () => {
   });
 });
 
+describe("obsOverlay", () => {
+  it("parses obs overlay URL param", async () => {
+    const { parseObsOverlay, appendObsParam } = await import("@/lib/obsOverlay");
+    expect(parseObsOverlay("obs=1")).toBe(true);
+    expect(parseObsOverlay("overlay=true")).toBe(true);
+    expect(parseObsOverlay("color=FF0000")).toBe(false);
+    expect(appendObsParam("https://example.com/green-screen?color=00FF00")).toContain(
+      "obs=1",
+    );
+  });
+});
+
+describe("ogImageTheme", () => {
+  it("uses solid color background for color screens", async () => {
+    const { getOgImageTheme, toolOgImagePath } = await import("@/lib/ogImageTheme");
+    const theme = getOgImageTheme("green-screen");
+    expect(theme.swatch).toBe("#00FF00");
+    expect(theme.background).toBe("#00FF00");
+    expect(toolOgImagePath("white-screen")).toBe("/white-screen/opengraph-image");
+  });
+
+  it("assigns category themes for non-color tools", async () => {
+    const { getOgImageTheme } = await import("@/lib/ogImageTheme");
+    expect(getOgImageTheme("matrix-rain").category).toBe("Ambient");
+    expect(getOgImageTheme("bsod").category).toBe("Prank");
+    expect(getOgImageTheme("dead-pixel-test").category).toBe("Tool");
+  });
+});
+
 describe("healthReport", () => {
   it("formats health report text with all steps", async () => {
     const { formatHealthReportText, HEALTH_CHECK_STEPS } = await import(

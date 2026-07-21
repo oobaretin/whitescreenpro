@@ -20,6 +20,7 @@ export function MonitorHealthWizard() {
   const showToast = useAppStore((s) => s.showToast);
   const startHealthDiagnostic = useAppStore((s) => s.startHealthDiagnostic);
   const advanceHealthDiagnostic = useAppStore((s) => s.advanceHealthDiagnostic);
+  const obsOverlayMode = useAppStore((s) => s.obsOverlayMode);
 
   useEffect(() => {
     if (healthDiagnosticStep === 0) return;
@@ -62,7 +63,8 @@ export function MonitorHealthWizard() {
     <>
       {healthDiagnosticStep >= 1 &&
         healthDiagnosticStep <= 4 &&
-        !healthDashboardOpen && (
+        !healthDashboardOpen &&
+        !obsOverlayMode && (
           <button
             type="button"
             className="zen-ui fixed bottom-24 right-6 z-[10001] px-6 py-3 rounded-full text-white text-sm font-semibold border-0 cursor-pointer shadow-lg transition-opacity hover:opacity-90"

@@ -26,6 +26,7 @@ export function SettingsFab() {
     setMultiMonitorSyncEnabled,
     setHealthDashboardOpen,
     settingsOpenNonce,
+    obsOverlayMode,
   } = useAppStore();
   const [panelOpen, setPanelOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -99,7 +100,7 @@ export function SettingsFab() {
     showToast(next === "dark" ? "Dark mode enabled" : "Light mode enabled");
   };
 
-  if (isFullscreen) return null;
+  if (obsOverlayMode || isFullscreen) return null;
 
   return (
     <>

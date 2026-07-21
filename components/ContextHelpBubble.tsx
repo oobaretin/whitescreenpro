@@ -13,6 +13,7 @@ export function ContextHelpBubble() {
   const pathname = usePathname();
   const activeMode = useAppStore((s) => s.activeMode);
   const isFullscreen = useAppStore((s) => s.isFullscreen);
+  const obsOverlayMode = useAppStore((s) => s.obsOverlayMode);
 
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const [pulse, setPulse] = useState(false);
@@ -51,7 +52,7 @@ export function ContextHelpBubble() {
     };
   }, []);
 
-  if (isFullscreen) return null;
+  if (obsOverlayMode || isFullscreen) return null;
 
   const tooltipId = "context-help-tooltip";
 
