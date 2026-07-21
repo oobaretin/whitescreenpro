@@ -20,6 +20,7 @@ export function useKeyboardShortcuts() {
     setColor,
     setActiveMode,
     activeMode,
+    setShortcutsOpen,
   } = useAppStore();
 
   const handleKeyDown = useCallback(
@@ -147,7 +148,7 @@ export function useKeyboardShortcuts() {
 
         case "?":
           e.preventDefault();
-          // Show keyboard shortcuts help (handled in UI)
+          setShortcutsOpen(true);
           break;
       }
     },
@@ -168,6 +169,7 @@ export function useKeyboardShortcuts() {
       setColor,
       setActiveMode,
       activeMode,
+      setShortcutsOpen,
     ]
   );
 

@@ -21,7 +21,6 @@
     "@radix-ui/react-tabs": "^1.0.4",
     "clsx": "^2.1.0",
     "colord": "^2.9.3",
-    "framer-motion": "^11.18.2",
     "html2canvas": "^1.4.1",
     "jspdf": "^3.0.4",
     "lucide-react": "^0.344.0",

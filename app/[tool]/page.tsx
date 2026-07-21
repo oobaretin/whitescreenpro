@@ -13,6 +13,7 @@ import {
 } from "@/lib/colorUtils";
 import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
 import { useShareLinkRestore } from "@/hooks/useShareLinkRestore";
+import { useToolDeepLinks } from "@/hooks/useToolDeepLinks";
 import { parseShareLinkParams } from "@/lib/shareLink";
 import { recordRecentTool } from "@/lib/recentTools";
 import { useFullscreen } from "@/hooks/useFullscreen";
@@ -117,10 +118,12 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
   useKeyboardShortcuts();
   useTimer();
   useAutoCycle();
-  useShareLinkRestore();
 
   const toolSlug = params.tool;
   const toolConfig = TOOL_CONFIG[toolSlug];
+
+  useShareLinkRestore();
+  useToolDeepLinks(toolSlug);
 
   // Track client-side mount to prevent hydration mismatch
   useEffect(() => {

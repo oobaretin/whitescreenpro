@@ -10,6 +10,7 @@ const FOOT_INTERACTIVE =
 export function Footer() {
   const currentYear = new Date().getFullYear();
   const setChangelogOpen = useAppStore((s) => s.setChangelogOpen);
+  const setShortcutsOpen = useAppStore((s) => s.setShortcutsOpen);
   const setHealthDashboardOpen = useAppStore((s) => s.setHealthDashboardOpen);
 
   return (
@@ -49,6 +50,16 @@ export function Footer() {
               className={`${FOOT_INTERACTIVE} inline p-0 border-none font-inherit`}
             >
               Monitor Health
+            </button>
+            <span className="hidden sm:inline select-none text-page/35 text-xs font-light" aria-hidden="true">
+              ·
+            </span>
+            <button
+              type="button"
+              onClick={() => setShortcutsOpen(true)}
+              className={`${FOOT_INTERACTIVE} inline p-0 border-none font-inherit`}
+            >
+              Shortcuts
             </button>
             <span className="hidden sm:inline select-none text-page/35 text-xs font-light" aria-hidden="true">
               ·

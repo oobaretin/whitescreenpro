@@ -120,6 +120,49 @@ describe("jsonLd", () => {
     expect(schemas[1]["@type"]).toBe("FAQPage");
   });
 });
+describe("toolDeepLinks", () => {
+  it("parses dead pixel auto cycle params", async () => {
+    const { parseToolDeepLinks } = await import("@/lib/toolDeepLinks");
+    const parsed = parseToolDeepLinks(
+      "dead-pixel-test",
+      "cycle=1&interval=5&grid=1",
+    );
+    expect(parsed?.tool).toBe("dead-pixel-test");
+    if (parsed?.tool === "dead-pixel-test") {
+      expect(parsed.config.autoCycle).toBe(true);
+      expect(parsed.config.cycleInterval).toBe(5);
+      expect(parsed.config.showGrid).toBe(true);
+    }
+  });
+
+  it("parses flicker params on color pages", async () => {
+    const { parseToolDeepLinks } = await import("@/lib/toolDeepLinks");
+    const parsed = parseToolDeepLinks("white-screen", "flicker=1&hz=2&intensity=80");
+    expect(parsed?.tool).toBe("flicker");
+    if (parsed?.tool === "flicker") {
+      expect(parsed.config.enabled).toBe(true);
+      expect(parsed.config.frequency).toBe(2);
+      expect(parsed.config.intensity).toBe(80);
+    }
+  });
+});
+
+describe("keyboardShortcuts", () => {
+  it("lists core shortcuts", async () => {
+    const { KEYBOARD_SHORTCUTS } = await import("@/lib/keyboardShortcuts");
+    expect(KEYBOARD_SHORTCUTS.length).toBeGreaterThanOrEqual(8);
+    expect(KEYBOARD_SHORTCUTS.some((s) => s.keys.includes("?"))).toBe(true);
+  });
+});
+
+describe("monitorLayouts", () => {
+  it("defines multi-monitor layout presets", async () => {
+    const { MONITOR_LAYOUT_PRESETS } = await import("@/lib/monitorLayouts");
+    expect(MONITOR_LAYOUT_PRESETS.length).toBeGreaterThanOrEqual(3);
+    expect(MONITOR_LAYOUT_PRESETS[0].monitors.length).toBe(2);
+  });
+});
+
 describe("presets", () => {
   it("defines quick start presets with href or action", async () => {
     const { QUICK_PRESETS } = await import("@/lib/presets");

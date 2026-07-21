@@ -7,6 +7,7 @@ import { LangSync } from "@/components/LangSync";
 import { SettingsFab } from "@/components/SettingsFab";
 import { Toast } from "@/components/Toast";
 import { ChangelogModal } from "@/components/ChangelogModal";
+import { KeyboardShortcutsModal } from "@/components/KeyboardShortcutsModal";
 import { MultiMonitorSync } from "@/components/MultiMonitorSync";
 import { MonitorHealthWizard } from "@/components/MonitorHealthWizard";
 import { ContextHelpBubble } from "@/components/ContextHelpBubble";
@@ -68,6 +69,7 @@ export default function RootLayout({
         <ContextHelpBubble />
         <Toast />
         <ChangelogModal />
+        <KeyboardShortcutsModal />
         <ServiceWorkerRegister />
       </body>
     </html>

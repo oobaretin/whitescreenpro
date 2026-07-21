@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useAppStore } from "@/lib/store";
+import { MonitorLayoutPresets } from "@/components/MonitorLayoutPresets";
 
 /** Inset from viewport bottom/right with iOS/Android safe-area. */
 const edgeBottom = "max(1.25rem, env(safe-area-inset-bottom, 0px))";
@@ -248,6 +249,8 @@ export function SettingsFab() {
               />
             </button>
           </div>
+
+          {multiMonitorSyncEnabled ? <MonitorLayoutPresets /> : null}
 
           <button
             type="button"

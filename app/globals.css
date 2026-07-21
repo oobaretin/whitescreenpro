@@ -269,3 +269,19 @@ button {
     scroll-behavior: auto !important;
   }
 }
+
+@keyframes flip-digit-in {
+  from {
+    transform: rotateX(-90deg);
+    opacity: 0;
+  }
+  to {
+    transform: rotateX(0);
+    opacity: 1;
+  }
+}
+
+.flip-digit {
+  animation: flip-digit-in 0.3s ease-out;
+  transform-style: preserve-3d;
+}

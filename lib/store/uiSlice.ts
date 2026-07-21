@@ -30,6 +30,7 @@ export const createUiSlice: StoreSlice<UiSlice> = (set, get) => ({
   healthDashboardOpen: false,
   healthDiagnosticStep: 0,
   healthDiagnosticComplete: false,
+  shortcutsOpen: false,
 
   togglePanel: () => {
     set((state) => ({ panelOpen: !state.panelOpen }));
@@ -76,6 +77,8 @@ export const createUiSlice: StoreSlice<UiSlice> = (set, get) => ({
   },
 
   setChangelogOpen: (open) => set({ changelogOpen: open }),
+
+  setShortcutsOpen: (open) => set({ shortcutsOpen: open }),
 
   requestOpenSettingsFab: () =>
     set((s) => ({ settingsOpenNonce: s.settingsOpenNonce + 1 })),
