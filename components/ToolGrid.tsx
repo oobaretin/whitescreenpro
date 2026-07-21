@@ -37,9 +37,11 @@ function ToolCard({
   onOpenSettings: () => void;
 }) {
   const pinId = getToolPinId(item);
+  const shellClass =
+    "tool-card relative flex flex-col text-left p-3 rounded-lg w-full";
 
-  const cardInner = (
-    <>
+  const metaRow = (
+    <div className="flex items-center justify-between gap-2 mb-1.5 min-h-[1.25rem]">
       {pinId ? (
         <button
           type="button"
@@ -50,15 +52,17 @@ function ToolCard({
             e.stopPropagation();
             onTogglePin(pinId);
           }}
-          className="absolute top-2 left-2 z-10 text-base leading-none p-0.5 rounded hover:scale-110 transition-transform"
+          className="shrink-0 text-base leading-none p-0.5 rounded hover:scale-110 transition-transform text-page/80 hover:text-page"
           title={pinned ? "Unpin" : "Pin to favorites"}
         >
           {pinned ? "★" : "☆"}
         </button>
-      ) : null}
-      {"badge" in item && item.badge && (
+      ) : (
+        <span className="shrink-0 w-5" aria-hidden="true" />
+      )}
+      {"badge" in item && item.badge ? (
         <span
-          className={`absolute top-2 right-2 text-[10px] font-semibold px-1.5 py-0.5 rounded ${
+          className={`shrink-0 ml-auto text-[10px] font-semibold px-1.5 py-0.5 rounded ${
             item.badge === "Popular"
               ? "bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-200"
               : "bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-200"
@@ -66,42 +70,52 @@ function ToolCard({
         >
           {item.badge}
         </span>
-      )}
-      <div className="font-medium text-page">{item.name}</div>
-      <div className="text-xs text-page/70 mt-1">{item.desc}</div>
+      ) : null}
+    </div>
+  );
+
+  const body = (
+    <>
+      <div className="font-medium text-page leading-snug">{item.name}</div>
+      <div className="text-xs text-page/70 mt-1 leading-snug">{item.desc}</div>
     </>
   );
-  const cardClass =
-    "tool-card relative text-left p-3 rounded-lg block w-full cursor-pointer";
 
   if (item.type === "route") {
     return (
-      <Link key={item.name} href={`/${item.slug}`} className={cardClass}>
-        {cardInner}
-      </Link>
+      <div className={shellClass}>
+        {metaRow}
+        <Link href={`/${item.slug}`} className="block flex-1 min-w-0 cursor-pointer">
+          {body}
+        </Link>
+      </div>
     );
   }
   if (item.type === "open-health") {
     return (
-      <button
-        key={item.name}
-        type="button"
-        className={cardClass}
-        onClick={onOpenHealth}
-      >
-        {cardInner}
-      </button>
+      <div className={shellClass}>
+        {metaRow}
+        <button
+          type="button"
+          className="flex-1 min-w-0 text-left cursor-pointer"
+          onClick={onOpenHealth}
+        >
+          {body}
+        </button>
+      </div>
     );
   }
   return (
-    <button
-      key={item.name}
-      type="button"
-      className={cardClass}
-      onClick={onOpenSettings}
-    >
-      {cardInner}
-    </button>
+    <div className={shellClass}>
+      {metaRow}
+      <button
+        type="button"
+        className="flex-1 min-w-0 text-left cursor-pointer"
+        onClick={onOpenSettings}
+      >
+        {body}
+      </button>
+    </div>
   );
 }
 

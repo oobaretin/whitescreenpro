@@ -31,6 +31,32 @@ test.describe("smoke", () => {
     await expect(page.getByRole("link", { name: /white screen/i }).first()).toBeVisible();
   });
 
+  test("pin star does not overlap tool title", async ({ page }) => {
+    await page.goto("/");
+    const layout = await page.evaluate(() => {
+      const pinBtn = document.querySelector<HTMLElement>(
+        '[aria-label*="Pin White Screen" i], [aria-label*="Unpin White Screen" i]',
+      );
+      const card = pinBtn?.closest(".tool-card");
+      const title = card?.querySelector<HTMLElement>(".font-medium.text-page");
+      if (!pinBtn || !title) return { error: "missing elements" as const };
+      const pinRect = pinBtn.getBoundingClientRect();
+      const titleRect = title.getBoundingClientRect();
+      const overlaps =
+        pinRect.bottom > titleRect.top &&
+        pinRect.right > titleRect.left &&
+        pinRect.left < titleRect.right &&
+        pinRect.top < titleRect.bottom;
+      return {
+        overlaps,
+        gap: titleRect.top - pinRect.bottom,
+      };
+    });
+    expect(layout).not.toHaveProperty("error");
+    expect(layout.overlaps).toBe(false);
+    expect(layout.gap).toBeGreaterThan(0);
+  });
+
   test("changelog badge opens v2.2 release notes", async ({ page }) => {
     await page.goto("/");
     await page.getByRole("button", { name: /what's new in v2\.2/i }).click();
