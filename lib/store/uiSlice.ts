@@ -25,7 +25,13 @@ export const createUiSlice: StoreSlice<UiSlice> = (set, get) => ({
     const patch = readPersistedStorePatch();
     if (!patch) return;
     set(patch);
-    applyPersistedDomState(patch.theme ?? "light", patch.language ?? "en");
+    const language = patch.language ?? "en";
+    if (language !== "en") {
+      void import("../translations").then(({ preloadLocale }) =>
+        preloadLocale(language),
+      );
+    }
+    applyPersistedDomState(patch.theme ?? "light", language);
   },
 
   togglePanel: () => {
@@ -40,6 +46,11 @@ export const createUiSlice: StoreSlice<UiSlice> = (set, get) => ({
     set({ language });
     if (typeof window !== "undefined") {
       localStorage.setItem("whitescreentools-language", language);
+      if (language !== "en") {
+        void import("../translations").then(({ preloadLocale }) =>
+          preloadLocale(language),
+        );
+      }
     }
   },
 

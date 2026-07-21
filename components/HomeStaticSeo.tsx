@@ -1,10 +1,10 @@
 import Link from "next/link";
-import { translations } from "@/lib/translations";
+import { en } from "@/lib/translations";
 import { ROUTE_TOOL_ENTRIES } from "@/lib/toolsCatalog";
 
 /** Server-rendered crawlable index — visible in HTML without client JS. */
 export function HomeStaticSeo() {
-  const t = translations.en;
+  const t = en;
 
   return (
     <section

@@ -155,6 +155,17 @@ describe("keyboardShortcuts", () => {
   });
 });
 
+describe("translations", () => {
+  it("loads English synchronously and Spanish lazily", async () => {
+    const { en, loadLocale } = await import("@/lib/translations");
+    expect(en.nav.home).toBe("Home");
+    const es = await loadLocale("es");
+    expect(es.nav.home).toBe("Inicio");
+    const cached = await loadLocale("es");
+    expect(cached).toBe(es);
+  });
+});
+
 describe("storeHydrate", () => {
   it("exports hydrate helpers", async () => {
     const { readPersistedStorePatch, applyPersistedDomState } = await import(

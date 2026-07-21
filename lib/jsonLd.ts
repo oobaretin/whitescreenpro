@@ -1,4 +1,4 @@
-import { translations } from "./translations";
+import { en } from "./translations";
 import { SITE_NAME, SITE_URL, absoluteUrl } from "./site";
 import { SEO } from "./seo";
 import { ROUTE_TOOL_ENTRIES } from "./toolsCatalog";
@@ -22,7 +22,7 @@ export function getWebApplicationJsonLd() {
 }
 
 export function getFaqPageJsonLd() {
-  const qa = translations.en.qa;
+  const qa = en.qa;
   const pairs = [
     [qa.q1, qa.a1],
     [qa.q2, qa.a2],
