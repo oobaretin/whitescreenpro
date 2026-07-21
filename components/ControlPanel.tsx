@@ -157,6 +157,7 @@ export function ControlPanel({ showColorTab = true }: ControlPanelProps) {
                   min={0}
                   max={100}
                   step={1}
+                  aria-label={t.colors.brightness}
                   className="relative flex items-center w-full h-5"
                 >
                   <Slider.Track className="bg-gray-200 relative flex-1 rounded-full h-2">
@@ -183,6 +184,7 @@ export function ControlPanel({ showColorTab = true }: ControlPanelProps) {
                   min={-100}
                   max={100}
                   step={1}
+                  aria-label={t.colors.colorTemperature}
                   className="relative flex items-center w-full h-5"
                 >
                   <Slider.Track className="bg-gray-200 relative flex-1 rounded-full h-2">
@@ -207,6 +209,7 @@ export function ControlPanel({ showColorTab = true }: ControlPanelProps) {
                     onCheckedChange={(checked) =>
                       setGradient({ enabled: checked })
                     }
+                    aria-label={t.colors.gradientMode}
                     className="w-11 h-6 bg-gray-300 rounded-full relative data-[state=checked]:bg-blue-600 transition-colors"
                   >
                     <Switch.Thumb className="block w-5 h-5 bg-white rounded-full transition-transform translate-x-0.5 data-[state=checked]:translate-x-[22px]" />
@@ -279,6 +282,7 @@ export function ControlPanel({ showColorTab = true }: ControlPanelProps) {
                           min={0}
                           max={360}
                           step={1}
+                          aria-label={t.colors.angle}
                           className="relative flex items-center w-full h-5"
                         >
                           <Slider.Track className="bg-gray-200 relative flex-1 rounded-full h-2">
@@ -627,6 +631,7 @@ export function ControlPanel({ showColorTab = true }: ControlPanelProps) {
                     onCheckedChange={(checked) =>
                       setTimer({ enabled: checked })
                     }
+                    aria-label="Timer"
                     className="w-11 h-6 bg-gray-700 rounded-full relative data-[state=checked]:bg-blue-600 transition-colors"
                   >
                     <Switch.Thumb className="block w-5 h-5 bg-white rounded-full transition-transform translate-x-0.5 data-[state=checked]:translate-x-[22px]" />
@@ -685,6 +690,7 @@ export function ControlPanel({ showColorTab = true }: ControlPanelProps) {
                     onCheckedChange={(checked) =>
                       setFlicker({ enabled: checked })
                     }
+                    aria-label="Flicker and strobe"
                     className="w-11 h-6 bg-gray-700 rounded-full relative data-[state=checked]:bg-blue-600 transition-colors"
                   >
                     <Switch.Thumb className="block w-5 h-5 bg-white rounded-full transition-transform translate-x-0.5 data-[state=checked]:translate-x-[22px]" />
@@ -756,6 +762,7 @@ export function ControlPanel({ showColorTab = true }: ControlPanelProps) {
                     onCheckedChange={(checked) =>
                       setAutoCycle({ enabled: checked })
                     }
+                    aria-label="Auto-cycle colors"
                     className="w-11 h-6 bg-gray-700 rounded-full relative data-[state=checked]:bg-blue-600 transition-colors"
                   >
                     <Switch.Thumb className="block w-5 h-5 bg-white rounded-full transition-transform translate-x-0.5 data-[state=checked]:translate-x-[22px]" />
@@ -800,6 +807,7 @@ export function ControlPanel({ showColorTab = true }: ControlPanelProps) {
                   onCheckedChange={(checked) =>
                     useAppStore.setState({ panelAutoHide: checked })
                   }
+                  aria-label={t.settings.autoHidePanel}
                   className="w-11 h-6 bg-gray-700 rounded-full relative data-[state=checked]:bg-blue-600 transition-colors"
                 >
                   <Switch.Thumb className="block w-5 h-5 bg-white rounded-full transition-transform translate-x-0.5 data-[state=checked]:translate-x-[22px]" />

@@ -251,6 +251,7 @@ export function ExportTools() {
         <button
           type="button"
           onClick={copyObsLink}
+          aria-label="Copy OBS browser source overlay link"
           className="mt-2 w-full px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded text-sm transition-colors"
         >
           Copy OBS overlay link (?obs=1)

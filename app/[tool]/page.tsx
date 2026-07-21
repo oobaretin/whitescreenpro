@@ -427,6 +427,7 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
                   setShowSettings(true);
                 }}
                 className="absolute top-4 right-4 z-50 px-4 py-2 bg-card/90 hover:bg-card text-page font-medium rounded-lg shadow-lg backdrop-blur-sm border border-card transition-all"
+                aria-label="Show settings panel"
                 title="Show Settings"
               >
                 ⚙️ Settings
@@ -448,6 +449,7 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
                           useAppStore.getState().toggleFullscreen();
                         }}
                         className="text-page/60 hover:text-page transition-colors"
+                        aria-label={t.display.toggleFullscreen}
                         title="Fullscreen"
                       >
                         <svg
@@ -464,6 +466,7 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
                       <Link
                         href="/"
                         className="text-page/60 hover:text-page transition-colors"
+                        aria-label={t.common.backToHome}
                         title="Back to Home"
                       >
                         <svg
