@@ -1,129 +1,75 @@
 # WhiteScreen Tools
 
-A professional, feature-rich whitescreen utility web application for photography, videography, monitor testing, animation tracing, and focus/productivity use cases.
+Professional full-screen color utilities, monitor tests, video-call lighting, and 28+ tools — free at [whitescreentools.com](https://whitescreentools.com).
 
-## Features
+**Version 2.2**
 
-### Core Features
-- **Full-screen color display** - Edge-to-edge solid color display
-- **Pre-set color palette** - 12+ preset colors including white, black, primary colors, and grayscale variations
-- **Custom color picker** - HEX, RGB, and HSL input support
-- **Color history & favorites** - Save frequently used colors
-- **Gradient mode** - Linear and radial gradients between two colors
-- **Brightness adjustment** - 0-100% brightness control
-- **Color temperature** - Warm to cool adjustment (-100 to +100)
+## Highlights
 
-### Display Controls
-- **Resolution presets** - 480p, 720p, 1080p, 1440p, 4K, 5K, 8K, and native
-- **Fullscreen toggle** - F11 or dedicated button
-- **Picture-in-Picture mode** - Browser PiP support
-- **Aspect ratio lock** - Maintain aspect ratio when resizing
+- **28+ tools** — color screens, dead-pixel test, zoom lighting, pranks, ambient modes
+- **Homepage** — search, categories, pinned favorites, recently used, quick-start presets
+- **Share & restore** — URL params for color, brightness, Kelvin; tool deep links; OBS overlay (`?obs=1`)
+- **Multi-monitor** — local tab sync + layout presets (calibration, video call, pixel test)
+- **Monitor Health** — step-by-step wizard + PDF report export
+- **Accessibility** — keyboard shortcuts modal (`?`), reduced motion, `lang`/`dir` sync, aria labels
+- **SEO & PWA** — per-tool OG images, JSON-LD, installable app with icons
+- **Performance** — code-split tools, lazy-loaded translations, SSR-safe store hydration
 
-### Advanced Features
-- **Pattern overlays** - Grid lines, crosshairs, test patterns for monitor calibration
-- **Timer/Countdown** - Built-in timer for timed exposure in photography
-- **Flicker/Strobe mode** - Adjustable frequency (0.1-30 Hz) and intensity
-- **Auto-cycle mode** - Rotate through colors at set intervals
-- **Screen burn-in prevention** - Subtle pixel shifting option
+## Keyboard shortcuts
 
-### Export & Sharing
-- **Download images** - PNG/JPG export at various resolutions
-- **Shareable links** - Generate links with current settings
-- **QR code generator** - Easy mobile access
-- **Export color palette** - CSS/JSON format
+| Key | Action |
+|-----|--------|
+| `F` / `F11` | Toggle fullscreen |
+| `Space` | Cycle preset colors |
+| `Esc` | Exit fullscreen / close panel |
+| `C` | Open / close control panel |
+| `G` | Toggle grid overlay |
+| `T` | Start / stop timer |
+| `↑` / `↓` | Adjust brightness |
+| `←` / `→` | Previous / next preset |
+| `1`–`9` | Select preset by number |
+| `?` | Show shortcuts list |
 
-### Keyboard Shortcuts
-- `F` or `F11` - Toggle fullscreen
-- `Space` - Cycle through preset colors
-- `ESC` - Exit fullscreen / Close panel
-- `C` - Open/close control panel
-- `B` - Toggle brightness slider visibility
-- `G` - Toggle grid overlay
-- `T` - Start/stop timer
-- `1-9` - Quick select first 9 preset colors
-- `Arrow Up/Down` - Fine-tune brightness
-- `Arrow Left/Right` - Cycle colors
+## Tech stack
 
-## Tech Stack
+- **Next.js 14** (App Router)
+- **Tailwind CSS**, **Radix UI**, **Zustand**, **colord**
+- **Vitest** (unit) + **Playwright** (e2e)
+- **GitHub Actions** CI
 
-- **Framework**: Next.js 14+ with App Router
-- **Styling**: Tailwind CSS
-- **State Management**: Zustand
-- **UI Components**: Radix UI
-- **Color Manipulation**: colord
-- **QR Codes**: qrcode.react
-
-## Getting Started
-
-### Installation
+## Getting started
 
 ```bash
 npm install
+npm run dev          # http://localhost:3000
+npm run dev:clean    # clear .next cache if dev acts stale
 ```
 
-### Development
+### Scripts
 
 ```bash
-npm run dev
+npm run build        # production build
+npm test             # Vitest unit/smoke tests
+npm run test:e2e     # Playwright (build first; uses port 3099)
+npm run icons        # regenerate PWA icons
+npm run lint
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-### Build
-
-```bash
-npm run build
-npm start
-```
-
-## Project Structure
+## Project layout
 
 ```
-/app
-  /page.tsx          # Main whitescreen display
-  /layout.tsx        # Root layout
-  /globals.css       # Global styles
-/components
-  /ControlPanel.tsx  # Main control panel with tabs
-  /ColorPicker.tsx   # Color selection component
-  /ExportTools.tsx   # Export and sharing tools
-  /PatternOverlay.tsx # Pattern overlay component
-  /TimerDisplay.tsx  # Timer display component
-  /HintIndicator.tsx # Initial hint indicator
-/lib
-  /colorUtils.ts     # Color manipulation utilities
-  /storageUtils.ts   # LocalStorage utilities
-  /store.ts          # Zustand state store
-/hooks
-  /useKeyboardShortcuts.ts # Keyboard shortcuts hook
-  /useFullscreen.ts  # Fullscreen API hook
-  /useTimer.ts       # Timer logic hook
-  /useAutoCycle.ts   # Auto-cycle hook
-  /useFlicker.ts     # Flicker effect hook
-/public
-  /manifest.json     # PWA manifest
+app/                 # Routes (home, [tool], legal pages, opengraph-image)
+components/          # UI (ToolGrid, ControlPanel, modals, tool modes)
+lib/                 # Store slices, SEO, share links, translations/
+hooks/               # Keyboard, fullscreen, timers, share restore
+e2e/                 # Playwright smoke tests
+public/              # manifest, service worker, icons
 ```
 
-## Performance
+## Browser support
 
-- Optimized for 60fps rendering
-- Lazy-loaded control panel
-- Minimal bundle size
-- Fast initial load (<1s target)
-- PWA support for offline use
-
-## Browser Support
-
-- Chrome/Edge (latest)
-- Firefox (latest)
-- Safari (latest)
-- Mobile browsers (iOS Safari, Chrome Mobile)
+Chrome, Edge, Firefox, Safari (desktop & mobile). PWA install supported.
 
 ## License
 
 MIT
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
