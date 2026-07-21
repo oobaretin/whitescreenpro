@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
@@ -7,6 +8,21 @@ export const metadata: Metadata = {
   title: "About Us - WhiteScreen Tools",
   description: "Learn about WhiteScreen Tools, the ultimate screen utility tool.",
 };
+
+function SectionCard({
+  title,
+  children,
+}: {
+  title: string;
+  children: ReactNode;
+}) {
+  return (
+    <section className="bg-card border border-card rounded-xl p-6 sm:p-8">
+      <h2 className="text-2xl font-semibold text-page mb-4">{title}</h2>
+      {children}
+    </section>
+  );
+}
 
 export default function AboutPage() {
   return (
@@ -18,128 +34,177 @@ export default function AboutPage() {
             href="/"
             className="inline-flex items-center gap-2 text-page/80 hover:text-page transition-colors mb-8"
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              aria-hidden="true"
+            >
               <path d="M19 12H5M12 19l-7-7 7-7" />
             </svg>
             <span>Back to Home</span>
           </Link>
-          <h1 className="text-4xl md:text-5xl font-bold mb-8 text-center">About WhiteScreen Tools</h1>
-          
+
+          <header className="mb-10 text-center max-w-2xl mx-auto">
+            <h1 className="text-4xl md:text-5xl font-bold text-page mb-4">
+              About WhiteScreen Tools
+            </h1>
+            <p className="text-lg text-page/80 leading-relaxed">
+              Professional screen utilities, monitor tests, and creative tools — free,
+              browser-based, and privacy-focused.
+            </p>
+          </header>
+
           <div className="space-y-8 text-page/90 leading-relaxed">
-            <section className="prose prose-lg max-w-none">
-              <p className="text-xl text-gray-800 mb-6">
-                WhiteScreen Tools is a comprehensive, feature-rich screen utility web application 
-                designed for professionals, creators, and everyday users. We provide the most 
-                complete collection of screen tools available—all free, accessible, and privacy-focused.
+            <SectionCard title="Our mission">
+              <p className="text-lg">
+                We aim to provide the most complete screen utility collection available,
+                combining professional features for photography, videography, and design
+                with fun prank tools and ambient modes — all in one free platform. No
+                downloads, no registration, no ads.
               </p>
-            </section>
+            </SectionCard>
 
             <section>
-              <h2 className="text-3xl font-semibold text-black mb-4">Our Mission</h2>
-              <p className="text-lg text-page/90">
-                We aim to provide the most complete screen utility tool available, combining 
-                professional features for photography, videography, and design with fun prank 
-                tools and ambient screensavers—all in one free, accessible platform. No downloads, 
-                no registration, no ads.
-              </p>
-            </section>
-
-            <section>
-              <h2 className="text-3xl font-semibold text-black mb-4">What We Offer</h2>
+              <h2 className="text-2xl font-semibold text-page mb-6">What we offer</h2>
               <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <h3 className="text-xl font-semibold text-black mb-3">Professional Tools</h3>
-                  <ul className="list-disc list-inside space-y-2 text-page/90">
-                    <li>Zoom Lighting for video calls</li>
+                <div className="bg-card border border-card rounded-xl p-6">
+                  <h3 className="text-lg font-semibold text-page mb-3">
+                    Professional tools
+                  </h3>
+                  <ul className="list-disc list-inside space-y-2 text-page/85">
+                    <li>Zoom lighting for video calls</li>
                     <li>Digital signature capture</li>
                     <li>Tip calculator for POS systems</li>
-                    <li>Dead pixel test for monitors</li>
-                    <li>Color calibration tools</li>
-                    <li>Pattern overlays for alignment</li>
+                    <li>Dead pixel &amp; monitor health tests</li>
+                    <li>Color calibration &amp; screen ruler</li>
+                    <li>OBS overlay &amp; share links</li>
                   </ul>
                 </div>
-                <div>
-                  <h3 className="text-xl font-semibold text-black mb-3">Fun Features</h3>
-                  <ul className="list-disc list-inside space-y-2 text-page/90">
-                    <li>Broken screen prank</li>
-                    <li>Blue screen of death (BSOD)</li>
+                <div className="bg-card border border-card rounded-xl p-6">
+                  <h3 className="text-lg font-semibold text-page mb-3">
+                    Fun &amp; ambient
+                  </h3>
+                  <ul className="list-disc list-inside space-y-2 text-page/85">
+                    <li>Broken screen &amp; BSOD pranks</li>
                     <li>Fake system updates</li>
                     <li>Hacker terminal effects</li>
                     <li>DVD screensaver</li>
-                    <li>Matrix rain effect</li>
+                    <li>Matrix rain &amp; flip clock</li>
+                    <li>No-signal static</li>
                   </ul>
                 </div>
               </div>
             </section>
 
-            <section>
-              <h2 className="text-3xl font-semibold text-black mb-4">Key Features</h2>
-              <ul className="list-disc list-inside space-y-3 text-page/90">
-                <li><strong>15+ Professional Tools</strong> - Zoom lighting, signature capture, tip calculator, dead pixel test, and more</li>
-                <li><strong>10+ Fun Pranks</strong> - Broken screen, BSOD, fake updates, hacker terminal</li>
-                <li><strong>5+ Ambient Modes</strong> - DVD screensaver, Matrix rain, flip clock, white noise</li>
-                <li><strong>Full Color Customization</strong> - Custom colors, gradients, temperature control, brightness adjustment</li>
-                <li><strong>Export Options</strong> - Download screens at various resolutions (480p to 8K)</li>
-                <li><strong>100% Free</strong> - No ads, no tracking, no registration required</li>
-                <li><strong>Privacy First</strong> - Everything runs in your browser, no data sent to servers</li>
-                <li><strong>Mobile Friendly</strong> - Works perfectly on phones, tablets, and desktop computers</li>
+            <SectionCard title="Key features">
+              <ul className="list-disc list-inside space-y-3">
+                <li>
+                  <strong className="text-page">28+ tools</strong> — color screens,
+                  utilities, pranks, and ambient modes
+                </li>
+                <li>
+                  <strong className="text-page">Pinned favorites &amp; search</strong> —
+                  find and save your go-to tools
+                </li>
+                <li>
+                  <strong className="text-page">Share links</strong> — restore color,
+                  brightness, and Kelvin from the URL
+                </li>
+                <li>
+                  <strong className="text-page">Monitor Health</strong> — guided wizard
+                  with PDF report export
+                </li>
+                <li>
+                  <strong className="text-page">Multi-monitor sync</strong> — layout
+                  presets across tabs
+                </li>
+                <li>
+                  <strong className="text-page">100% free</strong> — no ads, no
+                  registration required
+                </li>
+                <li>
+                  <strong className="text-page">Privacy first</strong> — tools run in
+                  your browser; settings stay local
+                </li>
+                <li>
+                  <strong className="text-page">Mobile friendly</strong> — works on
+                  phones, tablets, and desktop
+                </li>
               </ul>
-            </section>
+            </SectionCard>
 
             <section>
-              <h2 className="text-3xl font-semibold text-black mb-4">Who Uses WhiteScreen Tools?</h2>
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <h3 className="text-xl font-semibold text-black mb-2">📸 Photographers</h3>
-                  <p className="text-page/90">
-                    Use white screens for fill lighting, color calibration, and product photography backgrounds.
-                  </p>
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold text-black mb-2">🎥 Videographers</h3>
-                  <p className="text-page/90">
-                    Green and blue screens for chroma key effects, zoom lighting for video calls.
-                  </p>
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold text-black mb-2">🎨 Designers</h3>
-                  <p className="text-page/90">
-                    Color testing, monitor calibration, and neutral backgrounds for design work.
-                  </p>
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold text-black mb-2">👨‍💻 Developers</h3>
-                  <p className="text-page/90">
-                    Screen testing, dead pixel detection, and display calibration.
-                  </p>
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold text-black mb-2">🎓 Educators</h3>
-                  <p className="text-page/90">
-                    Presentations, focus tools, and distraction-free backgrounds.
-                  </p>
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold text-black mb-2">🎭 Content Creators</h3>
-                  <p className="text-page/90">
-                    Prank tools, screensavers, and creative effects for videos and streams.
-                  </p>
-                </div>
+              <h2 className="text-2xl font-semibold text-page mb-6">
+                Who uses WhiteScreen Tools?
+              </h2>
+              <div className="grid sm:grid-cols-2 gap-4">
+                {[
+                  {
+                    emoji: "📸",
+                    title: "Photographers",
+                    text: "Fill lighting, color calibration, and clean backgrounds.",
+                  },
+                  {
+                    emoji: "🎥",
+                    title: "Videographers",
+                    text: "Green/blue screens for chroma key and zoom lighting.",
+                  },
+                  {
+                    emoji: "🎨",
+                    title: "Designers",
+                    text: "Color testing, monitor calibration, neutral backgrounds.",
+                  },
+                  {
+                    emoji: "👨‍💻",
+                    title: "Developers",
+                    text: "Display testing, dead pixels, and calibration.",
+                  },
+                  {
+                    emoji: "🎓",
+                    title: "Educators",
+                    text: "Presentations, focus tools, distraction-free backgrounds.",
+                  },
+                  {
+                    emoji: "🎭",
+                    title: "Content creators",
+                    text: "Pranks, overlays, and stream-friendly effects.",
+                  },
+                ].map((item) => (
+                  <div
+                    key={item.title}
+                    className="bg-card border border-card rounded-xl p-5"
+                  >
+                    <h3 className="text-base font-semibold text-page mb-2">
+                      {item.emoji} {item.title}
+                    </h3>
+                    <p className="text-sm text-page/80">{item.text}</p>
+                  </div>
+                ))}
               </div>
             </section>
 
-            <section className="bg-card border border-card p-6 rounded-lg">
-              <h2 className="text-3xl font-semibold text-black mb-4">Privacy & Transparency</h2>
-              <p className="text-page/90 mb-4">
-                WhiteScreen Tools is built with privacy in mind. Everything runs entirely in your browser—no 
-                data is collected, stored, or transmitted to our servers. All your preferences and settings 
-                are saved locally on your device.
+            <SectionCard title="Privacy & transparency">
+              <p className="mb-4">
+                Screen tools run entirely in your browser. Preferences, pinned tools, and
+                settings are stored locally on your device — not on our servers.
               </p>
-              <p className="text-page/90">
-                We believe in transparency and user control. You can use WhiteScreen Tools with complete 
-                confidence that your privacy is protected.
+              <p>
+                The optional{" "}
+                <Link href="/contact" className="text-[color:var(--accent-color)] hover:underline">
+                  contact form
+                </Link>{" "}
+                is the only feature that sends information you provide (name, email,
+                message) so we can reply. See our{" "}
+                <Link href="/privacy" className="text-[color:var(--accent-color)] hover:underline">
+                  Privacy Policy
+                </Link>{" "}
+                for details.
               </p>
-            </section>
+            </SectionCard>
           </div>
         </div>
       </main>
@@ -147,4 +212,3 @@ export default function AboutPage() {
     </div>
   );
 }
-

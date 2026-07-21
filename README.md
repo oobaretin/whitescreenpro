@@ -14,6 +14,18 @@ Professional full-screen color utilities, monitor tests, video-call lighting, an
 - **Accessibility** — keyboard shortcuts modal (`?`), reduced motion, `lang`/`dir` sync, aria labels
 - **SEO & PWA** — per-tool OG images, JSON-LD, installable app with icons
 - **Performance** — code-split tools, lazy-loaded translations, SSR-safe store hydration
+- **Contact** — Web3Forms-powered message form at `/contact`
+
+## Environment variables
+
+Optional for local contact form testing (production uses Vercel env vars):
+
+```bash
+cp .env.example .env.local
+# NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY=your_key_from_web3forms.com
+```
+
+See [Web3Forms](https://web3forms.com) to create a free access key.
 
 ## Keyboard shortcuts
 

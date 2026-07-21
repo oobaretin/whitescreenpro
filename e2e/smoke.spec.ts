@@ -63,4 +63,21 @@ test.describe("smoke", () => {
     await expect(page.getByRole("dialog", { name: /release notes/i })).toBeVisible();
     await expect(page.getByText("Version 2.2")).toBeVisible();
   });
+
+  test("contact page loads with form and sidebar", async ({ page }) => {
+    await page.goto("/contact");
+    await expect(
+      page.getByRole("heading", { name: "Contact Us", exact: true }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Send a message", exact: true }),
+    ).toBeVisible();
+    await expect(page.getByLabel("Email")).toBeVisible();
+    await expect(page.getByLabel("Message")).toBeVisible();
+    await expect(page.getByRole("button", { name: "Send message" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Email", exact: true })).toBeVisible();
+    await expect(
+      page.getByRole("link", { name: /open an issue on github/i }),
+    ).toBeVisible();
+  });
 });
