@@ -4,6 +4,7 @@ import { useEffect } from "react";
 
 export function ServiceWorkerRegister() {
   useEffect(() => {
+    if (process.env.NODE_ENV === "development") return;
     if (typeof window === "undefined" || !("serviceWorker" in navigator)) return;
 
     window.addEventListener("load", () => {

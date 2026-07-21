@@ -63,6 +63,34 @@ describe("shareLink", () => {
   });
 });
 
+describe("toolsCatalog", () => {
+  it("filterToolEntries matches by name", async () => {
+    const { filterToolEntries, ALL_TOOL_ENTRIES } = await import(
+      "@/lib/toolsCatalog"
+    );
+    const results = filterToolEntries(ALL_TOOL_ENTRIES, "matrix", "all");
+    expect(results.some((r) => r.name === "Matrix Rain")).toBe(true);
+  });
+
+  it("filterToolEntries respects category", async () => {
+    const { filterToolEntries, ALL_TOOL_ENTRIES } = await import(
+      "@/lib/toolsCatalog"
+    );
+    const results = filterToolEntries(ALL_TOOL_ENTRIES, "", "prank");
+    expect(results.length).toBeGreaterThan(0);
+    expect(results.every((r) => r.category === "prank")).toBe(true);
+  });
+});
+
+describe("jsonLd", () => {
+  it("builds FAQ and WebApplication schemas", async () => {
+    const { getHomeJsonLd } = await import("@/lib/jsonLd");
+    const schemas = getHomeJsonLd();
+    expect(schemas).toHaveLength(2);
+    expect(schemas[0]["@type"]).toBe("WebApplication");
+    expect(schemas[1]["@type"]).toBe("FAQPage");
+  });
+});
 describe("seo", () => {
   it("every sitemap tool has metadata", async () => {
     const { SEO } = await import("@/lib/seo");

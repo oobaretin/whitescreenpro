@@ -6,7 +6,7 @@
     "dev": "next dev",
     "dev:clean": "rm -rf .next && next dev",
     "dev:poll": "NEXT_WATCH_POLL=1 next dev",
-    "build": "next build",
+    "build": "rm -rf .next && next build",
     "start": "next start",
     "lint": "next lint",
     "test": "vitest run",

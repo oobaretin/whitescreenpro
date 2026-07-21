@@ -1,6 +1,14 @@
 import type { Metadata } from "next";
+import { OG_IMAGE, SITE_URL } from "./site";
 
-/** SEO titles (≤60 chars) and meta descriptions (≤155 chars) for key pages. */
+const ogImages = [
+  {
+    url: OG_IMAGE.url,
+    width: OG_IMAGE.width,
+    height: OG_IMAGE.height,
+    alt: OG_IMAGE.alt,
+  },
+];
 export const SEO = {
   home: {
     title: "White Screen & Monitor Test Tools | Full Screen Colors & Lighting",
@@ -163,7 +171,35 @@ export function getToolMetadata(slug: string): Metadata | null {
   return {
     title: meta.title,
     description: meta.description,
-    openGraph: { title: meta.title, description: meta.description, type: "website" },
-    twitter: { card: "summary_large_image", title: meta.title, description: meta.description },
+    openGraph: {
+      title: meta.title,
+      description: meta.description,
+      type: "website",
+      url: `${SITE_URL}/${slug}`,
+      images: ogImages,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: meta.title,
+      description: meta.description,
+      images: [OG_IMAGE.url],
+    },
+  };
+}
+
+export function getDefaultMetadata(): Pick<
+  Metadata,
+  "metadataBase" | "openGraph" | "twitter"
+> {
+  return {
+    metadataBase: new URL(SITE_URL),
+    openGraph: {
+      siteName: "WhiteScreen Tools",
+      images: ogImages,
+    },
+    twitter: {
+      card: "summary_large_image",
+      images: [OG_IMAGE.url],
+    },
   };
 }

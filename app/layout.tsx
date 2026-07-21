@@ -10,11 +10,15 @@ import { ChangelogModal } from "@/components/ChangelogModal";
 import { MultiMonitorSync } from "@/components/MultiMonitorSync";
 import { MonitorHealthWizard } from "@/components/MonitorHealthWizard";
 import { ContextHelpBubble } from "@/components/ContextHelpBubble";
-import { SEO } from "@/lib/seo";
+import { SEO, getDefaultMetadata } from "@/lib/seo";
+import { JsonLd } from "@/components/JsonLd";
+import { getHomeJsonLd } from "@/lib/jsonLd";
 
 const inter = Inter({ subsets: ["latin"] });
+const defaultMeta = getDefaultMetadata();
 
 export const metadata: Metadata = {
+  metadataBase: defaultMeta.metadataBase,
   title: SEO.home.title,
   description: SEO.home.description,
   keywords: [
@@ -29,12 +33,14 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "WhiteScreen Tools" }],
   openGraph: {
+    ...defaultMeta.openGraph,
     title: SEO.home.title,
     description: SEO.home.description,
     type: "website",
+    url: "/",
   },
   twitter: {
-    card: "summary_large_image",
+    ...defaultMeta.twitter,
     title: SEO.home.title,
     description: SEO.home.description,
   },
@@ -52,6 +58,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+        <JsonLd data={getHomeJsonLd()} />
         <ThemeSync />
         <LangSync />
         <MultiMonitorSync />

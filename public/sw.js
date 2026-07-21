@@ -1,4 +1,4 @@
-const cacheName = "whitescreen-v2";
+const cacheName = "whitescreen-v3";
 
 const SHELL = ["/"];
 
@@ -49,21 +49,8 @@ self.addEventListener("fetch", (evt) => {
   }
 
   if (isNextAsset) {
-    evt.respondWith(
-      caches.match(evt.request).then((cached) => {
-        const network = fetch(evt.request)
-          .then((response) => {
-            if (response.status === 200) {
-              const clone = response.clone();
-              caches.open(cacheName).then((cache) => cache.put(evt.request, clone));
-            }
-            return response;
-          })
-          .catch(() => cached);
-
-        return cached || network;
-      }),
-    );
+    // Never cache Next.js bundles — avoids stale chunks after deploys or dev rebuilds
+    evt.respondWith(fetch(evt.request));
     return;
   }
 
