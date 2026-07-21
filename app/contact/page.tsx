@@ -52,7 +52,7 @@ export default function ContactPage() {
                 </div>
               </div>
 
-              {/* Opens visitor's mail app (mailto: contact@whitescreentools.com) */}
+              {/* Web3Forms — set NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY in Vercel */}
               <ContactForm />
             </section>
 
