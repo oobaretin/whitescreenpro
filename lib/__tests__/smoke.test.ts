@@ -155,6 +155,21 @@ describe("keyboardShortcuts", () => {
   });
 });
 
+describe("healthReport", () => {
+  it("formats health report text with all steps", async () => {
+    const { formatHealthReportText, HEALTH_CHECK_STEPS } = await import(
+      "@/lib/healthReport"
+    );
+    const text = formatHealthReportText({
+      completedAt: new Date("2026-07-21T12:00:00"),
+      steps: HEALTH_CHECK_STEPS,
+    });
+    expect(text).toContain("Monitor Health Report");
+    expect(text).toContain("Dead Pixel Hunt");
+    expect(text).toContain("Ghosting / Motion Blur");
+  });
+});
+
 describe("monitorLayouts", () => {
   it("defines multi-monitor layout presets", async () => {
     const { MONITOR_LAYOUT_PRESETS } = await import("@/lib/monitorLayouts");

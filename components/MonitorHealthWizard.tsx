@@ -1,22 +1,23 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAppStore } from "@/lib/store";
+import {
+  HEALTH_CHECK_STEPS,
+  downloadHealthReportPdf,
+} from "@/lib/healthReport";
 
-const STEPS = [
-  "Dead Pixel Hunt",
-  "Backlight Bleed Test",
-  "Uniformity (Grey) Check",
-  "Ghosting / Motion Blur",
-] as const;
+const STEPS = HEALTH_CHECK_STEPS;
 
 export function MonitorHealthWizard() {
   const router = useRouter();
+  const [exportingPdf, setExportingPdf] = useState(false);
   const healthDashboardOpen = useAppStore((s) => s.healthDashboardOpen);
   const healthDiagnosticStep = useAppStore((s) => s.healthDiagnosticStep);
   const healthDiagnosticComplete = useAppStore((s) => s.healthDiagnosticComplete);
   const setHealthDashboardOpen = useAppStore((s) => s.setHealthDashboardOpen);
+  const showToast = useAppStore((s) => s.showToast);
   const startHealthDiagnostic = useAppStore((s) => s.startHealthDiagnostic);
   const advanceHealthDiagnostic = useAppStore((s) => s.advanceHealthDiagnostic);
 
@@ -116,10 +117,38 @@ export function MonitorHealthWizard() {
               ))}
             </ul>
             {healthDiagnosticComplete && (
-              <p className="text-sm text-page/80 mb-4 rounded-lg p-3 bg-page/5 border border-card text-left">
-                All steps completed. Screenshot this summary if you like — this is a
-                self-guided check, not a lab certification.
-              </p>
+              <>
+                <p className="text-sm text-page/80 mb-4 rounded-lg p-3 bg-page/5 border border-card text-left">
+                  All steps completed. Export a PDF summary below, or screenshot this
+                  panel — this is a self-guided check, not a lab certification.
+                </p>
+                <button
+                  type="button"
+                  disabled={exportingPdf}
+                  className="w-full py-3 mb-3 rounded-[10px] border text-page font-semibold cursor-pointer text-sm transition-opacity hover:opacity-90 disabled:opacity-50"
+                  style={{ borderColor: "var(--border-color)" }}
+                  onClick={async () => {
+                    setExportingPdf(true);
+                    try {
+                      await downloadHealthReportPdf({
+                        completedAt: new Date(),
+                        steps: STEPS,
+                        userAgent:
+                          typeof navigator !== "undefined"
+                            ? navigator.userAgent
+                            : undefined,
+                      });
+                      showToast("PDF report downloaded", 3000);
+                    } catch {
+                      showToast("Could not generate PDF", 3000);
+                    } finally {
+                      setExportingPdf(false);
+                    }
+                  }}
+                >
+                  {exportingPdf ? "Generating PDF…" : "Download PDF report"}
+                </button>
+              </>
             )}
             <button
               type="button"
