@@ -1,10 +1,12 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useAppStore } from "@/lib/store";
+import { getRecentTools } from "@/lib/recentTools";
 import {
   ALL_TOOL_ENTRIES,
+  ROUTE_TOOL_ENTRIES,
   TOOL_CATEGORIES,
   filterToolEntries,
   type ToolCategory,
@@ -80,13 +82,44 @@ export function ToolGrid({ showChangelogBadge, onOpenChangelog }: ToolGridProps)
   const { setHealthDashboardOpen, requestOpenSettingsFab } = useAppStore();
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<ToolCategory | "all">("all");
+  const [recentSlugs, setRecentSlugs] = useState<string[]>([]);
+
+  useEffect(() => {
+    setRecentSlugs(getRecentTools());
+  }, []);
+
+  const recentEntries = useMemo(() => {
+    return recentSlugs
+      .map((slug) => ROUTE_TOOL_ENTRIES.find((t) => t.slug === slug))
+      .filter((t): t is Extract<ToolGridEntry, { type: "route" }> => Boolean(t));
+  }, [recentSlugs]);
 
   const filtered = useMemo(
     () => filterToolEntries(ALL_TOOL_ENTRIES, query, category),
     [query, category],
   );
 
+  const showRecent = recentEntries.length > 0 && !query && category === "all";
+
   return (
+    <div className="space-y-4">
+      {showRecent && (
+        <div className="bg-card rounded-xl shadow-md p-4 border border-card">
+          <h2 className="text-lg font-semibold text-page mb-3">Recently used</h2>
+          <div className="flex flex-wrap gap-2">
+            {recentEntries.map((item) => (
+              <Link
+                key={item.slug}
+                href={`/${item.slug}`}
+                className="px-3 py-1.5 rounded-full text-sm bg-page/10 text-page hover:bg-page/15 transition-colors"
+              >
+                {item.name}
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+
     <div className="bg-card rounded-xl shadow-md p-6 border border-card">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
         <h2 className="text-2xl font-bold text-page">All Tools</h2>
@@ -154,6 +187,7 @@ export function ToolGrid({ showChangelogBadge, onOpenChangelog }: ToolGridProps)
           </button>
         </div>
       )}
+    </div>
     </div>
   );
 }

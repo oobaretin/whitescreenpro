@@ -10,7 +10,7 @@ import { buildShareLink } from "@/lib/shareLink";
 
 export function ExportTools() {
   const t = useTranslation();
-  const { currentColor, brightness, gradient, activeMode, showToast } = useAppStore();
+  const { currentColor, brightness, colorTemperature, masterKelvin, gradient, activeMode, showToast } = useAppStore();
   const [showQR, setShowQR] = useState(false);
   const [exportResolution, setExportResolution] = useState("1920x1080");
   const [exportType, setExportType] = useState<"screen" | "color">("screen");
@@ -104,7 +104,12 @@ export function ExportTools() {
   };
 
   const generateShareLink = () =>
-    buildShareLink({ color: currentColor, brightness });
+    buildShareLink({
+      color: currentColor,
+      brightness,
+      kelvin: masterKelvin,
+      colorTemperature,
+    });
 
   const copyShareLink = async () => {
     const link = generateShareLink();

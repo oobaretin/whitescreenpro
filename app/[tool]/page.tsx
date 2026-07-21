@@ -14,6 +14,7 @@ import {
 import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
 import { useShareLinkRestore } from "@/hooks/useShareLinkRestore";
 import { parseShareLinkParams } from "@/lib/shareLink";
+import { recordRecentTool } from "@/lib/recentTools";
 import { useFullscreen } from "@/hooks/useFullscreen";
 import { useTimer } from "@/hooks/useTimer";
 import { useAutoCycle } from "@/hooks/useAutoCycle";
@@ -150,6 +151,7 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
 
   useEffect(() => {
     if (!toolSlug) return;
+    recordRecentTool(toolSlug);
     
     if (!toolConfig) {
       router.push("/");

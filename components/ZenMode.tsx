@@ -1,17 +1,21 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { prefersReducedMotion } from "@/hooks/useReducedMotion";
 
 const IDLE_MS = 3000;
 
 /**
  * On tool routes only: after 3s without mouse/touch/keyboard activity,
  * hides cursor and fades out elements with class `zen-ui`.
+ * Skipped when the user prefers reduced motion.
  */
 export function ZenMode() {
   const idleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
+    if (prefersReducedMotion()) return;
+
     document.body.classList.add("tool-active");
 
     const goZen = () => {

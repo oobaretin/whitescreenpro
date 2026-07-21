@@ -1,12 +1,18 @@
 import { useEffect, useRef, useState } from "react";
 import { useAppStore } from "@/lib/store";
+import { prefersReducedMotion } from "@/hooks/useReducedMotion";
 
 export function useFlicker() {
-  const { flicker, currentColor } = useAppStore();
+  const { flicker } = useAppStore();
   const [isVisible, setIsVisible] = useState(true);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
+    if (prefersReducedMotion()) {
+      setIsVisible(true);
+      return;
+    }
+
     if (flicker.enabled && flicker.frequency > 0) {
       const period = 1000 / flicker.frequency; // milliseconds
       const onTime = period * (flicker.intensity / 100);

@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import {
   getColorString,
   getGradientCSS,
@@ -57,9 +57,38 @@ describe("shareLink", () => {
   });
 
   it("buildShareLinkParams round-trips with parse", () => {
-    const params = buildShareLinkParams({ color: "#00FF00", brightness: 42 });
+    const params = buildShareLinkParams({
+      color: "#00FF00",
+      brightness: 42,
+      kelvin: 5500,
+      colorTemperature: 20,
+    });
     const parsed = parseShareLinkParams(params);
-    expect(parsed).toEqual({ color: "#00FF00", brightness: 42 });
+    expect(parsed).toEqual({
+      color: "#00FF00",
+      brightness: 42,
+      kelvin: 5500,
+      colorTemperature: 20,
+    });
+  });
+});
+
+describe("recentTools", () => {
+  it("recordRecentTool dedupes and caps list", async () => {
+    const { recordRecentTool, getRecentTools } = await import("@/lib/recentTools");
+    const store: Record<string, string> = {};
+    vi.stubGlobal("localStorage", {
+      getItem: (k: string) => store[k] ?? null,
+      setItem: (k: string, v: string) => {
+        store[k] = v;
+      },
+    });
+    recordRecentTool("white-screen");
+    recordRecentTool("black-screen");
+    recordRecentTool("white-screen");
+    expect(getRecentTools()[0]).toBe("white-screen");
+    expect(getRecentTools()[1]).toBe("black-screen");
+    vi.unstubAllGlobals();
   });
 });
 
