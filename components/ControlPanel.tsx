@@ -693,6 +693,13 @@ export function ControlPanel({ showColorTab = true }: ControlPanelProps) {
 
                 {flicker.enabled && (
                   <div className="space-y-3 pl-4 border-l-2 border-gray-700">
+                    <p
+                      role="alert"
+                      className="text-xs text-amber-300 bg-amber-950/40 border border-amber-700/50 rounded px-2 py-1.5"
+                    >
+                      Flashing lights warning: Do not use if you are sensitive to
+                      strobe effects or have photosensitive epilepsy.
+                    </p>
                     <div>
                       <label className="text-xs text-gray-400 mb-1 block">
                         Frequency: {flicker.frequency} Hz

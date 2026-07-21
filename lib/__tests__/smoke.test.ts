@@ -1,0 +1,104 @@
+import { describe, expect, it } from "vitest";
+import {
+  getColorString,
+  getGradientCSS,
+  isValidColor,
+  kelvinToHex,
+} from "@/lib/colorUtils";
+import {
+  buildShareLinkParams,
+  parseShareLinkParams,
+} from "@/lib/shareLink";
+
+describe("colorUtils", () => {
+  it("getColorString returns hex unchanged at 100% brightness", () => {
+    expect(getColorString("#FF0000", 100)).toBe("#ff0000");
+  });
+
+  it("getColorString darkens at lower brightness", () => {
+    expect(getColorString("#FFFFFF", 50)).toBe("#808080");
+  });
+
+  it("getGradientCSS returns linear gradient CSS", () => {
+    const css = getGradientCSS({
+      enabled: true,
+      type: "linear",
+      startColor: "#FFFFFF",
+      endColor: "#000000",
+      angle: 90,
+    });
+    expect(css).toContain("linear-gradient(90deg");
+    expect(css).toContain("#ffffff");
+    expect(css).toContain("#000000");
+  });
+
+  it("kelvinToHex returns valid hex in range", () => {
+    const warm = kelvinToHex(3000);
+    const cool = kelvinToHex(9000);
+    expect(isValidColor(warm)).toBe(true);
+    expect(isValidColor(cool)).toBe(true);
+    expect(warm).not.toBe(cool);
+  });
+});
+
+describe("shareLink", () => {
+  it("parseShareLinkParams decodes color and brightness", () => {
+    const parsed = parseShareLinkParams("color=FF0000&brightness=75");
+    expect(parsed).toEqual({ color: "#FF0000", brightness: 75 });
+  });
+
+  it("parseShareLinkParams rejects invalid color", () => {
+    const parsed = parseShareLinkParams("color=not-a-color&brightness=50");
+    expect(parsed).toEqual({ brightness: 50 });
+  });
+
+  it("parseShareLinkParams returns null when empty", () => {
+    expect(parseShareLinkParams("")).toBeNull();
+  });
+
+  it("buildShareLinkParams round-trips with parse", () => {
+    const params = buildShareLinkParams({ color: "#00FF00", brightness: 42 });
+    const parsed = parseShareLinkParams(params);
+    expect(parsed).toEqual({ color: "#00FF00", brightness: 42 });
+  });
+});
+
+describe("seo", () => {
+  it("every sitemap tool has metadata", async () => {
+    const { SEO } = await import("@/lib/seo");
+    const tools = [
+      "black-screen",
+      "red-screen",
+      "blue-screen",
+      "green-screen",
+      "yellow-screen",
+      "orange-screen",
+      "pink-screen",
+      "purple-screen",
+      "white-screen",
+      "gray-screen",
+      "zoom-lighting",
+      "tip-screen",
+      "signature-screen",
+      "dvd-screensaver",
+      "broken-screen",
+      "dead-pixel-test",
+      "bsod",
+      "matrix-rain",
+      "flip-clock",
+      "no-signal",
+      "fake-update",
+      "hacker-terminal",
+      "screen-stress-test",
+      "burn-in-fixer",
+      "motion-blur-test",
+      "reading-light",
+      "reflection-checker",
+      "ruler",
+    ];
+    for (const slug of tools) {
+      expect(SEO[slug as keyof typeof SEO], `missing SEO for ${slug}`).toBeDefined();
+      expect(SEO[slug as keyof typeof SEO].title.length).toBeGreaterThan(0);
+    }
+  });
+});

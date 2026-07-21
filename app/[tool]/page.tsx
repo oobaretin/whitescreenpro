@@ -12,6 +12,8 @@ import {
   getColorFromTemperature,
 } from "@/lib/colorUtils";
 import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
+import { useShareLinkRestore } from "@/hooks/useShareLinkRestore";
+import { parseShareLinkParams } from "@/lib/shareLink";
 import { useFullscreen } from "@/hooks/useFullscreen";
 import { useTimer } from "@/hooks/useTimer";
 import { useAutoCycle } from "@/hooks/useAutoCycle";
@@ -19,37 +21,39 @@ import { useFlicker } from "@/hooks/useFlicker";
 import { PatternOverlay } from "@/components/PatternOverlay";
 import { TimerDisplay } from "@/components/TimerDisplay";
 import { HintIndicator } from "@/components/HintIndicator";
+import { ControlPanel } from "@/components/ControlPanel";
 import { ZoomLightingDisplay } from "@/components/tools/ZoomLightingDisplay";
+import {
+  BSOD,
+  BrokenScreenOverlay,
+  FakeUpdate,
+  HackerTerminal,
+  DVDScreensaver,
+  MatrixRain,
+  FlipClock,
+  NoSignal,
+  SignatureScreen,
+  TipScreen,
+  DeadPixelTest,
+  ScreenStressTest,
+  BurnInFixer,
+  MotionBlurTest,
+  ReadingLight,
+  ReflectionChecker,
+  ScreenRuler,
+  BrokenScreen,
+  BSODControls,
+  FakeUpdateControls,
+  HackerTerminalControls,
+  DVDControls,
+  MatrixControls,
+  FlipClockControls,
+  NoSignalControls,
+  ZoomLighting,
+} from "@/lib/toolComponents";
+import { QuickNav } from "@/components/QuickNav";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
-import { ControlPanel } from "@/components/ControlPanel";
-import { BSOD } from "@/components/pranks/BSOD";
-import { BrokenScreenOverlay } from "@/components/pranks/BrokenScreenOverlay";
-import { FakeUpdate } from "@/components/pranks/FakeUpdate";
-import { HackerTerminal } from "@/components/pranks/HackerTerminal";
-import { DVDScreensaver } from "@/components/ambient/DVDScreensaver";
-import { MatrixRain } from "@/components/ambient/MatrixRain";
-import { FlipClock } from "@/components/ambient/FlipClock";
-import { NoSignal } from "@/components/ambient/NoSignal";
-import { SignatureScreen } from "@/components/tools/SignatureScreen";
-import { TipScreen } from "@/components/tools/TipScreen";
-import { DeadPixelTest } from "@/components/tools/DeadPixelTest";
-import { ScreenStressTest } from "@/components/tools/ScreenStressTest";
-import { BurnInFixer } from "@/components/tools/BurnInFixer";
-import { MotionBlurTest } from "@/components/tools/MotionBlurTest";
-import { ReadingLight } from "@/components/tools/ReadingLight";
-import { ReflectionChecker } from "@/components/tools/ReflectionChecker";
-import { ScreenRuler } from "@/components/tools/ScreenRuler";
-import { BrokenScreen } from "@/components/pranks/BrokenScreen";
-import { BSODControls } from "@/components/pranks/BSODControls";
-import { FakeUpdateControls } from "@/components/pranks/FakeUpdateControls";
-import { HackerTerminalControls } from "@/components/pranks/HackerTerminalControls";
-import { DVDControls } from "@/components/ambient/DVDControls";
-import { MatrixControls } from "@/components/ambient/MatrixControls";
-import { FlipClockControls } from "@/components/ambient/FlipClockControls";
-import { NoSignalControls } from "@/components/ambient/NoSignalControls";
-import { ZoomLighting } from "@/components/tools/ZoomLighting";
-import { QuickNav } from "@/components/QuickNav";
 import { SkeletonTerminal } from "@/components/SkeletonTerminal";
 import { getToolMeta } from "@/lib/seo";
 
@@ -112,6 +116,7 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
   useKeyboardShortcuts();
   useTimer();
   useAutoCycle();
+  useShareLinkRestore();
 
   const toolSlug = params.tool;
   const toolConfig = TOOL_CONFIG[toolSlug];
@@ -152,7 +157,13 @@ export default function ToolPage({ params }: { params: { tool: string } }) {
     }
 
     if (toolConfig.color) {
-      setColor(toolConfig.color);
+      const shareState =
+        typeof window !== "undefined"
+          ? parseShareLinkParams(window.location.search)
+          : null;
+      if (!shareState?.color) {
+        setColor(toolConfig.color);
+      }
     }
     
     if (toolConfig.mode) {

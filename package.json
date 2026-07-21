@@ -4,10 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:clean": "rm -rf .next && next dev",
     "dev:poll": "NEXT_WATCH_POLL=1 next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "icons": "python3 scripts/generate-icons.py",
     "deploy": "vercel --prod"
   },
   "dependencies": {
@@ -38,6 +42,7 @@
     "postcss": "^8.4.0",
     "tailwindcss": "^3.4.0",
     "typescript": "^5.3.0",
-    "vercel": "^48.12.0"
+    "vercel": "^48.12.0",
+    "vitest": "^3.0.5"
   }
 }

@@ -6,10 +6,11 @@ import { useTranslation } from "@/hooks/useTranslation";
 import QRCode from "react-qr-code";
 import { COLOR_PRESETS } from "@/lib/colorUtils";
 import { getStoredFavorites } from "@/lib/storageUtils";
+import { buildShareLink } from "@/lib/shareLink";
 
 export function ExportTools() {
   const t = useTranslation();
-  const { currentColor, brightness, gradient, activeMode } = useAppStore();
+  const { currentColor, brightness, gradient, activeMode, showToast } = useAppStore();
   const [showQR, setShowQR] = useState(false);
   const [exportResolution, setExportResolution] = useState("1920x1080");
   const [exportType, setExportType] = useState<"screen" | "color">("screen");
@@ -31,7 +32,7 @@ export function ExportTools() {
       // Capture the actual display area
       const displayArea = document.querySelector('[data-display-area]') as HTMLElement;
       if (!displayArea) {
-        alert("Display area not found. Please ensure the screen is visible.");
+        showToast("Display area not found. Please ensure the screen is visible.");
         return;
       }
 
@@ -102,21 +103,17 @@ export function ExportTools() {
     );
   };
 
-  const generateShareLink = () => {
-    const params = new URLSearchParams({
-      color: currentColor,
-      brightness: brightness.toString(),
-    });
-    return `${window.location.origin}?${params.toString()}`;
-  };
+  const generateShareLink = () =>
+    buildShareLink({ color: currentColor, brightness });
 
   const copyShareLink = async () => {
     const link = generateShareLink();
     try {
       await navigator.clipboard.writeText(link);
-      alert("Share link copied to clipboard!");
+      showToast("Share link copied to clipboard!");
     } catch (err) {
       console.error("Failed to copy:", err);
+      showToast("Could not copy link. Please copy it manually.");
     }
   };
 

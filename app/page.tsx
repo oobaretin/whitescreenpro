@@ -7,6 +7,8 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { CHANGELOG_SEEN_KEY } from "@/components/ChangelogModal";
+import { useShareLinkRestore } from "@/hooks/useShareLinkRestore";
+import { parseShareLinkParams } from "@/lib/shareLink";
 
 type ToolBadge = "Popular" | "New";
 
@@ -100,15 +102,23 @@ export default function Home() {
   } = useAppStore();
   const [showChangelogBadge, setShowChangelogBadge] = useState(true);
 
+  useShareLinkRestore();
+
   useEffect(() => {
     if (typeof window !== "undefined" && localStorage.getItem(CHANGELOG_SEEN_KEY) === "true") {
       setShowChangelogBadge(false);
     }
   }, []);
 
-  // Reset to white when landing on homepage
+  // Reset to white when landing on homepage (unless share link specifies a color)
   useEffect(() => {
-    setColor("#FFFFFF");
+    const shareState =
+      typeof window !== "undefined"
+        ? parseShareLinkParams(window.location.search)
+        : null;
+    if (!shareState?.color) {
+      setColor("#FFFFFF");
+    }
     setActiveMode("color");
     setActiveTab("colors");
   }, [setColor, setActiveMode, setActiveTab]);

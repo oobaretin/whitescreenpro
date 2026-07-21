@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
 import { ThemeSync } from "@/components/ThemeSync";
+import { LangSync } from "@/components/LangSync";
 import { SettingsFab } from "@/components/SettingsFab";
 import { Toast } from "@/components/Toast";
 import { ChangelogModal } from "@/components/ChangelogModal";
@@ -52,6 +53,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <ThemeSync />
+        <LangSync />
         <MultiMonitorSync />
         <MonitorHealthWizard />
         {children}
