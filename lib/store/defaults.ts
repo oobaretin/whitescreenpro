@@ -1,5 +1,4 @@
 import { COLOR_PRESETS, type GradientConfig } from "../colorUtils";
-import { getStoredSettings } from "../storageUtils";
 import type {
   FlickerConfig,
   PatternConfig,
@@ -41,30 +40,6 @@ export const defaultAutoCycle = {
   colors: COLOR_PRESETS.map((p) => p.hex),
   currentIndex: 0,
 };
-
-export const storedSettings =
-  typeof window !== "undefined" ? getStoredSettings() : {};
-
-export function readMasterKelvin(): number {
-  if (typeof window === "undefined") return 6500;
-  const raw = localStorage.getItem("whitescreentools-master-kelvin");
-  const n = raw ? parseInt(raw, 10) : 6500;
-  if (Number.isNaN(n)) return 6500;
-  return Math.min(10000, Math.max(2000, n));
-}
-
-export function readMasterBrightness(): number {
-  if (typeof window === "undefined") return 100;
-  const raw = localStorage.getItem("whitescreentools-master-brightness");
-  const n = raw ? parseInt(raw, 10) : 100;
-  if (Number.isNaN(n)) return 100;
-  return Math.min(100, Math.max(20, n));
-}
-
-export function readMultiMonitorSync(): boolean {
-  if (typeof window === "undefined") return true;
-  return localStorage.getItem("whitescreentools-multi-sync") !== "false";
-}
 
 export const defaultToolConfigs = {
   zoomLighting: {

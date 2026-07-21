@@ -177,6 +177,8 @@ export function Navigation() {
               <button
                 ref={buttonRefDesktop}
                 type="button"
+                aria-label="Select language"
+                aria-expanded={isLangMenuOpen}
                 onClick={(e) => {
                   e.stopPropagation();
                   setIsLangMenuOpen(!isLangMenuOpen);

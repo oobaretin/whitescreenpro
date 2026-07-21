@@ -39,6 +39,7 @@ export function QuickPresets() {
               key={preset.id}
               type="button"
               className={`${className} w-full cursor-pointer`}
+              aria-label={`${preset.label}: ${preset.desc}`}
               onClick={() => setHealthDashboardOpen(true)}
             >
               {inner}

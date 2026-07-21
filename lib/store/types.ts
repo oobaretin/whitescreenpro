@@ -128,6 +128,7 @@ export interface UiSlice {
   healthDiagnosticComplete: boolean;
   shortcutsOpen: boolean;
   obsOverlayMode: boolean;
+  storeHydrated: boolean;
   togglePanel: () => void;
   setPanelOpen: (open: boolean) => void;
   setActiveTab: (tab: ActiveTab) => void;
@@ -139,6 +140,7 @@ export interface UiSlice {
   setChangelogOpen: (open: boolean) => void;
   setShortcutsOpen: (open: boolean) => void;
   setObsOverlayMode: (enabled: boolean) => void;
+  hydrateFromStorage: () => void;
   requestOpenSettingsFab: () => void;
   setHealthDashboardOpen: (open: boolean) => void;
   startHealthDiagnostic: () => void;

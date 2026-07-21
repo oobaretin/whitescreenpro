@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
+import { StoreHydration } from "@/components/StoreHydration";
 import { ThemeSync } from "@/components/ThemeSync";
 import { LangSync } from "@/components/LangSync";
 import { SettingsFab } from "@/components/SettingsFab";
@@ -61,6 +62,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <JsonLd data={getHomeJsonLd()} />
+        <StoreHydration />
         <ThemeSync />
         <LangSync />
         <MultiMonitorSync />

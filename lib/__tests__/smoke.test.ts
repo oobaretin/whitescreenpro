@@ -155,6 +155,16 @@ describe("keyboardShortcuts", () => {
   });
 });
 
+describe("storeHydrate", () => {
+  it("exports hydrate helpers", async () => {
+    const { readPersistedStorePatch, applyPersistedDomState } = await import(
+      "@/lib/store/hydrate"
+    );
+    expect(readPersistedStorePatch()).toBeNull();
+    expect(typeof applyPersistedDomState).toBe("function");
+  });
+});
+
 describe("obsOverlay", () => {
   it("parses obs overlay URL param", async () => {
     const { parseObsOverlay, appendObsParam } = await import("@/lib/obsOverlay");

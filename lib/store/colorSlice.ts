@@ -7,18 +7,14 @@ import {
   defaultGradient,
   defaultPattern,
   defaultTimer,
-  readMasterBrightness,
-  readMasterKelvin,
-  readMultiMonitorSync,
-  storedSettings,
 } from "./defaults";
 import type { ColorSlice, StoreSlice } from "./types";
 
 export const createColorSlice: StoreSlice<ColorSlice> = (set, get) => ({
-  currentColor: storedSettings.lastColor || COLOR_PRESETS[0].hex,
-  brightness: storedSettings.brightness ?? 100,
-  colorTemperature: storedSettings.colorTemperature ?? 0,
-  gradient: storedSettings.gradient || defaultGradient,
+  currentColor: COLOR_PRESETS[0].hex,
+  brightness: 100,
+  colorTemperature: 0,
+  gradient: defaultGradient,
   isFullscreen: false,
   isPiP: false,
   resolution: "native",
@@ -28,9 +24,9 @@ export const createColorSlice: StoreSlice<ColorSlice> = (set, get) => ({
   timer: defaultTimer,
   flicker: defaultFlicker,
   autoCycle: defaultAutoCycle,
-  masterKelvin: readMasterKelvin(),
-  masterBrightness: readMasterBrightness(),
-  multiMonitorSyncEnabled: readMultiMonitorSync(),
+  masterKelvin: 6500,
+  masterBrightness: 100,
+  multiMonitorSyncEnabled: true,
 
   setColor: (color, opts) => {
     set({ currentColor: color });

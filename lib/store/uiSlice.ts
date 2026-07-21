@@ -1,30 +1,17 @@
-import { storedSettings } from "./defaults";
 import type { StoreSlice, UiSlice } from "./types";
+import { applyPersistedDomState, readPersistedStorePatch } from "./hydrate";
 
 export const createUiSlice: StoreSlice<UiSlice> = (set, get) => ({
   panelOpen: false,
-  panelAutoHide: storedSettings.autoHidePanel ?? true,
-  panelHideDelay: storedSettings.panelHideDelay ?? 3000,
+  panelAutoHide: true,
+  panelHideDelay: 3000,
   showHint: true,
   activeTab: "colors",
-  language:
-    (typeof window !== "undefined" &&
-      (localStorage.getItem("whitescreentools-language") as UiSlice["language"])) ||
-    "en",
-  theme:
-    typeof window !== "undefined" &&
-    localStorage.getItem("whitescreentools-theme") === "dark"
-      ? "dark"
-      : "light",
+  language: "en",
+  theme: "light",
   toastMessage: null,
-  pixelShifterEnabled:
-    (typeof window !== "undefined" &&
-      localStorage.getItem("whitescreentools-pixel-shifter") === "true") ||
-    false,
-  ecoMode:
-    (typeof window !== "undefined" &&
-      localStorage.getItem("whitescreentools-eco-mode") === "true") ||
-    false,
+  pixelShifterEnabled: false,
+  ecoMode: false,
   changelogOpen: false,
   settingsOpenNonce: 0,
   healthDashboardOpen: false,
@@ -32,6 +19,14 @@ export const createUiSlice: StoreSlice<UiSlice> = (set, get) => ({
   healthDiagnosticComplete: false,
   shortcutsOpen: false,
   obsOverlayMode: false,
+  storeHydrated: false,
+
+  hydrateFromStorage: () => {
+    const patch = readPersistedStorePatch();
+    if (!patch) return;
+    set(patch);
+    applyPersistedDomState(patch.theme ?? "light", patch.language ?? "en");
+  },
 
   togglePanel: () => {
     set((state) => ({ panelOpen: !state.panelOpen }));
