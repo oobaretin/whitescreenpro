@@ -4,9 +4,9 @@ export const SITE_URL = "https://whitescreentools.com";
 export const SITE_NAME = "WhiteScreen Tools";
 
 export const OG_IMAGE = {
-  url: "/icon-512.png",
-  width: 512,
-  height: 512,
+  url: "/opengraph-image",
+  width: 1200,
+  height: 630,
   alt: "WhiteScreen Tools — full-screen color and monitor test utilities",
 } as const;
 

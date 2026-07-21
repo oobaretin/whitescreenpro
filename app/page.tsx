@@ -7,6 +7,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { ToolGrid } from "@/components/ToolGrid";
+import { QuickPresets } from "@/components/QuickPresets";
 import { CHANGELOG_SEEN_KEY } from "@/components/ChangelogModal";
 import { useShareLinkRestore } from "@/hooks/useShareLinkRestore";
 import { parseShareLinkParams } from "@/lib/shareLink";
@@ -53,9 +54,11 @@ export default function Home() {
           <h1 className="text-4xl md:text-5xl font-bold text-page mb-3">
             {t.home.title}
           </h1>
-          <p className="text-lg text-page/80 mb-8">
+          <p className="text-lg text-page/80 mb-6">
             {t.home.subtitle}
           </p>
+
+          <QuickPresets />
 
           <ToolGrid
             showChangelogBadge={showChangelogBadge}

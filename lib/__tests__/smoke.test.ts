@@ -120,6 +120,17 @@ describe("jsonLd", () => {
     expect(schemas[1]["@type"]).toBe("FAQPage");
   });
 });
+describe("presets", () => {
+  it("defines quick start presets with href or action", async () => {
+    const { QUICK_PRESETS } = await import("@/lib/presets");
+    expect(QUICK_PRESETS.length).toBeGreaterThanOrEqual(3);
+    for (const p of QUICK_PRESETS) {
+      expect(p.label.length).toBeGreaterThan(0);
+      expect("href" in p || "action" in p).toBe(true);
+    }
+  });
+});
+
 describe("seo", () => {
   it("every sitemap tool has metadata", async () => {
     const { SEO } = await import("@/lib/seo");
