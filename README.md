@@ -2,12 +2,13 @@
 
 Professional full-screen color utilities, monitor tests, video-call lighting, and 28+ tools — free at [whitescreentools.com](https://whitescreentools.com).
 
-**Version 2.2**
+**Version 2.3**
 
 ## Highlights
 
 - **28+ tools** — color screens, dead-pixel test, zoom lighting, pranks, ambient modes
-- **Homepage** — search, categories, pinned favorites, recently used, quick-start presets
+- **Homepage** — start-here CTAs, search, categories, pinned favorites, recently used, quick-start presets
+- **Help & docs** — `/docs` guide for shortcuts, share links, OBS, and multi-monitor sync
 - **Share & restore** — URL params for color, brightness, Kelvin; tool deep links; OBS overlay (`?obs=1`)
 - **Multi-monitor** — local tab sync + layout presets (calibration, video call, pixel test)
 - **Monitor Health** — step-by-step wizard + PDF report export

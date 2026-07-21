@@ -18,68 +18,95 @@ export default function DisclaimerPage() {
             href="/"
             className="inline-flex items-center gap-2 text-page/80 hover:text-page transition-colors mb-8"
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              aria-hidden="true"
+            >
               <path d="M19 12H5M12 19l-7-7 7-7" />
             </svg>
             <span>Back to Home</span>
           </Link>
-          <h1 className="text-4xl md:text-5xl font-bold mb-2 text-center">Disclaimer & Safety Warning</h1>
-          <p className="text-sm text-page/70 text-center mb-12">WhiteScreen Tools — Use at your own risk</p>
+          <h1 className="text-4xl md:text-5xl font-bold mb-2 text-center text-page">
+            Disclaimer &amp; Safety Warning
+          </h1>
+          <p className="text-sm text-page/70 text-center mb-12">
+            WhiteScreen Tools — use at your own risk
+          </p>
 
-          <div className="space-y-10 text-page/90 leading-relaxed">
-            <section>
-              <h2 className="text-2xl font-semibold text-page mb-3">1. Epilepsy & Photosensitivity Warning</h2>
+          <div className="space-y-8 text-page/90 leading-relaxed">
+            <section className="bg-card border border-card rounded-xl p-6">
+              <h2 className="text-xl font-semibold text-page mb-3">
+                1. Epilepsy &amp; photosensitivity
+              </h2>
               <p>
-                Some tools on WhiteScreenTools.com, including the Dead Pixel Test and certain creative backgrounds,
-                may involve flashing colors or rapid light changes. If you have a history of epilepsy or photosensitivity,
-                please consult a medical professional before use. Discontinue use immediately if you experience dizziness,
-                altered vision, or muscle twitches.
+                Some tools, including the Dead Pixel Test and certain effects, may
+                involve flashing colors or rapid light changes. If you have a
+                history of epilepsy or photosensitivity, consult a medical
+                professional before use. Stop immediately if you experience
+                dizziness, altered vision, or muscle twitches.
               </p>
             </section>
 
-            <section>
-              <h2 className="text-2xl font-semibold text-page mb-3">2. Prank Tools & Responsible Use</h2>
+            <section className="bg-card border border-card rounded-xl p-6">
+              <h2 className="text-xl font-semibold text-page mb-3">
+                2. Prank tools &amp; responsible use
+              </h2>
               <p>
-                Our &quot;Broken Screen,&quot; &quot;BSOD,&quot; and &quot;Fake Update&quot; tools are provided for entertainment
-                purposes only. WhiteScreenTools.com is not responsible for any distress, property damage, or disciplinary
-                actions resulting from the use of these pranks. Always use these tools responsibly and ensure the
-                &quot;victim&quot; is aware it is a simulation in a timely manner.
+                Broken Screen, BSOD, and Fake Update tools are for entertainment
+                only. We are not responsible for distress or disciplinary actions
+                from prank use. Ensure others know it is a simulation in a timely
+                manner.
               </p>
             </section>
 
-            <section>
-              <h2 className="text-2xl font-semibold text-page mb-3">3. Hardware Safety</h2>
+            <section className="bg-card border border-card rounded-xl p-6">
+              <h2 className="text-xl font-semibold text-page mb-3">
+                3. Hardware safety
+              </h2>
               <p>
-                While our tools are designed to assist with monitor testing and lighting, prolonged use of high-brightness
-                solid colors (especially on OLED or Plasma displays) can contribute to screen burn-in. Users are encouraged
-                to use the &quot;Pixel Shifter&quot; feature or limit continuous display time.
+                Prolonged high-brightness solid colors (especially on OLED
+                displays) can contribute to burn-in. Use the Burn-In Fixer or limit
+                continuous display time when testing panels.
               </p>
             </section>
 
-            <section>
-              <h2 className="text-2xl font-semibold text-page mb-3">4. No Professional Liability</h2>
+            <section className="bg-card border border-card rounded-xl p-6">
+              <h2 className="text-xl font-semibold text-page mb-3">
+                4. No professional liability
+              </h2>
               <p>
-                WhiteScreenTools.com provides these utilities &quot;as-is.&quot; We are not liable for any hardware failure,
-                data loss, or professional errors occurring during the use of our digital signature or monitor testing tools.
+                Utilities are provided &quot;as-is.&quot; We are not liable for
+                hardware failure, data loss, or professional errors from signature
+                capture, monitor testing, or other tools.
               </p>
             </section>
           </div>
 
-          <div className="mt-12 pt-8 border-t border-card text-center">
+          <div className="mt-12 pt-8 border-t border-card text-center text-sm">
             <Link
               href="/terms"
-              className="text-accent hover:underline"
-              style={{ color: "var(--accent-color)" }}
+              className="text-[color:var(--accent-color)] hover:underline"
             >
               Terms and Conditions
             </Link>
             <span className="mx-2 text-page/60">·</span>
             <Link
               href="/privacy"
-              className="text-accent hover:underline"
-              style={{ color: "var(--accent-color)" }}
+              className="text-[color:var(--accent-color)] hover:underline"
             >
               Privacy Policy
+            </Link>
+            <span className="mx-2 text-page/60">·</span>
+            <Link
+              href="/docs"
+              className="text-[color:var(--accent-color)] hover:underline"
+            >
+              Help &amp; Docs
             </Link>
           </div>
         </div>

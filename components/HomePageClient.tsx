@@ -8,6 +8,7 @@ import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { ToolGrid } from "@/components/ToolGrid";
 import { QuickPresets } from "@/components/QuickPresets";
+import { StartHere } from "@/components/StartHere";
 import { CHANGELOG_SEEN_KEY } from "@/components/ChangelogModal";
 import { useShareLinkRestore } from "@/hooks/useShareLinkRestore";
 import { parseShareLinkParams } from "@/lib/shareLink";
@@ -50,6 +51,8 @@ export function HomePageClient({ seoIndex }: { seoIndex?: ReactNode }) {
             {t.home.title}
           </h1>
           <p className="text-lg text-page/80 mb-6">{t.home.subtitle}</p>
+
+          <StartHere />
 
           <QuickPresets />
 

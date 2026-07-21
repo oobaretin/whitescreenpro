@@ -202,7 +202,11 @@ export default function AboutPage() {
                 <Link href="/privacy" className="text-[color:var(--accent-color)] hover:underline">
                   Privacy Policy
                 </Link>{" "}
-                for details.
+                for details. Tips for shortcuts, OBS, and share links are in our{" "}
+                <Link href="/docs" className="text-[color:var(--accent-color)] hover:underline">
+                  Help &amp; docs
+                </Link>
+                .
               </p>
             </SectionCard>
           </div>

@@ -57,11 +57,35 @@ test.describe("smoke", () => {
     expect(layout.gap).toBeGreaterThan(0);
   });
 
-  test("changelog badge opens v2.2 release notes", async ({ page }) => {
+  test("changelog badge opens v2.3 release notes", async ({ page }) => {
     await page.goto("/");
-    await page.getByRole("button", { name: /what's new in v2\.2/i }).click();
+    await page.getByRole("button", { name: /what's new in v2\.3/i }).click();
     await expect(page.getByRole("dialog", { name: /release notes/i })).toBeVisible();
-    await expect(page.getByText("Version 2.2")).toBeVisible();
+    await expect(page.getByText("Version 2.3")).toBeVisible();
+  });
+
+  test("docs page loads with shortcuts table", async ({ page }) => {
+    await page.goto("/docs");
+    await expect(
+      page.getByRole("heading", { name: /help & docs/i }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Keyboard shortcuts", exact: true }),
+    ).toBeVisible();
+    await expect(page.getByRole("cell", { name: /toggle fullscreen/i })).toBeVisible();
+  });
+
+  test("homepage start here actions are visible", async ({ page }) => {
+    await page.goto("/");
+    await expect(
+      page.getByRole("heading", { name: "Start here", exact: true }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("button", { name: /test my monitor/i }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("link", { name: /video call lighting/i }),
+    ).toBeVisible();
   });
 
   test("contact page loads with form and sidebar", async ({ page }) => {

@@ -70,6 +70,12 @@ export function Footer() {
             <span className="hidden sm:inline select-none text-page/35 text-xs font-light" aria-hidden="true">
               ·
             </span>
+            <Link href="/docs" className={FOOT_INTERACTIVE}>
+              Docs
+            </Link>
+            <span className="hidden sm:inline select-none text-page/35 text-xs font-light" aria-hidden="true">
+              ·
+            </span>
             <Link href="/contact" className={FOOT_INTERACTIVE}>
               Contact
             </Link>

@@ -3,7 +3,7 @@
 import { useEffect, useCallback } from "react";
 import { useAppStore } from "@/lib/store";
 
-const CHANGELOG_SEEN_KEY = "whitescreentools-v2.2-seen";
+const CHANGELOG_SEEN_KEY = "whitescreentools-v2.3-seen";
 
 export function ChangelogModal() {
   const changelogOpen = useAppStore((s) => s.changelogOpen);
@@ -43,72 +43,56 @@ export function ChangelogModal() {
         <h2 id="changelog-title" className="text-xl font-bold mt-0 mb-1 text-page">
           Release Notes
         </h2>
-        <p className="text-sm text-page/70 mb-4">Version 2.2</p>
+        <p className="text-sm text-page/70 mb-4">Version 2.3</p>
         <div className="max-h-[350px] overflow-y-auto text-left pr-2">
           <h4
             className="text-sm font-semibold mt-4 mb-2 first:mt-0"
             style={{ color: "var(--accent-color)" }}
           >
-            Discover &amp; personalize
+            Contact &amp; trust
           </h4>
           <ul className="list-disc pl-5 space-y-1 text-sm text-page/90 mb-4">
             <li>
-              <strong>Tool search &amp; categories</strong> — filter 28+ tools on the
-              homepage.
+              <strong>Contact form</strong> — send messages from the site via
+              Web3Forms (no mail app needed).
             </li>
             <li>
-              <strong>Pinned favorites</strong> — star tools for quick access (up to 8).
+              <strong>Redesigned contact page</strong> — form + email, GitHub,
+              and tips sidebar.
             </li>
             <li>
-              <strong>Recently used</strong> — jump back to tools you opened lately.
-            </li>
-            <li>
-              <strong>Quick start presets</strong> — Photography, video call, monitor
-              test, chroma key.
+              <strong>Updated privacy &amp; about</strong> — accurate policy and
+              refreshed layouts.
             </li>
           </ul>
-          <h4 className="text-sm font-semibold mt-4 mb-2" style={{ color: "var(--accent-color)" }}>
-            Share, stream &amp; sync
+          <h4
+            className="text-sm font-semibold mt-4 mb-2"
+            style={{ color: "var(--accent-color)" }}
+          >
+            Discover &amp; learn
           </h4>
           <ul className="list-disc pl-5 space-y-1 text-sm text-page/90 mb-4">
             <li>
-              <strong>Share links restore settings</strong> — color, brightness, Kelvin
-              from the URL.
+              <strong>Help &amp; docs</strong> — shortcuts, share links, OBS, and
+              multi-monitor guide at <code>/docs</code>.
             </li>
             <li>
-              <strong>Tool deep links</strong> — e.g. dead-pixel auto-cycle, flicker
-              params.
+              <strong>Start here</strong> — one-click monitor test and video-call
+              lighting on the homepage.
             </li>
             <li>
-              <strong>OBS overlay mode</strong> — add <code>?obs=1</code> for a clean
-              browser source.
-            </li>
-            <li>
-              <strong>Multi-monitor layout presets</strong> — open matched pairs from
-              settings.
+              <strong>Pin star fix</strong> — favorites no longer overlap tool
+              names on cards.
             </li>
           </ul>
-          <h4 className="text-sm font-semibold mt-4 mb-2" style={{ color: "var(--accent-color)" }}>
-            Quality &amp; accessibility
+          <h4
+            className="text-sm font-semibold mt-4 mb-2"
+            style={{ color: "var(--accent-color)" }}
+          >
+            Still in v2.2
           </h4>
           <ul className="list-disc pl-5 space-y-1 text-sm text-page/90 mb-4">
-            <li>
-              <strong>Keyboard shortcuts modal</strong> — press <b>?</b> or use the
-              footer link.
-            </li>
-            <li>
-              <strong>Monitor Health PDF</strong> — export a report after the wizard.
-            </li>
-            <li>
-              <strong>Reduced motion</strong> — respects system preference site-wide.
-            </li>
-            <li>
-              <strong>Per-tool social previews</strong> — unique OG images when sharing.
-            </li>
-            <li>
-              <strong>Faster loads</strong> — lazy-loaded translations and code-split
-              tools.
-            </li>
+            <li>Pinned favorites, search, share links, OBS mode, Monitor Health PDF, and 28+ tools.</li>
           </ul>
         </div>
         <button

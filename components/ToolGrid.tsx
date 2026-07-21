@@ -261,7 +261,7 @@ export function ToolGrid({ showChangelogBadge, onOpenChangelog }: ToolGridProps)
               className="py-1.5 px-3 rounded-full text-white text-xs font-bold cursor-pointer border-none transition-opacity hover:opacity-90"
               style={{ background: "var(--accent-color)" }}
             >
-              What&apos;s New in v2.2? ✨
+              What&apos;s New in v2.3? ✨
             </button>
           </div>
         )}
